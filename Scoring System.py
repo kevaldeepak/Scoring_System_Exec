@@ -20,7 +20,10 @@ Team_List_2 = []
 Team_List_3 = []
 
 Teams_ID = {}
+Teams_ID_Inverted = {}
 
+#VAR
+id_number = 0
 
 #    ------------------- THIS IS THE INTRODUCTION ---------------------
 #    -------------------- CHANGE TO WHATEVER THE FIRST MESSAGE IS THAT WILL POPUP -----------------
@@ -143,6 +146,14 @@ def PasteValues():
         Team_File.close()
         x += 1
 
+    #IMPORTING DICT. TEAM_id_INVERTED
+    lenght_Teams_ID = len(Teams_ID)
+    count_num = 0
+    for pip in range(0,lenght_Teams_ID):
+        Teams_ID_Inverted[Teams_ID[count_num]] = count_num
+        count_num += 1
+
+    
     """
     x = 0
     for yuy in range(0,num_lines):
@@ -489,6 +500,12 @@ def Teams_Menu_2():
             php = 1
             Teams[team_name] = str(Teams_List) + str(php)
             php += 1
+            #ADDING TO DICT. Teams_ID
+            global id_number
+            Teams_ID[id_number] = team_name
+            #ADDING TO DICT. Teams_ID_Inverted
+            Teams_ID_Inverted[team_name] = id_number
+            id_number += 1
             #THIS CREATES A FILE USING THE TEAM NAME
             team_file = open('%s.txt' % team_name, 'a+')
             team_file.close()
@@ -567,6 +584,17 @@ def Teams_Menu_4():
             Team_File = open(Team_Selected + ".txt","a+")
             Team_File.write(Player_Name + "\n")
             Team_File.close()
+            #ADDING TO TEAM'S SPECIFIC MEMBER LIST
+            ID_TEAM = Teams_ID_Inverted[Team_Selected]
+            if ID_TEAM == 0:
+                Team_List_0.append(Player_Name)
+            elif ID_TEAM == 1:
+                Team_List_1.append(Player_Name)
+            elif ID_TEAM == 2:
+                Team_List_2.append(Player_Name)
+            elif ID_TEAM == 3:
+                Team_List_3.append(Player_Name)
+                
             print("Player has been added to " + Team_Selected)
             Teams_Menu()
         #VALIDATION 1: IF THE NAME IS NOT ON THE LIST
@@ -585,7 +613,6 @@ def Events_Menu():
 #   ---------- THIS IS THE SCORES MENU. EVERYTHING RELATING TO SCORES IS HERE -----------
 def Scores_Menu():
     return
-
 
 # ----------------- STARTS THE WHOLE PROGRAM, LAUNCHED WITH THE INTRODUCTION. ----------------------
 Introduction()
