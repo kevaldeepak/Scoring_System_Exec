@@ -18,10 +18,10 @@ Team_List_0 = []
 Team_List_1 = []
 Team_List_2 = []
 Team_List_3 = []
-
+#SHOWS THE TEAM FOR THE ID
 Teams_ID = {}
+#SHOWS THE ID FOR THE TEAM
 Teams_ID_Inverted = {}
-
 #VAR
 id_number = 0
 
@@ -434,7 +434,13 @@ def Teams_Menu():
             Teams_Menu_1()
         #ADD TEAMS
         elif T_M == 2:
-            Teams_Menu_2()
+            lenght_Teams_List = len(Teams_List)
+            if lenght_Teams_List <= 3:                
+                Teams_Menu_2()
+            else:
+                print("\n    ----- Error -----")
+                print("There are too many teams! (Max 4 Teams)")
+                Teams_Menu()
         #REMOVE TEAMS
         elif T_M == 3:
             Teams_Menu_3()
@@ -571,6 +577,11 @@ def Teams_Menu_3():
 
 #THIS IS TO ADD PLAYERS TO TEAMS
 def Teams_Menu_4():
+    global Lenght_Team_0
+    global Lenght_Team_1
+    global Lenght_Team_2
+    global Lenght_Team_3
+    
     try:
         print("")
         for lol in Teams_List:
@@ -579,6 +590,28 @@ def Teams_Menu_4():
         #VALIDATION 1: IF THE NAME IS ON THE LIST
         if Team_Selected in Teams_List:
             print("\n--- " + Team_Selected + " has been selected! ---")
+            #VALIDATION 2 : CHECKS IF THE TEAM IS FULL
+            ID_TEAM = Teams_ID_Inverted[Team_Selected]
+            if ID_TEAM == 0:
+                Lenght_Team_0 = len(Team_List_0)
+                if Lenght_Team_0 == 5:
+                    print("{0} is currently full! Max. 5 players per team.".format(Team_Selected))
+                    Teams_Menu()
+            elif ID_TEAM == 1:
+                Lenght_Team_1 = len(Team_List_1)
+                if Lenght_Team_1 == 5:
+                    print("{0} is currently full! Max. 5 players per team.".format(Team_Selected))
+                    Teams_Menu()
+            elif ID_TEAM == 2:
+                Lenght_Team_2 = len(Team_List_2)
+                if Lenght_Team_2 == 5:
+                    print("{0} is currently full! Max. 5 players per team.".format(Team_Selected))
+                    Teams_Menu()
+            elif ID_TEAM == 3:
+                Lenght_Team_3 = len(Team_List_3)
+                if Lenght_Team_3 == 5:
+                    print("{0} is currently full! Max. 5 players per team.".format(Team_Selected))
+                    Teams_Menu()
             #BELOW IS THE CODE FOR ADDING A TEAM MATE
             Player_Name = input("Enter a Player's FULL NAME for team " + Team_Selected + " : ").title()
             Team_File = open(Team_Selected + ".txt","a+")
