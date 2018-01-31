@@ -586,5 +586,6 @@ def Events_Menu():
 def Scores_Menu():
     return
 
+
 # ----------------- STARTS THE WHOLE PROGRAM, LAUNCHED WITH THE INTRODUCTION. ----------------------
 Introduction()
