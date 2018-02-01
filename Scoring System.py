@@ -206,6 +206,7 @@ def Reset():
         #CLEARS THE FILE
         open('Individual_Names.txt', 'w').close()
         #CLEARS THE LISTS
+        # --- Individuals_List ---
         del Individuals_List[:]
         #CLEARS THE DICTIONARIES
         Individuals.clear()
@@ -276,7 +277,12 @@ def Individuals_Menu():
             Individuals_Menu_1()
         #ADD PARTICIPANTS
         elif P_M == 2:
-            Individuals_Menu_2()
+            if len(Individuals_List) == 20:
+                print("\n--- Error ---")
+                print("There are too many players! Max. 20 players")
+                Individuals_Menu()
+            else:
+                Individuals_Menu_2()
         #REMOVE PARTICIPANTS
         elif P_M == 3:
             Individuals_Menu_3()
@@ -313,7 +319,7 @@ def Individuals_Menu_1():
 def Individuals_Menu_2():
     try:
         global Add_Individual
-        Add_Individual = input("\nPlease enter a full name: ")
+        Add_Individual = input("\nPlease enter a full name: ").title()
         #VALIDATION 1 : IF THERE ARE ANY NUMBERS
         if any(i.isdigit() for i in Add_Individual):
             print("\n---------- Error! ----------\nPlease enter a name without numbers!\n----------------------------")
@@ -325,6 +331,23 @@ def Individuals_Menu_2():
         #VALIDATION 3 : IF THE PERSON HASN'T ENTERED A FULL NAME
         elif " " not in Add_Individual:
             print("\n---------- Error! ----------\nPlease enter your First & Last name!\n----------------------------")
+            Individuals_Menu()
+        #VALIDATION 5 : IF THE NAME IS TAKEN IN A TEAM
+        #CHECKS TEAM 1
+        elif Add_Individual in Team_List_0:
+            print("{0} is already in team {1}".format(Add_Individual,Teams_ID[0]))
+            Individuals_Menu()
+        #CHECKS TEAM 2
+        elif Add_Individual in Team_List_1:
+            print("{0} is already in team {1}".format(Add_Individual,Teams_ID[1]))
+            Individuals_Menu()
+        #CHECKS TEAM 3
+        elif Add_Individual in Team_List_2:
+            print("{0} is already in team {1}".format(Add_Individual,Teams_ID[2]))
+            Individuals_Menu()
+        #CHECKS TEAM 4
+        elif Add_Individual in Team_List_3:
+            print("{0} is already in team {1}".format(Add_Individual,Teams_ID[3]))
             Individuals_Menu()
         #TITLES() THE VARIABLE
         Add_Individual = Add_Individual.title()
@@ -464,21 +487,31 @@ def Teams_Menu():
         
 #THIS IS TO REVIEW ALL THE TEAMS /////////// THIS CAN BE DIFFERENT, TO BE ABLE TO VIEW MEMEBRS \\\\\\\\\\\\\\\\
 def Teams_Menu_1():
-    # THIS PRINT IS JUST FOR AESTHETICS PURPOSES
     print("")
-    # THIS CHECK THE LENGHT OF THE LIGHT --- TO CHECK IF IT IS EMPTY
-    lenght = len(Teams_List)
-    #IF IT IS EMPTY, THIS SHOULD HAPPEN
-    if lenght == 0:
-        print("There are no Teams!")
-    #IF IT HAS TEAMS IT WILL PRINT THEM OUT
+    temphgh = int(input("1 - View players by team\n2 - View all Teams\nWhere do you want to go?: "))
+    if temphgh == 1:
+        print("Hello")
+    elif temphgh == 2:
+        # THIS PRINT IS JUST FOR AESTHETICS PURPOSES
+        print("")
+        # THIS CHECK THE LENGHT OF THE LIGHT --- TO CHECK IF IT IS EMPTY
+        lenght = len(Teams_List)
+        #IF IT IS EMPTY, THIS SHOULD HAPPEN
+        if lenght == 0:
+            print("There are no Teams!")
+        #IF IT HAS TEAMS IT WILL PRINT THEM OUT
+        else:
+            print("---------- TEAMS ----------")
+            for abc in Teams_List:
+                print("---> " + abc + " <---")
+        #RETURNING TO INDIVIDUAL MENU MACHANISM    
+        Teams_Menu()
     else:
-        print("---------- TEAMS ----------")
-        for abc in Teams_List:
-            print("---> " + abc + " <---")
-    #RETURNING TO INDIVIDUAL MENU MACHANISM    
+        print("Please enter a valid option.")
     Teams_Menu()
+    
 
+    
 #THIS IS TO ADD TEAMS
 def Teams_Menu_2():
     try:
@@ -614,22 +647,37 @@ def Teams_Menu_4():
                     Teams_Menu()
             #BELOW IS THE CODE FOR ADDING A TEAM MATE
             Player_Name = input("Enter a Player's FULL NAME for team " + Team_Selected + " : ").title()
-            Team_File = open(Team_Selected + ".txt","a+")
-            Team_File.write(Player_Name + "\n")
-            Team_File.close()
-            #ADDING TO TEAM'S SPECIFIC MEMBER LIST
-            ID_TEAM = Teams_ID_Inverted[Team_Selected]
-            if ID_TEAM == 0:
-                Team_List_0.append(Player_Name)
-            elif ID_TEAM == 1:
-                Team_List_1.append(Player_Name)
-            elif ID_TEAM == 2:
-                Team_List_2.append(Player_Name)
-            elif ID_TEAM == 3:
-                Team_List_3.append(Player_Name)
-                
-            print("Player has been added to " + Team_Selected)
-            Teams_Menu()
+            #IF NAME IS ALREADY IN A TEAM
+            if Player_Name in Team_List_0:
+                print("{0} is already in {1}".format(Player_Name,Teams_ID[0]))
+            elif Player_Name in Team_List_1:
+                print("{0} is already in {1}".format(Player_Name,Teams_ID[1]))
+            elif Player_Name in Team_List_2:
+                print("{0} is already in {1}".format(Player_Name,Teams_ID[2]))
+            elif Player_Name in Team_List_3:
+                print("{0} is already in {1}".format(Player_Name,Teams_ID[3]))
+            #IF NAME IS REGISTERED WITH INDIVIDUALS PARTICIPANTS
+            elif Player_Name in Individuals_List:
+                print("{0} is registered with individuals.".format(Player_Name))
+            else:
+                Team_File = open(Team_Selected + ".txt","a+")
+                Team_File.write(Player_Name + "\n")
+                Team_File.close()
+                #ADDING TO TEAM'S SPECIFIC MEMBER LIST
+                ID_TEAM = Teams_ID_Inverted[Team_Selected]
+                if ID_TEAM == 0:
+                    Team_List_0.append(Player_Name)
+                elif ID_TEAM == 1:
+                    Team_List_1.append(Player_Name)
+                elif ID_TEAM == 2:
+                    Team_List_2.append(Player_Name)
+                elif ID_TEAM == 3:
+                    Team_List_3.append(Player_Name)
+                    
+                print("Player has been added to " + Team_Selected)
+                Teams_Menu()
+
+            Teams_Menu()  
         #VALIDATION 1: IF THE NAME IS NOT ON THE LIST
         else:
             print("Please enter a correct name!")
