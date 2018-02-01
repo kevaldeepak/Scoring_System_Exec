@@ -490,7 +490,30 @@ def Teams_Menu_1():
     print("")
     temphgh = int(input("1 - View players by team\n2 - View all Teams\nWhere do you want to go?: "))
     if temphgh == 1:
-        print("Hello")
+        print("")
+        pep = 1
+        print("---- Teams ----")
+        for kjk in Teams_List:
+            print("{0} --> {1}".format(pep,kjk))
+            pep += 1
+        temprtr = int(input("Select a team: "))
+        print("")
+        if temprtr == 1:
+            for fdf in Team_List_0:
+                print("--> {0} <--".format(fdf))
+        elif temprtr == 2:
+            for fdf in Team_List_1:
+                print("--> {0} <--".format(fdf))
+        elif temprtr == 3:
+            for fdf in Team_List_2:
+                print("--> {0} <--".format(fdf))
+        elif temprtr == 4:
+            for fdf in Team_List_3:
+                print("--> {0} <--".format(fdf))
+        else:
+            print("Please enter a valid answer!")
+            Teams_Menu()
+        Teams_Menu()
     elif temphgh == 2:
         # THIS PRINT IS JUST FOR AESTHETICS PURPOSES
         print("")
