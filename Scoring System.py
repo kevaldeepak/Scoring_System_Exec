@@ -155,6 +155,7 @@ def PasteValues():
 
     
     """
++
     x = 0
     for yuy in range(0,num_lines):
         team_names = BLines3[x]
@@ -210,10 +211,30 @@ def Reset():
         del Individuals_List[:]
         #CLEARS THE DICTIONARIES
         Individuals.clear()
+        # ----------------- TEAMS -----------------
+        # -- DELETES ALL TEAM NAMES -- 
+        # READS TEAM NAMES
+        file = open("Team_Names.txt","r")
+        file_lines = file.readlines()
+        file.close()
+        # STRIPS THE '\N' FROM ALL LINES
+        striped_lines = [s.replace('\n','') for s in file_lines]
+        # CYCLES THROUGH THE LIST
+        for yuy in striped_lines:
+            # REMOVES FILES FOR EACH TEAM
+            os.remove(yuy + '.txt')
+        #REMOVES REST OF FILES AS WELL
+        # -- Individual_Names.TXT --
+        os.remove("Individual_Names.txt")
+        # -- Individual_Scores.TXT --
+        os.remove('Individual_Scores.txt')
+        # -- Team_Names.TXT --
+        os.remove('Team_Names.txt')
         #GIVES A MESSAGE FOR THE USER
         print("Program has been factory reset.")
         #RETURNS BACK TO THE MAIN MENU AFTER RESET
-        Main_Menu()
+        print("Restarting program.")
+        Introduction()
     #NOT CONFIRMED
     elif temp == "N":
         print("Returning to Main Menu...")
@@ -549,6 +570,11 @@ def Teams_Menu_2():
         elif team_name == "":
             print("\n---------- Error! ----------\nPlease enter a name!\n----------------------------")
             Teams_Menu()
+        #VALIDATION 4 : RESERVED NAMES 
+        elif team_name == "Individual_Names" or team_name == "Individual_Scores" or team_name == "Team_Names":
+            print("\nYou have entered a reserved name for the system.")
+            print("You may not have access to name a team this.")
+            Teams_Menu()
         #VALIDATION 3 : IF THERE IS THE SAME NAME PRESENT IT DOES THIS
         for ghg in Teams_List:
             if team_name == ghg:
@@ -576,7 +602,6 @@ def Teams_Menu_2():
             #THIS WRITES THE TEAM NAME INSIDE THE FILE
             teams_file.write(team_name + "\n")
             teams_file.close()
-            
             #PRINTS CONFIRMATION FOR THE USER TO KNOW
             print("\nTeam has been added!")
             #REDIRECTS BACK TO THE MENU
@@ -682,6 +707,10 @@ def Teams_Menu_4():
             #IF NAME IS REGISTERED WITH INDIVIDUALS PARTICIPANTS
             elif Player_Name in Individuals_List:
                 print("{0} is registered with individuals.".format(Player_Name))
+            #VALIDATION : NAME MUST BE A FULL NAME
+            elif " " not in Player_Name:
+                print("\nPlease enter a FULL name.")
+                Teams_Menu()
             else:
                 Team_File = open(Team_Selected + ".txt","a+")
                 Team_File.write(Player_Name + "\n")
