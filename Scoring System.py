@@ -255,7 +255,7 @@ def Main_Menu():
         # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
         print("-------- Main Menu --------")
         # INPUT WITH ALL THE OPTIONS LISTED. NUMBER REPRESENTS THE OPTION
-        M_M = int(input("1 - Individuals\n2 - Teams\n2 - Events\n4 - Scores\n5 - Reset all Data\n6 - Exit\nWhere do you want to go?: "))
+        M_M = int(input("1 - Individuals\n2 - Teams\n3 - Events\n4 - Scores\n5 - Reset all Data\n6 - Exit\nWhere do you want to go?: "))
         # IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN.
         #Individual MENU
         if M_M == 1:
@@ -742,7 +742,35 @@ def Teams_Menu_4():
     
 #   ---------- THIS IS THE EVENTS MENU. EVERYTHING RELATING TO EVENTS IS HERE -----------
 def Events_Menu():
-    return
+    # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
+    print("-------- Main Menu --------")
+    # INPUT WITH ALL THE OPTIONS LISTED. NUMBER REPRESENTS THE OPTION
+    E_M = int(input("1 - Review Events\n2 - Add Events\n3 - Remove Events\n4 - Add Teams to Events\n5 - Remove Teams to Events\n6 - Back\nWhere do you want to go?: "))
+    # IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN.
+    #REVIEW EVENTS
+    if E_M == 1:
+        Events_Menu_1()
+    #ADD EVENTS
+    elif E_M == 2:
+        Events_Menu_2()
+    #REMOVE EVENTS
+    elif E_M == 3:
+        Events_Menu_3()
+    #ADD TEAMS TO EVENTS
+    elif E_M == 4:
+        Events_Menu_4()
+    #REMOVE TEAMS FROM EVENTS
+    elif E_M == 5:
+        Events_Menu_5()
+    #BACK
+    elif E_M == 6:
+        Main_Menu()
+
+    else:
+        print("Please enter a valid option.")
+        Events_Menu()
+    
+    
 #   ---------- THIS IS THE SCORES MENU. EVERYTHING RELATING TO SCORES IS HERE -----------
 def Scores_Menu():
     return
