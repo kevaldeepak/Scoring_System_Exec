@@ -761,6 +761,10 @@ def Events_Menu_2():
         Events_Menu_2_1()
     #ADD EVENTS
     elif E_M == 2:
+        if len(Events_List) == 5:
+            print("\nToo many events!")
+            print("Please remove to add new one.")
+            Events_Menu_2()
         Events_Menu_2_2()
     #REMOVE EVENTS
     elif E_M == 3:
@@ -783,7 +787,7 @@ def Events_Menu_2():
 def Events_Menu_2_1():
     print("----- Events for Teams -----")
     for abc in Events_List:
-        print("-- {0} ---".format(abc))
+        print("  -- {0} ---".format(abc))
     time.sleep(1)
     Events_Menu_2()
 
@@ -800,7 +804,7 @@ def Events_Menu_2_2():
         print("Enter a name without numbers!")
         Events_Menu_2()
     #VALIDATION 3 : IF THE NAME IS ALREADY TAKEN
-    for name in Event_Name:
+    for name in Events_List:
         if name == Event_Name:
             print(" -- This name is taken -- ")
             Events_Menu_2()
@@ -812,6 +816,9 @@ def Events_Menu_2_2():
         file = open("Event_Names (Team).txt","a+")
         file.write(Event_Name + "\n")
         file.close()
+        #CREATES A FILE NAME FOR EACH EVENT
+        file = open("{0}.txt".format(Event_Name),"a+")
+        file.close()
         #MESSAGE FOR USER
         print("\n{0} has been added.".format(Event_Name))
         #GOES BACK TO MENU
@@ -819,7 +826,31 @@ def Events_Menu_2_2():
         
 #REMOVE EVENTS
 def Events_Menu_2_3():
-    return
+    print(" ---- Remove Events ----")
+    for name in Events_List:
+        print("-- {0} --".format(name))
+    Event_Name = input("Enter a event name: ").title()
+    for name in Events_List:
+        #IF THE NAME IS MATCHES, IT DOES THIS.
+        if Event_Name == name:
+            #REMOVES FROM FILE
+            file = open("Event_Names (Team).txt","r")
+            lines = file.readlines()
+            print(lines)
+            file.close()
+            striped_lines = [s.replace('\n', '') for s in lines]
+            file = open("Event_Names (Team).txt","w")
+            for line in striped_lines:
+                if line != Event_Name:
+                    file.write(line + "\n")
+            file.close()
+            #REMOVES FROM LIST
+            Events_List.remove(Event_Name)
+            #RETURNS BACK TO MENU
+            Events_Menu_2()
+    #IF NO NAME WAS FOUND THEN ~ ERROR MESSAGE
+    print("Event Not Found!")
+    Events_Menu_2()
 
 #ADD TEAMS TO EVENTS
 def Events_Menu_2_4():
