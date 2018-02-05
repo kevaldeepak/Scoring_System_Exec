@@ -846,6 +846,8 @@ def Events_Menu_2_3():
             file.close()
             #REMOVES FROM LIST
             Events_List.remove(Event_Name)
+            #DELETES FILE FOR SPORT
+            os.remove(str(Event_Name) + ".txt")
             #RETURNS BACK TO MENU
             Events_Menu_2()
     #IF NO NAME WAS FOUND THEN ~ ERROR MESSAGE
@@ -854,7 +856,41 @@ def Events_Menu_2_3():
 
 #ADD TEAMS TO EVENTS
 def Events_Menu_2_4():
-    return
+    def team_select():
+        print("-- Select Team --")
+        for name in Teams_List:
+            print("-- {0} --".format(name))
+        Team_Name = input("Enter a team name: ").title()
+        #VALIDATION 1 : IF IT IS IN THE LIST ALREADY
+        for name in Teams_List:
+            if Team_Name == name:
+                #THEN IT WILL DO EVERYTHING
+                #ADDS TO TEAM NAME TO EVENT FILE
+                file = open(str(Event_Name) + ".txt","a+")
+                file.write(Team_Name + "\n")
+                file.close()
+                #ADDS TO DICT.
+                
+                #RETURNS BACK TO MENU
+                Events_Menu_2()
+        #IF THE NAME IS NOT FOUND
+        print("\nEvent Not Found!")
+        Events_Menu_2()
+        
+    print("--- ADDING TEAM TO EVENT ---")
+    print("Select Event")
+    for name in Events_List:
+        print("-- {0} --".format(name))
+    Event_Name = input("Enter a event name: ").title()
+    #VALIDATION 1 : IF IT IS IN THE LIST ALREADY
+    for name in Events_List:
+        if Event_Name == name:
+            team_select()
+    #IF THE NAME IS NOT FOUND!
+    print("\nEvent Not Found!")
+    Events_Menu_2()
+
+        
 
 #REMOVE TEAMS FROM EVENTS
 def Events_Menu_2_5():
