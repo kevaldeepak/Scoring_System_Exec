@@ -20,6 +20,8 @@ Team_List_2 = []
 Team_List_3 = []
 #---- EVENTS ----
 Events_List = []
+#EVENTS DICT.
+Events = {}
 #SHOWS THE TEAM FOR THE ID
 Teams_ID = {}
 #SHOWS THE ID FOR THE TEAM
@@ -870,7 +872,7 @@ def Events_Menu_2_4():
                 file.write(Team_Name + "\n")
                 file.close()
                 #ADDS TO DICT.
-                
+                #DO THIS
                 #RETURNS BACK TO MENU
                 Events_Menu_2()
         #IF THE NAME IS NOT FOUND
