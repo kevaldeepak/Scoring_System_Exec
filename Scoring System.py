@@ -26,7 +26,6 @@ Teams_ID = {}
 Teams_ID_Inverted = {}
 #VAR
 id_number = 0
-Restart = "a"
 
 #    ------------------- THIS IS THE INTRODUCTION ---------------------
 #    -------------------- CHANGE TO WHATEVER THE FIRST MESSAGE IS THAT WILL POPUP -----------------
@@ -174,44 +173,10 @@ def PasteValues():
 
         
     file.close()
-    if Restart == "Team":
-        return
     Main_Menu()
 
 #THIS IS THE FUNCTION THAT WILL RESET ALL MY STORED DATA
 def Reset():
-    global Restart
-    #RESETING THE PROGRAM
-    if Restart == "Team":
-        # ----------------- INDIVIDUALS -----------------
-        #CLEARS THE FILE
-        open('Individual_Names.txt', 'w').close()
-        #CLEARS THE LISTS
-        # --- Individuals_List ---
-        del Individuals_List[:]
-        #CLEARS THE DICTIONARIES
-        Individuals.clear()
-        # ----------------- TEAMS -----------------
-        # -- DELETES ALL TEAM NAMES -- 
-        # READS TEAM NAMES
-        file = open("Team_Names.txt","r")
-        file_lines = file.readlines()
-        file.close()
-        # STRIPS THE '\N' FROM ALL LINES
-        striped_lines = [s.replace('\n','') for s in file_lines]
-        # CYCLES THROUGH THE LIST
-        for yuy in striped_lines:
-            # REMOVES FILES FOR EACH TEAM
-            os.remove(yuy + '.txt')
-        #REMOVES REST OF FILES AS WELL
-        # -- Individual_Names.TXT --
-        os.remove("Individual_Names.txt")
-        # -- Individual_Scores.TXT --
-        os.remove('Individual_Scores.txt')
-        # -- Team_Names.TXT --
-        os.remove('Team_Names.txt')
-        return
-        
     #ASKING TO CONFIRM 
     temp = input("Are you sure that you want to reset?(Y/N): ")
     temp = temp.title()
@@ -667,10 +632,6 @@ def Teams_Menu_3():
                 team_file.close()
                 #PRINTS A MESSAGE FOR THE USER
                 print("\nTeam '" + remove_team + "' has been removed!")
-                global Restart
-                Restart = "Team"
-                Reset()
-                PasteValues()
                 Teams_Menu()
         #IF THE NAME WASN'T FOUND IN LIST
         print("\n---------- Error! ----------\n   There is no such team!\n----------------------------")
