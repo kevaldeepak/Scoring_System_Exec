@@ -18,6 +18,8 @@ Team_List_0 = []
 Team_List_1 = []
 Team_List_2 = []
 Team_List_3 = []
+#---- EVENTS ----
+Events_List = []
 #SHOWS THE TEAM FOR THE ID
 Teams_ID = {}
 #SHOWS THE ID FOR THE TEAM
@@ -726,7 +728,7 @@ def Teams_Menu_4():
                 elif ID_TEAM == 3:
                     Team_List_3.append(Player_Name)
                     
-                print("Player has been added to " + Team_Selected)
+                print("\nPlayer has been added to " + Team_Selected)
                 Teams_Menu()
 
             Teams_Menu()  
@@ -743,34 +745,86 @@ def Teams_Menu_4():
 #   ---------- THIS IS THE EVENTS MENU. EVERYTHING RELATING TO EVENTS IS HERE -----------
 def Events_Menu():
     # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
-    print("-------- Main Menu --------")
+    print("\n-------- Main Menu --------")
     # INPUT WITH ALL THE OPTIONS LISTED. NUMBER REPRESENTS THE OPTION
-    E_M = int(input("1 - Review Events\n2 - Add Events\n3 - Remove Events\n4 - Add Teams to Events\n5 - Remove Teams to Events\n6 - Back\nWhere do you want to go?: "))
-    # IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN.
-    #REVIEW EVENTS
+    E_M = int(input("1 - Events for Individuals\n2 - Events for Teams\n3 - Back\nWhere do you want to go?: "))
+    #IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN
+    #INDIVIDUALS
     if E_M == 1:
         Events_Menu_1()
-    #ADD EVENTS
+    #TEAMS
     elif E_M == 2:
         Events_Menu_2()
+    #BACK
+    elif E_M == 3:
+        Main_Menu()
+    #ANYTHING ELSE
+    else:
+        print("\nPlease enter a valid option.")
+        Events_Menu()
+
+
+#INDIVIDUALS
+def Events_Menu_1():
+    return
+
+#TEAMS
+def Events_Menu_2():
+    # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
+    print("\n-------- EVENTS (TEAMS) --------")
+    E_M = int(input("1 - Review Events\n2 - Add Events\n3 - Remove Events\n4 - Add Teams to Events\n5 - Remove Teams to Events\n6 - Back\nWhere do you want to go?: "))
+    #IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN.
+    #REVIEW EVENTS
+    if E_M == 1:
+        Events_Menu_2_1()
+    #ADD EVENTS
+    elif E_M == 2:
+        Events_Menu_2_2()
     #REMOVE EVENTS
     elif E_M == 3:
-        Events_Menu_3()
+        Events_Menu_2_3()
     #ADD TEAMS TO EVENTS
     elif E_M == 4:
-        Events_Menu_4()
+        Events_Menu_2_4()
     #REMOVE TEAMS FROM EVENTS
     elif E_M == 5:
-        Events_Menu_5()
+        Events_Menu_2_5()
     #BACK
     elif E_M == 6:
         Main_Menu()
-
+    #ANYTHING ELSE
     else:
         print("Please enter a valid option.")
         Events_Menu()
     
-    
+#REVIEW EVENTS
+def Events_Menu_2_1():
+    print("----- Events for Teams -----")
+    for abc in Events_List:
+        print("-- {0} ---".format(abc))
+    time.sleep(1)
+    Events_Menu_2()
+
+#ADD EVENTS
+def Events_Menu_2_2():
+    print(" ---- Add Events ----")
+    Event_Name = input("Enter a event name: ").title()
+    #VALIDATION 1 : IF THERE IS NO NAME
+    if Event_Name == "":
+        print("Please enter a name!")
+        Events_Menu_2()
+
+#REMOVE EVENTS
+def Events_Menu_2_3():
+    return
+
+#ADD TEAMS TO EVENTS
+def Events_Menu_2_4():
+    return
+
+#REMOVE TEAMS FROM EVENTS
+def Events_Menu_2_5():
+    return
 #   ---------- THIS IS THE SCORES MENU. EVERYTHING RELATING TO SCORES IS HERE -----------
 def Scores_Menu():
     return
