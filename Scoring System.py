@@ -26,6 +26,7 @@ Teams_ID = {}
 Teams_ID_Inverted = {}
 #VAR
 id_number = 0
+Restart = "a"
 
 #    ------------------- THIS IS THE INTRODUCTION ---------------------
 #    -------------------- CHANGE TO WHATEVER THE FIRST MESSAGE IS THAT WILL POPUP -----------------
@@ -37,6 +38,7 @@ def Introduction():
     PasteValues()
 
 def PasteValues():
+    global Restart
     global num_lines
     #THIS IS WHERE IT LOADS UP ALL THE VALUES FROM THE FILES
     # --------- INDIVIDUALS NAME FILE -------------
@@ -155,51 +157,61 @@ def PasteValues():
         Teams_ID_Inverted[Teams_ID[count_num]] = count_num
         count_num += 1
 
-    
-    """
-+
-    x = 0
-    for yuy in range(0,num_lines):
-        team_names = BLines3[x]
-        print(team_names)
-        team_file = open(team_names + ".txt","r")
-        lines4 = team_file.readlines()
-        BLines4 = [s.replace('\n', '') for s in lines4]
-        print(str(BLines4) + " Individuals")
-        xpa = 0
-        for rtt in BLines4:
-            Teams_List1.append(rtt)
-            print(rtt)
-            xpa += 1
-        lenght_of_file = len(BLines4)
-        xp = 0
-        for tyt in range(0,lenght_of_file):
-            Teams[team_names] = BLines4[xp]
-            xp += 1
-        x += 1
-    """
-    """
-    x = 0
-    
-    for gjg in range(0,num_lines):
-        file_name = BLines3[x]
-        team_file = open(file_name + ".txt","r")
-        team_num_lines = sum(1 for line in open(file_name + '.txt'))
-        lines4 = team_file.readlines()
-        BLines4 = [s.replace('\n', '') for s in lines4]
-        for yuy in range(0,team_num_lines):
-            print(BLines4[x] + " PLAYERS")
+    #IMPORTING EVENTS
+    # ---- INDIVIDUALS - EVENTS
 
 
-        team_file.close()
-        x += 1
 
-"""
+    # ---- TEAMS - EVENTS
+    file = open("Event_Names (Team).txt", "a+")
     file.close()
+    file = open("Event_Names (Team).txt", "r")
+    lines = file.readlines()
+    file.close()
+    striped_lines = [s.replace('\n', '') for s in lines]
+    for abc in striped_lines:
+        Events_List.append(abc)
+
+        
+    file.close()
+    if Restart == "Team":
+        return
     Main_Menu()
 
 #THIS IS THE FUNCTION THAT WILL RESET ALL MY STORED DATA
 def Reset():
+    global Restart
+    #RESETING THE PROGRAM
+    if Restart == "Team":
+        # ----------------- INDIVIDUALS -----------------
+        #CLEARS THE FILE
+        open('Individual_Names.txt', 'w').close()
+        #CLEARS THE LISTS
+        # --- Individuals_List ---
+        del Individuals_List[:]
+        #CLEARS THE DICTIONARIES
+        Individuals.clear()
+        # ----------------- TEAMS -----------------
+        # -- DELETES ALL TEAM NAMES -- 
+        # READS TEAM NAMES
+        file = open("Team_Names.txt","r")
+        file_lines = file.readlines()
+        file.close()
+        # STRIPS THE '\N' FROM ALL LINES
+        striped_lines = [s.replace('\n','') for s in file_lines]
+        # CYCLES THROUGH THE LIST
+        for yuy in striped_lines:
+            # REMOVES FILES FOR EACH TEAM
+            os.remove(yuy + '.txt')
+        #REMOVES REST OF FILES AS WELL
+        # -- Individual_Names.TXT --
+        os.remove("Individual_Names.txt")
+        # -- Individual_Scores.TXT --
+        os.remove('Individual_Scores.txt')
+        # -- Team_Names.TXT --
+        os.remove('Team_Names.txt')
+        return
+        
     #ASKING TO CONFIRM 
     temp = input("Are you sure that you want to reset?(Y/N): ")
     temp = temp.title()
@@ -634,6 +646,12 @@ def Teams_Menu_3():
                 Teams_List.remove(remove_team)
                 #REMOVES FROM THE DICTIONARY
                 del Teams[remove_team]
+                #REMOVES FROM DICT. Teams_ID
+                ID = Teams_ID_Inverted[remove_team]
+                del Teams_ID[ID]
+                print("1")
+                del Teams_ID_Inverted[remove_team]
+                print("2")
                 #DELETES THE TEAM FILE
                 os.remove(str(remove_team) + ".txt")
                 #DELETES NAME FROM THE Team_Names.txt FILE
@@ -647,9 +665,12 @@ def Teams_Menu_3():
                     else:
                         team_file.write(line)
                 team_file.close()
-                
                 #PRINTS A MESSAGE FOR THE USER
                 print("\nTeam '" + remove_team + "' has been removed!")
+                global Restart
+                Restart = "Team"
+                Reset()
+                PasteValues()
                 Teams_Menu()
         #IF THE NAME WASN'T FOUND IN LIST
         print("\n---------- Error! ----------\n   There is no such team!\n----------------------------")
@@ -826,6 +847,12 @@ def Events_Menu_2_2():
     else:
         #ADDS IT TO EVENTS LIST
         Events_List.append(Event_Name)
+        #SAVES TO FILE EVENT_NAMES
+        file = open("Event_Names (Team).txt","a+")
+        file.write(Event_Name + "\n")
+        file.close()
+        #MESSAGE FOR USER
+        print("\n{0} has been added.".format(Event_Name))
         #GOES BACK TO MENU
         Events_Menu_2()
         
