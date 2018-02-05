@@ -813,7 +813,22 @@ def Events_Menu_2_2():
     if Event_Name == "":
         print("Please enter a name!")
         Events_Menu_2()
-
+    #VALIDATION 2: IF THERE ARE ANY NUMBERS
+    elif any(i.isdigit() for i in Event_Name):
+        print("Enter a name without numbers!")
+        Events_Menu_2()
+    #VALIDATION 3 : IF THE NAME IS ALREADY TAKEN
+    for name in Event_Name:
+        if name == Event_Name:
+            print(" -- This name is taken -- ")
+            Events_Menu_2()
+    #IF EVERYTHING IS OKAY  - -  THIS HAPPENS 
+    else:
+        #ADDS IT TO EVENTS LIST
+        Events_List.append(Event_Name)
+        #GOES BACK TO MENU
+        Events_Menu_2()
+        
 #REMOVE EVENTS
 def Events_Menu_2_3():
     return
