@@ -1130,34 +1130,120 @@ def Events_Menu_2_5():
                 for abc in Teams_List:
                     if abc == Team_Name:
                         if temp_number == 0:
-                            print(Team_List_0)
+                            print(Team_List_0)#TEMP
                             for member in Team_List_0:
                                 for event_member in Events[Event_Name]:
                                     if member == event_member:
                                         print("--> {0} <--".format(member))
+                                        #
+                                        Player_Name = input("Enter a player name: ").title()
+                                        #VALIDATION 1 : IF THAT NAME IS IN THE LIST
+                                        for member in Team_List_0:
+                                            for event_member in Events[Event_Name]:
+                                                if member == event_member:
+                                                    #IF EVERYTHING IS GOOD THEN DO THIS.
+                                                    #DELETES FROM THE EVENT FILE
+                                                    event_file = open(Event_Name + ".txt","r")
+                                                    raw_lines = event_file.readlines()
+                                                    event_file.close()
+                                                    
+                                                    lines = [s.replace('\n', '') for s in raw_lines]
+                                                    event_file = open(Event_Name + ".txt","w")
+                                                    for line in lines:
+                                                        if line != Player_Name:
+                                                            event_file.write(line + "\n")
+                                                    event_file.close()
+                                        print("Player is not part of this event!\nName not found.")
+                                        print("Returning to Menu")
+                                        Events_Menu_2()
+                                        #
                         elif temp_number == 1:
-                            print(Team_List_1)
+                            print(Team_List_1)#TEMP
                             for member in Team_List_1:
                                 for event_member in Events[Event_Name]:
                                     if member == event_member:
                                         print("--> {0} <--".format(member))
+                                        #
+                                        Player_Name = input("Enter a player name: ").title()
+                                        #VALIDATION 1 : IF THAT NAME IS IN THE LIST
+                                        for member in Team_List_0:
+                                            for event_member in Events[Event_Name]:
+                                                if member == event_member:
+                                                    #IF EVERYTHING IS GOOD THEN DO THIS.
+                                                    #DELETES FROM THE EVENT FILE
+                                                    event_file = open(Event_Name + ".txt","r")
+                                                    raw_lines = event_file.readlines()
+                                                    event_file.close()
+                                                    
+                                                    lines = [s.replace('\n', '') for s in raw_lines]
+                                                    event_file = open(Event_Name + ".txt","w")
+                                                    for line in lines:
+                                                        if line != Player_Name:
+                                                            event_file.write(line + "\n")
+                                                    event_file.close()
+                                        print("Player is not part of this event!\nName not found.")
+                                        print("Returning to Menu")
+                                        Events_Menu_2()
+                                        #
                         elif temp_number == 2:
-                            print(Team_List_2)
+                            print(Team_List_2)#TEMP
                             for member in Team_List_2:
                                 for event_member in Events[Event_Name]:
                                     if member == event_member:
                                         print("--> {0} <--".format(member))
+                                        #
+                                        Player_Name = input("Enter a player name: ").title()
+                                        #VALIDATION 1 : IF THAT NAME IS IN THE LIST
+                                        for member in Team_List_0:
+                                            for event_member in Events[Event_Name]:
+                                                if member == event_member:
+                                                    #IF EVERYTHING IS GOOD THEN DO THIS.
+                                                    #DELETES FROM THE EVENT FILE
+                                                    event_file = open(Event_Name + ".txt","r")
+                                                    raw_lines = event_file.readlines()
+                                                    event_file.close()
+                                                    
+                                                    lines = [s.replace('\n', '') for s in raw_lines]
+                                                    event_file = open(Event_Name + ".txt","w")
+                                                    for line in lines:
+                                                        if line != Player_Name:
+                                                            event_file.write(line + "\n")
+                                                    event_file.close()
+                                        print("Player is not part of this event!\nName not found.")
+                                        print("Returning to Menu")
+                                        Events_Menu_2()
+                                        #
                         elif temp_number == 3:
-                            print(Team_List_3)
+                            print(Team_List_3)#TEMP
                             for member in Team_List_3:
                                 for event_member in Events[Event_Name]:
                                     if member == event_member:
                                         print("--> {0} <--".format(member))
+                                        #
+                                        Player_Name = input("Enter a player name: ").title()
+                                        #VALIDATION 1 : IF THAT NAME IS IN THE LIST
+                                        for member in Team_List_0:
+                                            for event_member in Events[Event_Name]:
+                                                if member == event_member:
+                                                    #IF EVERYTHING IS GOOD THEN DO THIS.
+                                                    #DELETES FROM THE EVENT FILE
+                                                    event_file = open(Event_Name + ".txt","r")
+                                                    raw_lines = event_file.readlines()
+                                                    event_file.close()
+                                                    
+                                                    lines = [s.replace('\n', '') for s in raw_lines]
+                                                    event_file = open(Event_Name + ".txt","w")
+                                                    for line in lines:
+                                                        if line != Player_Name:
+                                                            event_file.write(line + "\n")
+                                                    event_file.close()
+                                        print("Player is not part of this event!\nName not found.")
+                                        print("Returning to Menu")
+                                        Events_Menu_2()
+                                        #
                         else:
                             temp_number += 1
-                def Player_Selection(): #DO THIS
-                    print("Hello!")
-                Player_Selection()
+                        
     print("--- ADDING TEAM TO EVENT ---")
     print("Select Event")
     for name in Events_List:
