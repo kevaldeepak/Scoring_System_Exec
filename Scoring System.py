@@ -23,6 +23,7 @@ Events_List = []
 # ------   EVENTS DICT. -------
 Events = {}
 Events_ID = {}
+Events_ID_Inverted = {}
 # -- EVENT LISTS FOR DICT. --
 Event_List_0 = []
 Event_List_1 = []
@@ -840,30 +841,35 @@ def Events_Menu_2_2():
         if Event_Var == 0:
             if a0 == "NOT TAKEN":
                 Events_ID[0] = Event_Name
+                Events_ID_Inverted[Event_Name] = 0
                 Events[Event_Name] = Event_List_0
             else:
                 Event_Var += 1
         elif Event_Var == 1:
             if a1 == "NOT TAKEN":
                 Events_ID[1] = Event_Name
+                Events_ID_Inverted[Event_Name] = 1
                 Events[Event_Name] = Event_List_1
             else:
                 Event_Var += 1
         elif Event_Var == 2:
             if a2 == "NOT TAKEN":
                 Events_ID[2] = Event_Name
+                Events_ID_Inverted[Event_Name] = 2
                 Events[Event_Name] = Event_List_2
             else:
                 Event_Var += 1
         elif Event_Var == 3:
             if a3 == "NOT TAKEN":
                 Events_ID[3] = Event_Name
+                Events_ID_Inverted[Event_Name] = 3
                 Events[Event_Name] = Event_List_3
             else:
                 Event_Var += 1
         elif Event_Var == 4:
             if a4 == "NOT TAKEN":
                 Events_ID[4] = Event_Name
+                Events_ID_Inverted[Event_Name] = 4
                 Events[Event_Name] = Event_List_4
             else:
                 Event_Var += 1
@@ -895,6 +901,10 @@ def Events_Menu_2_3():
             file.close()
             #REMOVES FROM LIST
             Events_List.remove(Event_Name)
+            #DELETES FROM EVENT'S DICT.
+            del Events[Event_Name]
+            #DELETES FROM EVENT'S ID DICT.
+            del Events_ID[Event_Name]
             #DELETES FILE FOR SPORT
             os.remove(str(Event_Name) + ".txt")
             #RETURNS BACK TO MENU
@@ -922,24 +932,60 @@ def Events_Menu_2_4():
                 for line in striped_lines:
                     print("-- {0} --".format(line))
                 #ASKS FOR WHICH TEAM MEMBER IS JOINING THE EVENT
-                Player_Name = input("Enter a player name: ").title()
-                #VALIDATION 2 : IF THIS IS A VALID NAME OR NOT
-                for line in striped_lines:
-                    if line == Player_Name: 
-                        ## -- THEN IT WILL DO EVERYTHING -- ##
-                        #ADDS TO TEAM NAME TO EVENT FILE
-                        file = open(str(Event_Name) + ".txt","a+")
-                        file.write(Player_Name + "\n")
-                        file.close()
-                        #ADDS TO DICT.
-                        #DO THIS
-                        print("")
-                        #SHOWS A MESSAGE
-                        print("{0} has been added to {1}".format(Player_Name,Event_Name))
-                        #RETURNS BACK TO MENU
+                def Player_Select():
+                    loop = 0
+                    Player_Name = input("Enter a player name: ").title()
+                    #VALIDATION 2 : IF THIS IS A VALID NAME OR NOT
+                    for line in striped_lines:
+                        if line == Player_Name: 
+                            ## -- THEN IT WILL DO EVERYTHING -- ##
+                            #ADDS TO TEAM NAME TO EVENT FILE
+                            file = open(str(Event_Name) + ".txt","a+")
+                            file.write(Player_Name + "\n")
+                            file.close()
+                            #ADDS TO DICT.
+                            ID = Events_ID_Inverted[Event_Name]
+                            if ID == 0:
+                                Event_List_0.append(Player_Name)
+                                file = open("{0}.txt".format(Event_Name),"a+")
+                                file.write(Player_Name + "\n")
+                                file.close()
+                            elif ID == 1:
+                                Event_List_1.append(Player_Name)
+                                file = open("{0}.txt".format(Event_Name),"a+")
+                                file.write(Player_Name + "\n")
+                                file.close()
+                            elif ID == 2:
+                                Event_List_2.append(Player_Name)
+                                file = open("{0}.txt".format(Event_Name),"a+")
+                                file.write(Player_Name + "\n")
+                                file.close()
+                            elif ID == 3:
+                                Event_List_3.append(Player_Name)
+                                file = open("{0}.txt".format(Event_Name),"a+")
+                                file.write(Player_Name + "\n")
+                                file.close()
+                            elif ID == 4:
+                                Event_List_4.append(Player_Name)
+                                file = open("{0}.txt".format(Event_Name),"a+")
+                                file.write(Player_Name + "\n")
+                                file.close()
+                            #DO THIS
+                            print("")
+                            #SHOWS A MESSAGE
+                            print("{0} has been added to {1}".format(Player_Name,Event_Name))
+                            #RETURNS BACK TO MENU
+                            Events_Menu_2()
+                    #IF PLAYER IS NOT FOUND
+                    print("\nPlayer Not Found!")
+                    loop += 1
+                    if loop == 3:
+                        print("You have not provided a valid response!")
+                        print("Returning back to menu.")
+                        loop = 0
                         Events_Menu_2()
-                #IF PLAYER IS NOT FOUND
-                print("\nPlayer Not Found!")
+                    Player_Select()
+                Player_Select()
         #IF THE NAME IS NOT FOUND
         print("\nEvent Not Found!")
         Events_Menu_2()
