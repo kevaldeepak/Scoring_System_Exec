@@ -178,6 +178,8 @@ def PasteValues():
     #------------------------------- IMPORTING EVENTS ------------------------
     # ---- INDIVIDUALS - EVENTS
     # ----------------- TEAMS - EVENTS ----------------------
+    event_names_file = open("Event_Names (Team).txt","a+")
+    event_names_file.close()
     event_names_file = open("Event_Names (Team).txt","r")
     event_names = event_names_file.readlines()
     event_names_file.close()
@@ -192,14 +194,59 @@ def PasteValues():
         Events_ID_Inverted[event] = x
         if x == 0:
             Events[event] = Event_List_0
+            #
+            event_file = open(event + ".txt","r")
+            event_members_list = event_file.readlines()
+            event_file.close()
+            print(event_members_list)
+            event_members = [s.replace('\n', '') for s in event_members_list]
+            for name in event_members:
+                Event_List_0.append(name)
+            #
         elif x == 1:
             Events[event] = Event_List_1
+            #
+            event_file = open(event + ".txt","r")
+            event_members_list = event_file.readlines()
+            event_file.close()
+            print(event_members_list)
+            event_members = [s.replace('\n', '') for s in event_members_list]
+            for name in event_members:
+                Event_List_1.append(name)
+            #
         elif x == 2:
             Events[event] = Event_List_2
+            #
+            event_file = open(event + ".txt","r")
+            event_members_list = event_file.readlines()
+            event_file.close()
+            print(event_members_list)
+            event_members = [s.replace('\n', '') for s in event_members_list]
+            for name in event_members:
+                Event_List_2.append(name)
+            #
         elif x == 3:
             Events[event] = Event_List_3
+            #
+            event_file = open(event + ".txt","r")
+            event_members_list = event_file.readlines()
+            event_file.close()
+            print(event_members_list)
+            event_members = [s.replace('\n', '') for s in event_members_list]
+            for name in event_members:
+                Event_List_3.append(name)
+            #
         elif x == 4:
-            Events[event] = Event_List_4            
+            Events[event] = Event_List_4
+            #
+            event_file = open(event + ".txt","r")
+            event_members_list = event_file.readlines()
+            event_file.close()
+            print(event_members_list)
+            event_members = [s.replace('\n', '') for s in event_members_list]
+            for name in event_members:
+                Event_List_4.append(name)
+            #
         x += 1
 
     
@@ -860,8 +907,8 @@ def Events_Menu_2():
 def Events_Menu_2_1():
     print("----- Events for Teams -----")
     for abc in Events_List:
-        print("  -- {0} ---".format(abc))
-        print(Events[abc])
+        print("             --- {0} ---".format(abc))
+        print(", ".join(Events[abc]))
     time.sleep(1)
     Events_Menu_2()
 
@@ -895,11 +942,17 @@ def Events_Menu_2_2():
         file.close()
         #SAVES INTO EVENTS DICT. AND ADDS IT TO EVENTS_ID DICT.
         global Event_Var
+        global a0
+        global a1
+        global a2
+        global a3
+        global a4
         if Event_Var == 0:
             if a0 == "NOT TAKEN":
                 Events_ID[0] = Event_Name
                 Events_ID_Inverted[Event_Name] = 0
                 Events[Event_Name] = Event_List_0
+                a0 = "TAKEN"
             else:
                 Event_Var += 1
         elif Event_Var == 1:
@@ -907,6 +960,7 @@ def Events_Menu_2_2():
                 Events_ID[1] = Event_Name
                 Events_ID_Inverted[Event_Name] = 1
                 Events[Event_Name] = Event_List_1
+                a1 = "TAKEN"
             else:
                 Event_Var += 1
         elif Event_Var == 2:
@@ -914,6 +968,7 @@ def Events_Menu_2_2():
                 Events_ID[2] = Event_Name
                 Events_ID_Inverted[Event_Name] = 2
                 Events[Event_Name] = Event_List_2
+                a2 = "TAKEN"
             else:
                 Event_Var += 1
         elif Event_Var == 3:
@@ -921,6 +976,7 @@ def Events_Menu_2_2():
                 Events_ID[3] = Event_Name
                 Events_ID_Inverted[Event_Name] = 3
                 Events[Event_Name] = Event_List_3
+                a3 = "TAKEN"
             else:
                 Event_Var += 1
         elif Event_Var == 4:
@@ -928,6 +984,7 @@ def Events_Menu_2_2():
                 Events_ID[4] = Event_Name
                 Events_ID_Inverted[Event_Name] = 4
                 Events[Event_Name] = Event_List_4
+                a4 = "TAKEN"
             else:
                 Event_Var += 1
         Event_Var += 1
@@ -948,7 +1005,6 @@ def Events_Menu_2_3():
             #REMOVES FROM FILE
             file = open("Event_Names (Team).txt","r")
             lines = file.readlines()
-            print(lines)
             file.close()
             striped_lines = [s.replace('\n', '') for s in lines]
             file = open("Event_Names (Team).txt","w")
@@ -956,12 +1012,15 @@ def Events_Menu_2_3():
                 if line != Event_Name:
                     file.write(line + "\n")
             file.close()
+            #MAKES A0/1/2/3/4 VARIABLE 'NOT TAKEN' AGAIN
             #REMOVES FROM LIST
             Events_List.remove(Event_Name)
+            #DELETES FROM EVENT'S ID DICT.
+            del Events_ID[Events_ID_Inverted[Event_Name]]
+            #DELETES FROM EVENT'S ID INVERTED DICT.
+            del Events_ID_Inverted[Event_Name]
             #DELETES FROM EVENT'S DICT.
             del Events[Event_Name]
-            #DELETES FROM EVENT'S ID DICT.
-            del Events_ID[Event_Name]
             #DELETES FILE FOR SPORT
             os.remove(str(Event_Name) + ".txt")
             #RETURNS BACK TO MENU
@@ -1056,11 +1115,61 @@ def Events_Menu_2_4():
     print("\nEvent Not Found!")
     Events_Menu_2()
 
-        
-
 #REMOVE TEAMS FROM EVENTS
 def Events_Menu_2_5():
-    return
+    def team_selection():
+        print("-- Select Team --")
+        for name in Teams_List:
+            print("-- {0} --".format(name))
+        Team_Name = input("Enter a team name: ").title()
+        #VALIDATION 1 : IF IT IS IN THE LIST ALREADY
+        for name in Teams_List:
+            if Team_Name == name:
+                #IF EVERYTHING IS OKAY, THIS WILL HAPPEN
+                temp_number = 0
+                for abc in Teams_List:
+                    if abc == Team_Name:
+                        if temp_number == 0:
+                            print(Team_List_0)
+                            for member in Team_List_0:
+                                for event_member in Events[Event_Name]:
+                                    if member == event_member:
+                                        print("--> {0} <--".format(member))
+                        elif temp_number == 1:
+                            print(Team_List_1)
+                            for member in Team_List_1:
+                                for event_member in Events[Event_Name]:
+                                    if member == event_member:
+                                        print("--> {0} <--".format(member))
+                        elif temp_number == 2:
+                            print(Team_List_2)
+                            for member in Team_List_2:
+                                for event_member in Events[Event_Name]:
+                                    if member == event_member:
+                                        print("--> {0} <--".format(member))
+                        elif temp_number == 3:
+                            print(Team_List_3)
+                            for member in Team_List_3:
+                                for event_member in Events[Event_Name]:
+                                    if member == event_member:
+                                        print("--> {0} <--".format(member))
+                        else:
+                            temp_number += 1
+                def Player_Selection(): #DO THIS
+                    print("Hello!")
+                Player_Selection()
+    print("--- ADDING TEAM TO EVENT ---")
+    print("Select Event")
+    for name in Events_List:
+        print("-- {0} --".format(name))
+    Event_Name = input("Enter a event name: ").title()
+    #VALIDATION 1 : IF IT IS IN THE LIST ALREADY
+    for name in Events_List:
+        if Event_Name == name:
+            team_selection()
+    #IF THE NAME IS NOT FOUND!
+    print("\nEvent Not Found!")
+    Events_Menu_2()
 #   ---------- THIS IS THE SCORES MENU. EVERYTHING RELATING TO SCORES IS HERE -----------
 def Scores_Menu():
     return
