@@ -20,14 +20,28 @@ Team_List_2 = []
 Team_List_3 = []
 #---- EVENTS ----
 Events_List = []
-#EVENTS DICT.
+# ------   EVENTS DICT. -------
 Events = {}
+Events_ID = {}
+# -- EVENT LISTS FOR DICT. --
+Event_List_0 = []
+Event_List_1 = []
+Event_List_2 = []
+Event_List_3 = []
+Event_List_4 = []
+# VAR FOR EVENTS
+a0 = "NOT TAKEN"
+a1 = "NOT TAKEN"
+a2 = "NOT TAKEN"
+a3 = "NOT TAKEN"
+a4 = "NOT TAKEN"
 #SHOWS THE TEAM FOR THE ID
 Teams_ID = {}
 #SHOWS THE ID FOR THE TEAM
 Teams_ID_Inverted = {}
 #VAR
 id_number = 0
+Event_Var = 0
 
 #    ------------------- THIS IS THE INTRODUCTION ---------------------
 #    -------------------- CHANGE TO WHATEVER THE FIRST MESSAGE IS THAT WILL POPUP -----------------
@@ -337,19 +351,19 @@ def Individuals_Menu_2():
         #VALIDATION 5 : IF THE NAME IS TAKEN IN A TEAM
         #CHECKS TEAM 1
         elif Add_Individual in Team_List_0:
-            print("{0} is already in team {1}".format(Add_Individual,Teams_ID[0]))
+            print("\n{0} is already in team {1}".format(Add_Individual,Teams_ID[0]))
             Individuals_Menu()
         #CHECKS TEAM 2
         elif Add_Individual in Team_List_1:
-            print("{0} is already in team {1}".format(Add_Individual,Teams_ID[1]))
+            print("\n{0} is already in team {1}".format(Add_Individual,Teams_ID[1]))
             Individuals_Menu()
         #CHECKS TEAM 3
         elif Add_Individual in Team_List_2:
-            print("{0} is already in team {1}".format(Add_Individual,Teams_ID[2]))
+            print("\n{0} is already in team {1}".format(Add_Individual,Teams_ID[2]))
             Individuals_Menu()
         #CHECKS TEAM 4
         elif Add_Individual in Team_List_3:
-            print("{0} is already in team {1}".format(Add_Individual,Teams_ID[3]))
+            print("\n{0} is already in team {1}".format(Add_Individual,Teams_ID[3]))
             Individuals_Menu()
         #TITLES() THE VARIABLE
         Add_Individual = Add_Individual.title()
@@ -821,6 +835,39 @@ def Events_Menu_2_2():
         #CREATES A FILE NAME FOR EACH EVENT
         file = open("{0}.txt".format(Event_Name),"a+")
         file.close()
+        #SAVES INTO EVENTS DICT. AND ADDS IT TO EVENTS_ID DICT.
+        global Event_Var
+        if Event_Var == 0:
+            if a0 == "NOT TAKEN":
+                Events_ID[0] = Event_Name
+                Events[Event_Name] = Event_List_0
+            else:
+                Event_Var += 1
+        elif Event_Var == 1:
+            if a1 == "NOT TAKEN":
+                Events_ID[1] = Event_Name
+                Events[Event_Name] = Event_List_1
+            else:
+                Event_Var += 1
+        elif Event_Var == 2:
+            if a2 == "NOT TAKEN":
+                Events_ID[2] = Event_Name
+                Events[Event_Name] = Event_List_2
+            else:
+                Event_Var += 1
+        elif Event_Var == 3:
+            if a3 == "NOT TAKEN":
+                Events_ID[3] = Event_Name
+                Events[Event_Name] = Event_List_3
+            else:
+                Event_Var += 1
+        elif Event_Var == 4:
+            if a4 == "NOT TAKEN":
+                Events_ID[4] = Event_Name
+                Events[Event_Name] = Event_List_4
+            else:
+                Event_Var += 1
+        Event_Var += 1
         #MESSAGE FOR USER
         print("\n{0} has been added.".format(Event_Name))
         #GOES BACK TO MENU
@@ -866,15 +913,33 @@ def Events_Menu_2_4():
         #VALIDATION 1 : IF IT IS IN THE LIST ALREADY
         for name in Teams_List:
             if Team_Name == name:
-                #THEN IT WILL DO EVERYTHING
-                #ADDS TO TEAM NAME TO EVENT FILE
-                file = open(str(Event_Name) + ".txt","a+")
-                file.write(Team_Name + "\n")
+                #PRINTS OUT ALL PLAYERS FROM THIS TEAM
+                file = open("{0}.txt".format(Team_Name),"r")
+                lines = file.readlines()
                 file.close()
-                #ADDS TO DICT.
-                #DO THIS
-                #RETURNS BACK TO MENU
-                Events_Menu_2()
+                striped_lines = [s.replace('\n', '') for s in lines]
+                print("------ PLAYERS ------")
+                for line in striped_lines:
+                    print("-- {0} --".format(line))
+                #ASKS FOR WHICH TEAM MEMBER IS JOINING THE EVENT
+                Player_Name = input("Enter a player name: ").title()
+                #VALIDATION 2 : IF THIS IS A VALID NAME OR NOT
+                for line in striped_lines:
+                    if line == Player_Name: 
+                        ## -- THEN IT WILL DO EVERYTHING -- ##
+                        #ADDS TO TEAM NAME TO EVENT FILE
+                        file = open(str(Event_Name) + ".txt","a+")
+                        file.write(Player_Name + "\n")
+                        file.close()
+                        #ADDS TO DICT.
+                        #DO THIS
+                        print("")
+                        #SHOWS A MESSAGE
+                        print("{0} has been added to {1}".format(Player_Name,Event_Name))
+                        #RETURNS BACK TO MENU
+                        Events_Menu_2()
+                #IF PLAYER IS NOT FOUND
+                print("\nPlayer Not Found!")
         #IF THE NAME IS NOT FOUND
         print("\nEvent Not Found!")
         Events_Menu_2()
