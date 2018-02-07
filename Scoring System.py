@@ -22,7 +22,9 @@ Team_List_3 = []
 Events_List = []
 # ------   EVENTS DICT. -------
 Events = {}
+#DICT. ID : EVENT
 Events_ID = {}
+#DICT. EVENT : ID
 Events_ID_Inverted = {}
 # -- EVENT LISTS FOR DICT. --
 Event_List_0 = []
@@ -165,31 +167,85 @@ def PasteValues():
               
         Team_File.close()
         x += 1
-
+    
     #IMPORTING DICT. TEAM_id_INVERTED
     lenght_Teams_ID = len(Teams_ID)
     count_num = 0
     for pip in range(0,lenght_Teams_ID):
         Teams_ID_Inverted[Teams_ID[count_num]] = count_num
         count_num += 1
-
-    #IMPORTING EVENTS
+    file.close()
+    #------------------------------- IMPORTING EVENTS ------------------------
     # ---- INDIVIDUALS - EVENTS
+    # ----------------- TEAMS - EVENTS ----------------------
+    event_names_file = open("Event_Names (Team).txt","r")
+    event_names = event_names_file.readlines()
+    event_names_file.close()
 
+    event_names_striped = [s.replace('\n', '') for s in event_names]
+    print(event_names_striped)
+    #APPENDING INTO EVENTS_LIST #ADDING TO Events_ID DICT.
+    x = 0
+    for event in event_names_striped:
+        Events_List.append(event)
+        Events_ID[x] = event
+        Events_ID_Inverted[event] = x
+        if x == 0:
+            Events[event] = Event_List_0
+        elif x == 1:
+            Events[event] = Event_List_1
+        elif x == 2:
+            Events[event] = Event_List_2
+        elif x == 3:
+            Events[event] = Event_List_3
+        elif x == 4:
+            Events[event] = Event_List_4            
+        x += 1
 
+    
 
-    # ---- TEAMS - EVENTS
+    """#THIS IS TEMP, MIGHT STILL USE THIS INSTEAD
     file = open("Event_Names (Team).txt", "a+")
     file.close()
     file = open("Event_Names (Team).txt", "r")
     lines = file.readlines()
     file.close()
     striped_lines = [s.replace('\n', '') for s in lines]
+    print(striped_lines) #TEMP
+    ID_Event = 0
     for abc in striped_lines:
         Events_List.append(abc)
+        file = open("{0}.txt".format(abc),"a+")
+        file.close()
+        file = open("{0}.txt".format(abc),"r")
+        sport_line = file.readlines()
+        file.close()
+        striped_sport_lines = [s.replace('\n', '') for s in sport_line]
+        print(striped_sport_lines)
+        for line in striped_sport_lines:
+            if ID_Event == 0:
+                Event_List_0.append(line)
+                ID_Event += 1
+            elif ID_Event == 1:
+                Event_List_1.append(line)
+                ID_Event += 1
+            elif ID_Event == 2:
+                Event_List_2.append(line)
+                ID_Event += 1
+            elif ID_Event == 3:
+                Event_List_3.append(line)
+                ID_Event += 1
+            elif ID_Event == 4:
+                Event_List_4.append(line)
+                ID_Event += 1
 
-        
-    file.close()
+    Range = len(striped_sport_lines)
+    for x in range(0,Range):
+        Events_ID[x] = "abc"
+        Events_ID_Inverted["abc"] = x
+    """
+    # ------ IMPORTING EVENTS ---------
+    
     Main_Menu()
 
 #THIS IS THE FUNCTION THAT WILL RESET ALL MY STORED DATA
@@ -805,6 +861,7 @@ def Events_Menu_2_1():
     print("----- Events for Teams -----")
     for abc in Events_List:
         print("  -- {0} ---".format(abc))
+        print(Events[abc])
     time.sleep(1)
     Events_Menu_2()
 
@@ -939,35 +996,31 @@ def Events_Menu_2_4():
                     for line in striped_lines:
                         if line == Player_Name: 
                             ## -- THEN IT WILL DO EVERYTHING -- ##
-                            #ADDS TO TEAM NAME TO EVENT FILE
-                            file = open(str(Event_Name) + ".txt","a+")
-                            file.write(Player_Name + "\n")
-                            file.close()
-                            #ADDS TO DICT.
+                            #ADDS TO DICT. #ADDS TEAM NAME TO EVENT FILE
                             ID = Events_ID_Inverted[Event_Name]
                             if ID == 0:
                                 Event_List_0.append(Player_Name)
-                                file = open("{0}.txt".format(Event_Name),"a+")
+                                file = open(Event_Name + ".txt","a+")
                                 file.write(Player_Name + "\n")
                                 file.close()
                             elif ID == 1:
                                 Event_List_1.append(Player_Name)
-                                file = open("{0}.txt".format(Event_Name),"a+")
+                                file = open(Event_Name + ".txt","a+")
                                 file.write(Player_Name + "\n")
                                 file.close()
                             elif ID == 2:
                                 Event_List_2.append(Player_Name)
-                                file = open("{0}.txt".format(Event_Name),"a+")
+                                file = open(Event_Name + ".txt","a+")
                                 file.write(Player_Name + "\n")
                                 file.close()
                             elif ID == 3:
                                 Event_List_3.append(Player_Name)
-                                file = open("{0}.txt".format(Event_Name),"a+")
+                                file = open(Event_Name + ".txt","a+")
                                 file.write(Player_Name + "\n")
                                 file.close()
                             elif ID == 4:
                                 Event_List_4.append(Player_Name)
-                                file = open("{0}.txt".format(Event_Name),"a+")
+                                file = open(Event_Name + ".txt","a+")
                                 file.write(Player_Name + "\n")
                                 file.close()
                             #DO THIS
