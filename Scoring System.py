@@ -865,7 +865,6 @@ def Events_Menu():
         print("\nPlease enter a valid option.")
         Events_Menu()
 
-
 #INDIVIDUALS
 def Events_Menu_1():
     return
@@ -907,8 +906,22 @@ def Events_Menu_2():
 def Events_Menu_2_1():
     print("----- Events for Teams -----")
     for abc in Events_List:
-        print("             --- {0} ---".format(abc))
+        print("      --- {0} ---".format(abc))
+        for individual in Events[abc]:
+            random = "YES"
+            for team_name in Teams_List:
+                team_file = open("{0}.txt".format(team_name),"r")
+                team_file_lines = team_file.readlines()
+                team_file.close()
+                team_members = [s.replace('\n', '') for s in team_file_lines]
+                for team_member in team_members:
+                    if team_member == individual:
+                        print("--> {0} --> TEAM '{1}'".format(team_member,team_name))
+                        random = "NO"
+
+        """
         print(", ".join(Events[abc]))
+        """
     time.sleep(1)
     Events_Menu_2()
 
@@ -1166,7 +1179,7 @@ def Events_Menu_2_5():
                                         #
                                         Player_Name = input("Enter a player name: ").title()
                                         #VALIDATION 1 : IF THAT NAME IS IN THE LIST
-                                        for member in Team_List_0:
+                                        for member in Team_List_1:
                                             for event_member in Events[Event_Name]:
                                                 if member == event_member:
                                                     #IF EVERYTHING IS GOOD THEN DO THIS.
@@ -1194,7 +1207,7 @@ def Events_Menu_2_5():
                                         #
                                         Player_Name = input("Enter a player name: ").title()
                                         #VALIDATION 1 : IF THAT NAME IS IN THE LIST
-                                        for member in Team_List_0:
+                                        for member in Team_List_2:
                                             for event_member in Events[Event_Name]:
                                                 if member == event_member:
                                                     #IF EVERYTHING IS GOOD THEN DO THIS.
@@ -1222,7 +1235,7 @@ def Events_Menu_2_5():
                                         #
                                         Player_Name = input("Enter a player name: ").title()
                                         #VALIDATION 1 : IF THAT NAME IS IN THE LIST
-                                        for member in Team_List_0:
+                                        for member in Team_List_3:
                                             for event_member in Events[Event_Name]:
                                                 if member == event_member:
                                                     #IF EVERYTHING IS GOOD THEN DO THIS.
