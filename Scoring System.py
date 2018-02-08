@@ -1072,7 +1072,16 @@ def Events_Menu_2_4():
                                 Events_Menu_2()
                             else:
                                 #ADD VALIDATION SO THAT TEAM MATES CANT JOIN THE SAME EVENT AS WELL
-                                
+                                team_file = open("{0}.txt".format(Team_Name),"r")
+                                lines = team_file.readlines()
+                                team_file.close()
+
+                                team_mates = [s.replace('\n', '') for s in lines]
+
+                                for name in team_mates:
+                                    if name in Event_List_0 or name in Event_List_1 or name in Event_List_2 or name in Event_List_3:
+                                        print("Your Team is already participating.")
+                                        Events_Menu_2()
                                 #
                                 ## -- THEN IT WILL DO EVERYTHING -- ##
                                 #ADDS TO DICT. #ADDS TEAM NAME TO EVENT FILE
