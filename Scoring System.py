@@ -1066,41 +1066,49 @@ def Events_Menu_2_4():
                     Player_Name = input("Enter a player name: ").title()
                     #VALIDATION 2 : IF THIS IS A VALID NAME OR NOT
                     for line in striped_lines:
-                        if line == Player_Name: 
-                            ## -- THEN IT WILL DO EVERYTHING -- ##
-                            #ADDS TO DICT. #ADDS TEAM NAME TO EVENT FILE
-                            ID = Events_ID_Inverted[Event_Name]
-                            if ID == 0:
-                                Event_List_0.append(Player_Name)
-                                file = open(Event_Name + ".txt","a+")
-                                file.write(Player_Name + "\n")
-                                file.close()
-                            elif ID == 1:
-                                Event_List_1.append(Player_Name)
-                                file = open(Event_Name + ".txt","a+")
-                                file.write(Player_Name + "\n")
-                                file.close()
-                            elif ID == 2:
-                                Event_List_2.append(Player_Name)
-                                file = open(Event_Name + ".txt","a+")
-                                file.write(Player_Name + "\n")
-                                file.close()
-                            elif ID == 3:
-                                Event_List_3.append(Player_Name)
-                                file = open(Event_Name + ".txt","a+")
-                                file.write(Player_Name + "\n")
-                                file.close()
-                            elif ID == 4:
-                                Event_List_4.append(Player_Name)
-                                file = open(Event_Name + ".txt","a+")
-                                file.write(Player_Name + "\n")
-                                file.close()
-                            #DO THIS
-                            print("")
-                            #SHOWS A MESSAGE
-                            print("{0} has been added to {1}".format(Player_Name,Event_Name))
-                            #RETURNS BACK TO MENU
-                            Events_Menu_2()
+                        if line == Player_Name:
+                            if Player_Name in Event_List_0 or Player_Name in Event_List_1 or Player_Name in Event_List_2 or Player_Name in Event_List_3:
+                                print("{0} is already in an event.".format(Player_Name))
+                                Events_Menu_2()
+                            else:
+                                #ADD VALIDATION SO THAT TEAM MATES CANT JOIN THE SAME EVENT AS WELL
+                                
+                                #
+                                ## -- THEN IT WILL DO EVERYTHING -- ##
+                                #ADDS TO DICT. #ADDS TEAM NAME TO EVENT FILE
+                                ID = Events_ID_Inverted[Event_Name]
+                                if ID == 0:
+                                    Event_List_0.append(Player_Name)
+                                    file = open(Event_Name + ".txt","a+")
+                                    file.write(Player_Name + "\n")
+                                    file.close()
+                                elif ID == 1:
+                                    Event_List_1.append(Player_Name)
+                                    file = open(Event_Name + ".txt","a+")
+                                    file.write(Player_Name + "\n")
+                                    file.close()
+                                elif ID == 2:
+                                    Event_List_2.append(Player_Name)
+                                    file = open(Event_Name + ".txt","a+")
+                                    file.write(Player_Name + "\n")
+                                    file.close()
+                                elif ID == 3:
+                                    Event_List_3.append(Player_Name)
+                                    file = open(Event_Name + ".txt","a+")
+                                    file.write(Player_Name + "\n")
+                                    file.close()
+                                elif ID == 4:
+                                    Event_List_4.append(Player_Name)
+                                    file = open(Event_Name + ".txt","a+")
+                                    file.write(Player_Name + "\n")
+                                    file.close()
+                                #DO THIS
+                                print("")
+                                #SHOWS A MESSAGE
+                                print("{0} has been added to {1}".format(Player_Name,Event_Name))
+                                #RETURNS BACK TO MENU
+                                Events_Menu_2()
+                                #
                     #IF PLAYER IS NOT FOUND
                     print("\nPlayer Not Found!")
                     loop += 1
