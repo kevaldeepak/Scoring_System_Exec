@@ -801,13 +801,13 @@ def Teams_Menu_4():
             Player_Name = input("Enter a Player's FULL NAME for team " + Team_Selected + " : ").title()
             #IF NAME IS ALREADY IN A TEAM
             if Player_Name in Team_List_0:
-                print("{0} is already in {1}".format(Player_Name,Teams_ID[0]))
+                print("{0} is already in a team.".format(Player_Name))
             elif Player_Name in Team_List_1:
-                print("{0} is already in {1}".format(Player_Name,Teams_ID[1]))
+                print("{0} is already in a team.".format(Player_Name))
             elif Player_Name in Team_List_2:
-                print("{0} is already in {1}".format(Player_Name,Teams_ID[2]))
+                print("{0} is already in a team.".format(Player_Name))
             elif Player_Name in Team_List_3:
-                print("{0} is already in {1}".format(Player_Name,Teams_ID[3]))
+                print("{0} is already in a team.".format(Player_Name))
             #IF NAME IS REGISTERED WITH INDIVIDUALS PARTICIPANTS
             elif Player_Name in Individuals_List:
                 print("{0} is registered with individuals.".format(Player_Name))
@@ -865,9 +865,33 @@ def Events_Menu():
         print("\nPlease enter a valid option.")
         Events_Menu()
 
-#INDIVIDUALS
+#INDIVIDUALS ----- DO THIS LATER
 def Events_Menu_1():
-    return
+    try:
+        # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
+        print("\n-------- EVENTS (INDIVIDUALS) --------")
+        E_M_i = int(input("1 - Review Events\n2 - Add Events\n3 - Remove Events\n4 - Add Individuals to Events\n5 - Remove Individuals to Events\n6 - Back\nWhere do you want to go?: "))
+        #IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN.
+        #REVIEW EVENTS
+        if E_M_i == 1:
+            return
+        #ADD EVENTS
+        elif E_M_i == 2:
+            return
+        #REMOVE EVENTS
+        elif E_M_i == 3:
+            return
+        #ADD INDIVIDUALS TO EVENTS
+        elif E_M_i == 4:
+            return
+        #REMOVE INDIVIDUALS TO EVENTS
+        elif E_M_i == 5:
+            return
+    #WHAT IF THE PERSON DOESN'T TYPE ANYTHING. 
+    except ValueError:
+        print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------\n")
+        Events_Menu_1()
+        
 
 #TEAMS
 def Events_Menu_2():
