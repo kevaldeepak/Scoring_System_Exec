@@ -31,24 +31,7 @@ Teams_List = []
 Events_Individuals = {}
 # ------   EVENTS DICT. -------
 Events_Teams = {}
-#DICT. ID : EVENT
-Events_ID = {}
-#DICT. EVENT : ID
-Events_ID_Inverted = {}
-# -- EVENT LISTS FOR DICT. --
-Event_List_0 = []
-Event_List_1 = []
-Event_List_2 = []
-Event_List_3 = []
-Event_List_4 = []
-# VAR FOR EVENTS
-a0 = "NOT TAKEN"
-a1 = "NOT TAKEN"
-a2 = "NOT TAKEN"
-a3 = "NOT TAKEN"
-a4 = "NOT TAKEN"
 
-Event_Var = 0
 
 #    ------------------- THIS IS THE INTRODUCTION ---------------------
 #    -------------------- CHANGE TO WHATEVER THE FIRST MESSAGE IS THAT WILL POPUP -----------------
@@ -56,7 +39,6 @@ def Introduction():
     #THIS IS JUST AN INTRODUCTION
     print("Welcome to Jimesh's World\n") #\\\\\CHANGE THIS LATER/////#
     print("Note!:\n      Players in Individuals cannot be entered into a team. \n      Enter players for a team from team's menu\n")
-    #PasteValues()
     PasteValues()
 
 def PasteValues():
@@ -962,7 +944,23 @@ def Events_Menu_2_4():
                                     if Team_Name == key:
                                         print("\nTeam is already registered for this event!")
                                         Events_Menu_2()
-                            #IF EVERYTHING IS OAKY, DOES THIS
+                            #IF EVERYTHING IS OKAY, DOES THIS
+                            """
+                                #THIS LOOPS ALL THE EVENTS
+                            if Team_Name in Events_Teams[Event_Name][0]:
+                                #
+                                print("a")
+                                if Player_Name in Events_Teams[Event_Name][0][Team_Name] == True:
+                                    print("b")
+                                    for key in Events_Teams:
+                                        if key == Events_Teams[key][0][Team_Name]:
+                                            print("Player is already in a event!")
+                                else:
+                                    a = 1 + 1
+                            """
+                            #
+                            #OR ELSE THIS CAN HAPPEN
+                            #
                             #APPENDS A NEW DICTIONARY INTO THIS DICT.
                             #NEW DICT HAS TEAM NAME : PLAYER NAME
                             Events_Teams[Event_Name].append({Team_Name:Player_Name})
@@ -970,10 +968,10 @@ def Events_Menu_2_4():
                             with open("Event_Team_{0}.pkl".format(Event_Name), "wb") as f:
                                 pickle.dump(Events_Teams[Event_Name], f, pickle.HIGHEST_PROTOCOL)                      
                             #GIVES A MESSAGE FOR THE USER
-                            print("{0} has been added to the event.".format(Player_Name))
+                            print("\n{0} has been added to the event.".format(Player_Name))
                             #RETURNS BACK TO MENU
                             Events_Menu_2()
-                                            
+                            #            
                     print("------ PLAYERS ------")
                     for line in striped_lines:
                         print("-- {0} --".format(line))
