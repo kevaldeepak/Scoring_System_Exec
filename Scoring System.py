@@ -2,6 +2,19 @@
 import time
 import re
 import os
+import pickle
+
+#THIS WAS ALL JUST A TEST, MAKE SURE TO REMOVE THIS LATER
+"""
+file = open("Test.pkl","w")
+file.close()
+DICT = {"keval":"deepak","daxit":"m"}
+with open('Test.pkl', 'wb') as f:
+    pickle.dump(DICT, f, pickle.HIGHEST_PROTOCOL)
+    
+with open('Test.pkl', 'rb') as f:
+    newDICT = pickle.load(f)
+"""
 # ------- LISTS & DICTIONARIES ----------
 # ----- Individuals Dict. Name : Score -----
 Individuals = {}
@@ -13,15 +26,11 @@ Teams = {}
 # MAX 4 Teams
 #THIS CONTAINS NAMES OF ALL TEAM NAMENAMES
 Teams_List = []
-#THIS IS THE TEAM'S LIST
-Team_List_0 = []
-Team_List_1 = []
-Team_List_2 = []
-Team_List_3 = []
 #---- EVENTS ----
-Events_List = []
+#---- INDIVIDUALS -- EVENTS ----
+Events_Individuals = {}
 # ------   EVENTS DICT. -------
-Events = {}
+Events_Teams = {}
 #DICT. ID : EVENT
 Events_ID = {}
 #DICT. EVENT : ID
@@ -38,12 +47,7 @@ a1 = "NOT TAKEN"
 a2 = "NOT TAKEN"
 a3 = "NOT TAKEN"
 a4 = "NOT TAKEN"
-#SHOWS THE TEAM FOR THE ID
-Teams_ID = {}
-#SHOWS THE ID FOR THE TEAM
-Teams_ID_Inverted = {}
-#VAR
-id_number = 0
+
 Event_Var = 0
 
 #    ------------------- THIS IS THE INTRODUCTION ---------------------
@@ -129,168 +133,69 @@ def PasteValues():
         x += 1
     #print(num_lines) #THIS IS TEMP JUST A NUMBER
     # ------ THIS IS TO IMPORT TEAM MEMBERS ------- ||||||  DO THIS AFTER ||||||
-    # --- THIS IS FOR THE FIRST TEAM ---
-    x = 0
-    for lop in range(0,num_lines):
-        TeamName = BLines3[x]
-        print(BLines3[x])
+    #IMPORTING TEAMS
+    team_name_file = open("Team_Names.txt","a+")
+    team_name_file.close()
+    team_name_file = open("Team_Names.txt","r")
+    lines = team_name_file.readlines()
+    team_name_file.close()
 
-        #ADDING TO THE TEAM_ID DICT.
-        Teams_ID[x] = BLines3[x]
-        
-        Team_File = open('%s.txt' % TeamName,"r")
-        Team_Members = Team_File.readlines()
-        #print(Team_Members) TEMP
-        global Team_Members2
-        Team_Members2 = [s.replace('\n', '') for s in Team_Members] #THIS IS THE STRIPPED VERSION
-        #DO THIS 
-        # print(Team_Members2) THIS IS THE VARIABLE FOR THE TEAM MEMBER NAMES
-        
-        for teamname in Teams_ID:
-            print("asd " + str(teamname))
-            ID = teamname
+    #THESE ARE ALL THE TEAM NAMES
+    Team_Names = [s.replace('\n', '') for s in lines]
 
-        print(len(Team_Members2))
-        
-        if ID == 0:
-            for member in Team_Members2:                
-                Team_List_0.append(member)
-        elif ID == 1:
-            for member in Team_Members2:                
-                Team_List_1.append(member)
-        elif ID == 2:
-            for member in Team_Members2:                
-                Team_List_2.append(member)
-        elif ID == 3:
-            for member in Team_Members2:                
-                Team_List_3.append(member)
-              
-        Team_File.close()
-        x += 1
-    
-    #IMPORTING DICT. TEAM_id_INVERTED
-    lenght_Teams_ID = len(Teams_ID)
-    count_num = 0
-    for pip in range(0,lenght_Teams_ID):
-        Teams_ID_Inverted[Teams_ID[count_num]] = count_num
-        count_num += 1
-    file.close()
+    for team_name in Team_Names:
+        team_file = open("Team_{0}.txt".format(team_name),"a+")
+        team_file.close()
+        team_file = open("Team_{0}.txt".format(team_name),"r")
+        lines = team_file.readlines()
+        team_file.close()
+
+        #THESE ARE ALL THE PLAYER NAMES
+        Player_Names = [s.replace('\n', '') for s in lines]
+
+        #ADDS TO THE DICT WITH ALL THE TEAMS
+        #CREATES THE ENTRY IN THE DICT, IF NOT ALREADY THERE
+        Teams[team_name] = []
+        #CYCLES THROUGH ALL PLAYERS AND ADDS THEM
+        for player_name in Player_Names:
+            Teams[team_name].append(player_name)
     #------------------------------- IMPORTING EVENTS ------------------------
     # ---- INDIVIDUALS - EVENTS
     # ----------------- TEAMS - EVENTS ----------------------
     event_names_file = open("Event_Names (Team).txt","a+")
     event_names_file.close()
     event_names_file = open("Event_Names (Team).txt","r")
-    event_names = event_names_file.readlines()
+    lines = event_names_file.readlines()
     event_names_file.close()
 
-    event_names_striped = [s.replace('\n', '') for s in event_names]
-    print(event_names_striped)
-    #APPENDING INTO EVENTS_LIST #ADDING TO Events_ID DICT.
-    x = 0
-    for event in event_names_striped:
-        Events_List.append(event)
-        Events_ID[x] = event
-        Events_ID_Inverted[event] = x
-        if x == 0:
-            Events[event] = Event_List_0
-            #
-            event_file = open(event + ".txt","r")
-            event_members_list = event_file.readlines()
-            event_file.close()
-            print(event_members_list)
-            event_members = [s.replace('\n', '') for s in event_members_list]
-            for name in event_members:
-                Event_List_0.append(name)
-            #
-        elif x == 1:
-            Events[event] = Event_List_1
-            #
-            event_file = open(event + ".txt","r")
-            event_members_list = event_file.readlines()
-            event_file.close()
-            print(event_members_list)
-            event_members = [s.replace('\n', '') for s in event_members_list]
-            for name in event_members:
-                Event_List_1.append(name)
-            #
-        elif x == 2:
-            Events[event] = Event_List_2
-            #
-            event_file = open(event + ".txt","r")
-            event_members_list = event_file.readlines()
-            event_file.close()
-            print(event_members_list)
-            event_members = [s.replace('\n', '') for s in event_members_list]
-            for name in event_members:
-                Event_List_2.append(name)
-            #
-        elif x == 3:
-            Events[event] = Event_List_3
-            #
-            event_file = open(event + ".txt","r")
-            event_members_list = event_file.readlines()
-            event_file.close()
-            print(event_members_list)
-            event_members = [s.replace('\n', '') for s in event_members_list]
-            for name in event_members:
-                Event_List_3.append(name)
-            #
-        elif x == 4:
-            Events[event] = Event_List_4
-            #
-            event_file = open(event + ".txt","r")
-            event_members_list = event_file.readlines()
-            event_file.close()
-            print(event_members_list)
-            event_members = [s.replace('\n', '') for s in event_members_list]
-            for name in event_members:
-                Event_List_4.append(name)
-            #
-        x += 1
+    Event_Names = [s.replace('\n', '') for s in lines]
+    print(Event_Names)
+    for event_name in Event_Names:
+        event_file = open("Event_Team_{0}.txt".format(event_name),"a+")
+        event_file.close()
+        event_file = open("Event_Team_{0}.txt".format(event_name),"r")
+        lines = event_file.readlines()
+        event_file.close()
 
-    
+        Players = [s.replace('\n', '') for s in lines]
+        Events_Teams[event_name] = []
+        for player in Players:
+            #CREATES AN ENTRY FOR THE EVENT FIRST, IF THERE WASN'T ONE BEFORE
+            
+            Events_Teams[event_name].append(player)
+    #ADDING THE EVENT INFORMATION AS WELL
+    for key in Events_Teams:        
+        with open('Event_Team_{0}.pkl'.format(key), 'rb') as f:
+            global newDICT
+            newDICT = pickle.load(f)
+            Events_Teams[key] = newDICT
 
-    """#THIS IS TEMP, MIGHT STILL USE THIS INSTEAD
-    file = open("Event_Names (Team).txt", "a+")
-    file.close()
-    file = open("Event_Names (Team).txt", "r")
-    lines = file.readlines()
-    file.close()
-    striped_lines = [s.replace('\n', '') for s in lines]
-    print(striped_lines) #TEMP
-    ID_Event = 0
-    for abc in striped_lines:
-        Events_List.append(abc)
-        file = open("{0}.txt".format(abc),"a+")
-        file.close()
-        file = open("{0}.txt".format(abc),"r")
-        sport_line = file.readlines()
-        file.close()
-        striped_sport_lines = [s.replace('\n', '') for s in sport_line]
-        print(striped_sport_lines)
-        for line in striped_sport_lines:
-            if ID_Event == 0:
-                Event_List_0.append(line)
-                ID_Event += 1
-            elif ID_Event == 1:
-                Event_List_1.append(line)
-                ID_Event += 1
-            elif ID_Event == 2:
-                Event_List_2.append(line)
-                ID_Event += 1
-            elif ID_Event == 3:
-                Event_List_3.append(line)
-                ID_Event += 1
-            elif ID_Event == 4:
-                Event_List_4.append(line)
-                ID_Event += 1
-
-    Range = len(striped_sport_lines)
-    for x in range(0,Range):
-        Events_ID[x] = "abc"
-        Events_ID_Inverted["abc"] = x
-    """
+    #IMPORTING FROM THE PKL FILE
+    for key in Events_Teams:
+        
+        with open("Event_Team_{0}.pkl".format(key), "rb") as f:
+            new_DICT = pickle.load(f)
+            Events_Teams[key] = new_DICT
     # ------ IMPORTING EVENTS ---------
     
     Main_Menu()
@@ -452,6 +357,7 @@ def Individuals_Menu_2():
         elif " " not in Add_Individual:
             print("\n---------- Error! ----------\nPlease enter your First & Last name!\n----------------------------")
             Individuals_Menu()
+        """
         #VALIDATION 5 : IF THE NAME IS TAKEN IN A TEAM
         #CHECKS TEAM 1
         elif Add_Individual in Team_List_0:
@@ -469,6 +375,7 @@ def Individuals_Menu_2():
         elif Add_Individual in Team_List_3:
             print("\n{0} is already in team {1}".format(Add_Individual,Teams_ID[3]))
             Individuals_Menu()
+        """
         #TITLES() THE VARIABLE
         Add_Individual = Add_Individual.title()
         #VALIDATION 4 : IF THE NAME IS ALREADY TAKEN
@@ -590,7 +497,7 @@ def Teams_Menu():
         #ADDING PLAYERS TO TEAMS
         elif T_M == 4:
             Teams_Menu_4()
-        #REMOVE PLAYERS FROM TEAMS
+        #REMOVE PLAYERS FROM TEAMS #STILL NEED TO DO THIS
         elif T_M == 5:
             return
         #BACK TO MAIN MENU
@@ -608,32 +515,33 @@ def Teams_Menu():
 #THIS IS TO REVIEW ALL THE TEAMS /////////// THIS CAN BE DIFFERENT, TO BE ABLE TO VIEW MEMEBRS \\\\\\\\\\\\\\\\
 def Teams_Menu_1():
     print("")
-    temphgh = int(input("1 - View players by team\n2 - View all Teams\nWhere do you want to go?: "))
+    temphgh = int(input("1 - View players by team\n2 - View all Teams\n3 - Back\nWhere do you want to go?: "))
+    #VIEWING PLAYERS BY A SPECIFIC TEAM
     if temphgh == 1:
         print("")
-        pep = 1
-        print("---- Teams ----")
-        for kjk in Teams_List:
-            print("{0} --> {1}".format(pep,kjk))
-            pep += 1
-        temprtr = int(input("Select a team: "))
-        print("")
-        if temprtr == 1:
-            for fdf in Team_List_0:
-                print("--> {0} <--".format(fdf))
-        elif temprtr == 2:
-            for fdf in Team_List_1:
-                print("--> {0} <--".format(fdf))
-        elif temprtr == 3:
-            for fdf in Team_List_2:
-                print("--> {0} <--".format(fdf))
-        elif temprtr == 4:
-            for fdf in Team_List_3:
-                print("--> {0} <--".format(fdf))
-        else:
-            print("Please enter a valid answer!")
-            Teams_Menu()
+        print("--- Teams ---")
+        for key in Teams:
+            print("--> {0} <--".format(key))
+        Team = input("Enter a team name to view: ").title()
+        #VALIDATION : IF THE NAME IS CORRECT
+        for name in Teams:
+            if name == Team:
+                #THIS WILL HAPPEN IF CORRECT
+                print('')
+                x = 1
+                for player in Teams[Team]:
+                    print('Player {0} --> {1}'.format(x,player))
+                    x += 1
+
+                #RESETS VARIABLE ONCE DONE LOOPING
+                x = 1
+                #RETURNS BACK TO THE MENU
+                Teams_Menu()
+        #IF THE NAME IS NOT FOUND
+        print("Team is not found!")
+        #RETURNS BACK TO THE MENU
         Teams_Menu()
+    #VIEWING ALL TEAMS
     elif temphgh == 2:
         # THIS PRINT IS JUST FOR AESTHETICS PURPOSES
         print("")
@@ -648,6 +556,9 @@ def Teams_Menu_1():
             for abc in Teams_List:
                 print("---> " + abc + " <---")
         #RETURNING TO INDIVIDUAL MENU MACHANISM    
+        Teams_Menu()
+    #BACK
+    elif temphgh == 3:
         Teams_Menu()
     else:
         print("Please enter a valid option.")
@@ -684,17 +595,9 @@ def Teams_Menu_2():
             #ADDING TO LIST (Teams_List)
             Teams_List.append(team_name)
             #ADDING TO DICT. Team : Team_List
-            php = 1
-            Teams[team_name] = str(Teams_List) + str(php)
-            php += 1
-            #ADDING TO DICT. Teams_ID
-            global id_number
-            Teams_ID[id_number] = team_name
-            #ADDING TO DICT. Teams_ID_Inverted
-            Teams_ID_Inverted[team_name] = id_number
-            id_number += 1
+            Teams[team_name] = []
             #THIS CREATES A FILE USING THE TEAM NAME
-            team_file = open('%s.txt' % team_name, 'a+')
+            team_file = open('Team_%s.txt' % team_name, 'a+') #over here
             team_file.close()
             #THIS CREATES A FILE FOR ALL THE TEAM NAMES
             teams_file = open("Team_Names.txt","a+")
@@ -731,14 +634,8 @@ def Teams_Menu_3():
                 Teams_List.remove(remove_team)
                 #REMOVES FROM THE DICTIONARY
                 del Teams[remove_team]
-                #REMOVES FROM DICT. Teams_ID
-                ID = Teams_ID_Inverted[remove_team]
-                del Teams_ID[ID]
-                print("1")
-                del Teams_ID_Inverted[remove_team]
-                print("2")
                 #DELETES THE TEAM FILE
-                os.remove(str(remove_team) + ".txt")
+                os.remove("Team_{0}.txt".format(remove_team))
                 #DELETES NAME FROM THE Team_Names.txt FILE
                 team_file = open("Team_Names.txt","r")
                 team_file_lines = team_file.readlines()
@@ -762,11 +659,6 @@ def Teams_Menu_3():
 
 #THIS IS TO ADD PLAYERS TO TEAMS
 def Teams_Menu_4():
-    global Lenght_Team_0
-    global Lenght_Team_1
-    global Lenght_Team_2
-    global Lenght_Team_3
-    
     try:
         print("")
         for lol in Teams_List:
@@ -775,64 +667,25 @@ def Teams_Menu_4():
         #VALIDATION 1: IF THE NAME IS ON THE LIST
         if Team_Selected in Teams_List:
             print("\n--- " + Team_Selected + " has been selected! ---")
-            #VALIDATION 2 : CHECKS IF THE TEAM IS FULL
-            ID_TEAM = Teams_ID_Inverted[Team_Selected]
-            if ID_TEAM == 0:
-                Lenght_Team_0 = len(Team_List_0)
-                if Lenght_Team_0 == 5:
-                    print("{0} is currently full! Max. 5 players per team.".format(Team_Selected))
-                    Teams_Menu()
-            elif ID_TEAM == 1:
-                Lenght_Team_1 = len(Team_List_1)
-                if Lenght_Team_1 == 5:
-                    print("{0} is currently full! Max. 5 players per team.".format(Team_Selected))
-                    Teams_Menu()
-            elif ID_TEAM == 2:
-                Lenght_Team_2 = len(Team_List_2)
-                if Lenght_Team_2 == 5:
-                    print("{0} is currently full! Max. 5 players per team.".format(Team_Selected))
-                    Teams_Menu()
-            elif ID_TEAM == 3:
-                Lenght_Team_3 = len(Team_List_3)
-                if Lenght_Team_3 == 5:
-                    print("{0} is currently full! Max. 5 players per team.".format(Team_Selected))
-                    Teams_Menu()
             #BELOW IS THE CODE FOR ADDING A TEAM MATE
             Player_Name = input("Enter a Player's FULL NAME for team " + Team_Selected + " : ").title()
-            #IF NAME IS ALREADY IN A TEAM
-            if Player_Name in Team_List_0:
-                print("{0} is already in a team.".format(Player_Name))
-            elif Player_Name in Team_List_1:
-                print("{0} is already in a team.".format(Player_Name))
-            elif Player_Name in Team_List_2:
-                print("{0} is already in a team.".format(Player_Name))
-            elif Player_Name in Team_List_3:
-                print("{0} is already in a team.".format(Player_Name))
             #IF NAME IS REGISTERED WITH INDIVIDUALS PARTICIPANTS
-            elif Player_Name in Individuals_List:
+            if Player_Name in Individuals_List:
                 print("{0} is registered with individuals.".format(Player_Name))
             #VALIDATION : NAME MUST BE A FULL NAME
             elif " " not in Player_Name:
                 print("\nPlease enter a FULL name.")
                 Teams_Menu()
             else:
-                Team_File = open(Team_Selected + ".txt","a+")
+                #ADDING PLAYER TO TEAM FILE
+                Team_File = open("Team_{0}.txt".format(Team_Selected),"a+")#over here
                 Team_File.write(Player_Name + "\n")
                 Team_File.close()
-                #ADDING TO TEAM'S SPECIFIC MEMBER LIST
-                ID_TEAM = Teams_ID_Inverted[Team_Selected]
-                if ID_TEAM == 0:
-                    Team_List_0.append(Player_Name)
-                elif ID_TEAM == 1:
-                    Team_List_1.append(Player_Name)
-                elif ID_TEAM == 2:
-                    Team_List_2.append(Player_Name)
-                elif ID_TEAM == 3:
-                    Team_List_3.append(Player_Name)
-                    
+                #ADDING PLAYER TO TEAM DICT.
+                Teams[Team_Selected].append(Player_Name)
+                #SHOWS A MESSAGE FOR THE USER
                 print("\nPlayer has been added to " + Team_Selected)
                 Teams_Menu()
-
             Teams_Menu()  
         #VALIDATION 1: IF THE NAME IS NOT ON THE LIST
         else:
@@ -865,7 +718,7 @@ def Events_Menu():
         print("\nPlease enter a valid option.")
         Events_Menu()
 
-#INDIVIDUALS ----- DO THIS LATER
+#INDIVIDUALS --- EVENTS ----- DO THIS LATER
 def Events_Menu_1():
     try:
         # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
@@ -874,37 +727,88 @@ def Events_Menu_1():
         #IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN.
         #REVIEW EVENTS
         if E_M_i == 1:
-            return
+            Events_Menu_1_1()
         #ADD EVENTS
         elif E_M_i == 2:
-            return
+            if len(Events_Teams) == 5:
+                Events_Menu_1_2()
+            else:
+                print("Max. 5 Events")
+                Events_Menu_1()
         #REMOVE EVENTS
         elif E_M_i == 3:
-            return
+            Events_Menu_1_3()
         #ADD INDIVIDUALS TO EVENTS
         elif E_M_i == 4:
-            return
+            Events_Menu_1_4()
         #REMOVE INDIVIDUALS TO EVENTS
         elif E_M_i == 5:
-            return
+            Events_Menu_1_5()
+        #BACK
+        elif E_M_i == 6:
+            Events_Menu()
+        #IF THE USER TYPES SOMETHING ELSE
+        else:
+            print("Please enter a valid option.")
+            Events_Menu_1()
     #WHAT IF THE PERSON DOESN'T TYPE ANYTHING. 
     except ValueError:
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------\n")
         Events_Menu_1()
+
+# ----- SUB SECTIONS --- EVENTS ---- INDIVIDUALS
+#REVIEW EVENTS
+def Events_Menu_1_1():
+    return
+
+#ADD EVENTS
+def Events_Menu_1_2():
+    print(" ---- Add Events (Individuals) ----")
+    Event_Name = input("Enter a event name: ").title()
+    #VALIDATION 1 : IF THERE IS NO NAME
+    if Event_Name == "":
+        print("Please enter a name!")
+        Events_Menu_1()
+    #VALIDATION 2: IF THERE ARE ANY NUMBERS
+    elif any(i.isdigit() for i in Event_Name):
+        print("Enter a name without numbers!")
+        Events_Menu_1()
+    #VALIDATION 3 : IF THE NAME IS ALREADY TAKEN
+    elif Event_Name in Events_Individuals:
+        print("\n -- This name is taken -- ")
+        Events_Menu_1()
+    #IF EVERYTHING IS OKAY, THIS WILL HAPPEN
+    else:
+        #ADDS TO DICT. (Events_Individuals)
+        Events_Individuals[Event_Name] = []
+        #RETURNS BACK TO MENU
+        Events_Menu_1_2()
         
+#REMOVE EVENTS
+def Events_Menu_1_3():
+    return
+
+#ADD INDIVIDUALS TO EVENTS
+def Events_Menu_1_4():
+    return
+
+#REMOVE INDIVIDUALS TO EVENTS
+def Events_Menu_1_5():
+    return
+
 
 #TEAMS
 def Events_Menu_2():
     # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
     print("\n-------- EVENTS (TEAMS) --------")
-    E_M = int(input("1 - Review Events\n2 - Add Events\n3 - Remove Events\n4 - Add Teams to Events\n5 - Remove Teams to Events\n6 - Back\nWhere do you want to go?: "))
+    E_M = int(input("1 - Review Events\n2 - Add Events\n3 - Remove Events\n4 - Add Teams to Events\n5 - Remove Teams from Events\n6 - Back\nWhere do you want to go?: "))
     #IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN.
     #REVIEW EVENTS
     if E_M == 1:
         Events_Menu_2_1()
     #ADD EVENTS
     elif E_M == 2:
-        if len(Events_List) == 5:
+        if len(Events_Teams.keys()) == 5:
             print("\nToo many events!")
             print("Please remove to add new one.")
             Events_Menu_2()
@@ -920,38 +824,30 @@ def Events_Menu_2():
         Events_Menu_2_5()
     #BACK
     elif E_M == 6:
-        Main_Menu()
+        Events_Menu()
     #ANYTHING ELSE
     else:
         print("Please enter a valid option.")
-        Events_Menu()
+        Events_Menu_2()
     
 #REVIEW EVENTS
 def Events_Menu_2_1():
     print("----- Events for Teams -----")
-    for abc in Events_List:
-        print("      --- {0} ---".format(abc))
-        for individual in Events[abc]:
-            random = "YES"
-            for team_name in Teams_List:
-                team_file = open("{0}.txt".format(team_name),"r")
-                team_file_lines = team_file.readlines()
-                team_file.close()
-                team_members = [s.replace('\n', '') for s in team_file_lines]
-                for team_member in team_members:
-                    if team_member == individual:
-                        print("--> {0} --> TEAM '{1}'".format(team_member,team_name))
-                        random = "NO"
+    for key in Events_Teams:
+        print("      --- {0} ---".format(key))
+        x = 1
+        for player in Events_Teams[key]:
+            print("Player {0} --> {1}".format(x,player))
+            x += 1
 
-        """
-        print(", ".join(Events[abc]))
-        """
+        x = 1
+
     time.sleep(1)
     Events_Menu_2()
 
 #ADD EVENTS
 def Events_Menu_2_2():
-    print(" ---- Add Events ----")
+    print(" ---- Add Events (Teams) ----")
     Event_Name = input("Enter a event name: ").title()
     #VALIDATION 1 : IF THERE IS NO NAME
     if Event_Name == "":
@@ -962,69 +858,25 @@ def Events_Menu_2_2():
         print("Enter a name without numbers!")
         Events_Menu_2()
     #VALIDATION 3 : IF THE NAME IS ALREADY TAKEN
-    for name in Events_List:
-        if name == Event_Name:
-            print(" -- This name is taken -- ")
+    for key in Events_Teams:
+        if key == Event_Name:
+            print("\n -- This name is taken -- ")
             Events_Menu_2()
     #IF EVERYTHING IS OKAY  - -  THIS HAPPENS 
     else:
-        #ADDS IT TO EVENTS LIST
-        Events_List.append(Event_Name)
         #SAVES TO FILE EVENT_NAMES
         file = open("Event_Names (Team).txt","a+")
         file.write(Event_Name + "\n")
         file.close()
         #CREATES A FILE NAME FOR EACH EVENT
-        file = open("{0}.txt".format(Event_Name),"a+")
+        file = open("Event_Team_{0}.txt".format(Event_Name),"a+")
+        file.close()
+        #CREATES A PKL FILE FOR EACH EVENT
+        file = open("Event_Team_{0}.pkl".format(Event_Name),"a+")
         file.close()
         #SAVES INTO EVENTS DICT. AND ADDS IT TO EVENTS_ID DICT.
-        global Event_Var
-        global a0
-        global a1
-        global a2
-        global a3
-        global a4
-        if Event_Var == 0:
-            if a0 == "NOT TAKEN":
-                Events_ID[0] = Event_Name
-                Events_ID_Inverted[Event_Name] = 0
-                Events[Event_Name] = Event_List_0
-                a0 = "TAKEN"
-            else:
-                Event_Var += 1
-        elif Event_Var == 1:
-            if a1 == "NOT TAKEN":
-                Events_ID[1] = Event_Name
-                Events_ID_Inverted[Event_Name] = 1
-                Events[Event_Name] = Event_List_1
-                a1 = "TAKEN"
-            else:
-                Event_Var += 1
-        elif Event_Var == 2:
-            if a2 == "NOT TAKEN":
-                Events_ID[2] = Event_Name
-                Events_ID_Inverted[Event_Name] = 2
-                Events[Event_Name] = Event_List_2
-                a2 = "TAKEN"
-            else:
-                Event_Var += 1
-        elif Event_Var == 3:
-            if a3 == "NOT TAKEN":
-                Events_ID[3] = Event_Name
-                Events_ID_Inverted[Event_Name] = 3
-                Events[Event_Name] = Event_List_3
-                a3 = "TAKEN"
-            else:
-                Event_Var += 1
-        elif Event_Var == 4:
-            if a4 == "NOT TAKEN":
-                Events_ID[4] = Event_Name
-                Events_ID_Inverted[Event_Name] = 4
-                Events[Event_Name] = Event_List_4
-                a4 = "TAKEN"
-            else:
-                Event_Var += 1
-        Event_Var += 1
+        #IF EVERYTHING IS GOOD
+        Events_Teams[Event_Name] = []
         #MESSAGE FOR USER
         print("\n{0} has been added.".format(Event_Name))
         #GOES BACK TO MENU
@@ -1033,12 +885,12 @@ def Events_Menu_2_2():
 #REMOVE EVENTS
 def Events_Menu_2_3():
     print(" ---- Remove Events ----")
-    for name in Events_List:
-        print("-- {0} --".format(name))
+    for key in Events_Teams:
+        print("-- {0} --".format(key))
     Event_Name = input("Enter a event name: ").title()
-    for name in Events_List:
-        #IF THE NAME IS MATCHES, IT DOES THIS.
-        if Event_Name == name:
+    for key in Events_Teams:
+        #IF IT IS CORRECT IT SHOULD DO THIS
+        if Event_Name == key:
             #REMOVES FROM FILE
             file = open("Event_Names (Team).txt","r")
             lines = file.readlines()
@@ -1049,108 +901,85 @@ def Events_Menu_2_3():
                 if line != Event_Name:
                     file.write(line + "\n")
             file.close()
-            #MAKES A0/1/2/3/4 VARIABLE 'NOT TAKEN' AGAIN
-            #REMOVES FROM LIST
-            Events_List.remove(Event_Name)
-            #DELETES FROM EVENT'S ID DICT.
-            del Events_ID[Events_ID_Inverted[Event_Name]]
-            #DELETES FROM EVENT'S ID INVERTED DICT.
-            del Events_ID_Inverted[Event_Name]
             #DELETES FROM EVENT'S DICT.
-            del Events[Event_Name]
+            del Events_Teams[Event_Name]
             #DELETES FILE FOR SPORT
-            os.remove(str(Event_Name) + ".txt")
+            os.remove("Event_Team_{0}.txt".format(Event_Name))
+            os.remove("Event_Team_{0}.pkl".format(Event_Name))
+            #GIVES A MESSAGE FOR THE USER
+            print("\n{0} has been removed.".format(Event_Name))
             #RETURNS BACK TO MENU
             Events_Menu_2()
+
     #IF NO NAME WAS FOUND THEN ~ ERROR MESSAGE
     print("Event Not Found!")
     Events_Menu_2()
 
 #ADD TEAMS TO EVENTS
 def Events_Menu_2_4():
+    global loop
+    loop = 0
     def team_select():
         print("-- Select Team --")
-        for name in Teams_List:
-            print("-- {0} --".format(name))
+        for key in Teams:
+            print("-- {0} --".format(key))
         Team_Name = input("Enter a team name: ").title()
         #VALIDATION 1 : IF IT IS IN THE LIST ALREADY
-        for name in Teams_List:
-            if Team_Name == name:
+        for key in Teams:
+            if Team_Name == key:
                 #PRINTS OUT ALL PLAYERS FROM THIS TEAM
-                file = open("{0}.txt".format(Team_Name),"r")
+                file = open("Team_{0}.txt".format(Team_Name),"r") #over here
                 lines = file.readlines()
                 file.close()
                 striped_lines = [s.replace('\n', '') for s in lines]
                 print("------ PLAYERS ------")
                 for line in striped_lines:
                     print("-- {0} --".format(line))
+                
                 #ASKS FOR WHICH TEAM MEMBER IS JOINING THE EVENT
                 def Player_Select():
-                    loop = 0
                     Player_Name = input("Enter a player name: ").title()
-                    #VALIDATION 2 : IF THIS IS A VALID NAME OR NOT
-                    for line in striped_lines:
-                        if line == Player_Name:
-                            if Player_Name in Event_List_0 or Player_Name in Event_List_1 or Player_Name in Event_List_2 or Player_Name in Event_List_3:
-                                print("{0} is already in an event.".format(Player_Name))
-                                Events_Menu_2()
-                            else:
-                                #ADD VALIDATION SO THAT TEAM MATES CANT JOIN THE SAME EVENT AS WELL
-                                team_file = open("{0}.txt".format(Team_Name),"r")
-                                lines = team_file.readlines()
-                                team_file.close()
-
-                                team_mates = [s.replace('\n', '') for s in lines]
-
-                                for name in team_mates:
-                                    if name in Event_List_0 or name in Event_List_1 or name in Event_List_2 or name in Event_List_3:
-                                        print("Your Team is already participating.")
+                    for name in Teams[Team_Name]:
+                        if name == Player_Name:
+                            #NAME IS FOUND
+                            #VALIDATION 1: IF THE NAME IS ALREADY IN A EVENT
+                            #PHASE 1 : READS THE FILE
+                            event_file = open("Event_Team_{0}.txt".format(Event_Name),"r")
+                            lines = event_file.readlines()
+                            Players = [s.replace('\n', '') for s in lines]
+                            event_file.close()
+                            #PHASE 2 : CHECKS IF ANY NAMES MATCH
+                            for player in Players:
+                                if player == Player_Name:
+                                    #IF THE NAME IS FOUND (BAD)
+                                    print("{0} is already in an event.".format(player))
+                                    Events_Menu_2()
+                            #IF THE NAME IS NOT FOUND! (GOOD)
+                            #VALIDATION 2 : THE TEAM IS ALREADY ENTERED IN THIS EVENT
+                            x = len(Events_Teams[Event_Name])
+                            for y in range(0,x):
+                                for key in Events_Teams[Event_Name][y]:
+                                    if Team_Name == key:
+                                        print("\nTeam is already registered for this event!")
                                         Events_Menu_2()
-                                #
-                                ## -- THEN IT WILL DO EVERYTHING -- ##
-                                #ADDS TO DICT. #ADDS TEAM NAME TO EVENT FILE
-                                ID = Events_ID_Inverted[Event_Name]
-                                if ID == 0:
-                                    Event_List_0.append(Player_Name)
-                                    file = open(Event_Name + ".txt","a+")
-                                    file.write(Player_Name + "\n")
-                                    file.close()
-                                elif ID == 1:
-                                    Event_List_1.append(Player_Name)
-                                    file = open(Event_Name + ".txt","a+")
-                                    file.write(Player_Name + "\n")
-                                    file.close()
-                                elif ID == 2:
-                                    Event_List_2.append(Player_Name)
-                                    file = open(Event_Name + ".txt","a+")
-                                    file.write(Player_Name + "\n")
-                                    file.close()
-                                elif ID == 3:
-                                    Event_List_3.append(Player_Name)
-                                    file = open(Event_Name + ".txt","a+")
-                                    file.write(Player_Name + "\n")
-                                    file.close()
-                                elif ID == 4:
-                                    Event_List_4.append(Player_Name)
-                                    file = open(Event_Name + ".txt","a+")
-                                    file.write(Player_Name + "\n")
-                                    file.close()
-                                #DO THIS
-                                print("")
-                                #SHOWS A MESSAGE
-                                print("{0} has been added to {1}".format(Player_Name,Event_Name))
-                                #RETURNS BACK TO MENU
-                                Events_Menu_2()
-                                #
-                    #IF PLAYER IS NOT FOUND
-                    print("\nPlayer Not Found!")
-                    loop += 1
-                    if loop == 3:
-                        print("You have not provided a valid response!")
-                        print("Returning back to menu.")
-                        loop = 0
-                        Events_Menu_2()
+                            #IF EVERYTHING IS OAKY, DOES THIS
+                            #APPENDS A NEW DICTIONARY INTO THIS DICT.
+                            #NEW DICT HAS TEAM NAME : PLAYER NAME
+                            Events_Teams[Event_Name].append({Team_Name:Player_Name})
+                            #ADDS TO EVENT FILE .pkl
+                            with open("Event_Team_{0}.pkl".format(Event_Name), "wb") as f:
+                                pickle.dump(Events_Teams[Event_Name], f, pickle.HIGHEST_PROTOCOL)                      
+                            #GIVES A MESSAGE FOR THE USER
+                            print("{0} has been added to the event.".format(Player_Name))
+                            #RETURNS BACK TO MENU
+                            Events_Menu_2()
+                                            
+                    print("------ PLAYERS ------")
+                    for line in striped_lines:
+                        print("-- {0} --".format(line))
+                    print("Name not found!")
                     Player_Select()
+
                 Player_Select()
         #IF THE NAME IS NOT FOUND
         print("\nEvent Not Found!")
@@ -1158,12 +987,12 @@ def Events_Menu_2_4():
         
     print("--- ADDING TEAM TO EVENT ---")
     print("Select Event")
-    for name in Events_List:
-        print("-- {0} --".format(name))
+    for key in Events_Teams:
+        print("-- {0} --".format(key))
     Event_Name = input("Enter a event name: ").title()
     #VALIDATION 1 : IF IT IS IN THE LIST ALREADY
-    for name in Events_List:
-        if Event_Name == name:
+    for key in Events_Teams:
+        if Event_Name == key:
             team_select()
     #IF THE NAME IS NOT FOUND!
     print("\nEvent Not Found!")
@@ -1172,140 +1001,37 @@ def Events_Menu_2_4():
 #REMOVE TEAMS FROM EVENTS
 def Events_Menu_2_5():
     def team_selection():
-        print("-- Select Team --")
-        for name in Teams_List:
-            print("-- {0} --".format(name))
+        print("\n-- Select Team --")
+        for key in Teams:
+            print("-- {0} --".format(key))
         Team_Name = input("Enter a team name: ").title()
         #VALIDATION 1 : IF IT IS IN THE LIST ALREADY
         for name in Teams_List:
             if Team_Name == name:
                 #IF EVERYTHING IS OKAY, THIS WILL HAPPEN
-                temp_number = 0
-                for abc in Teams_List:
-                    if abc == Team_Name:
-                        if temp_number == 0:
-                            print(Team_List_0)#TEMP
-                            for member in Team_List_0:
-                                for event_member in Events[Event_Name]:
-                                    if member == event_member:
-                                        print("--> {0} <--".format(member))
-                                        #
-                                        Player_Name = input("Enter a player name: ").title()
-                                        #VALIDATION 1 : IF THAT NAME IS IN THE LIST
-                                        for member in Team_List_0:
-                                            for event_member in Events[Event_Name]:
-                                                if member == event_member:
-                                                    #IF EVERYTHING IS GOOD THEN DO THIS.
-                                                    #DELETES FROM THE EVENT FILE
-                                                    event_file = open(Event_Name + ".txt","r")
-                                                    raw_lines = event_file.readlines()
-                                                    event_file.close()
-                                                    
-                                                    lines = [s.replace('\n', '') for s in raw_lines]
-                                                    event_file = open(Event_Name + ".txt","w")
-                                                    for line in lines:
-                                                        if line != Player_Name:
-                                                            event_file.write(line + "\n")
-                                                    event_file.close()
-                                        print("Player is not part of this event!\nName not found.")
-                                        print("Returning to Menu")
-                                        Events_Menu_2()
-                                        #
-                        elif temp_number == 1:
-                            print(Team_List_1)#TEMP
-                            for member in Team_List_1:
-                                for event_member in Events[Event_Name]:
-                                    if member == event_member:
-                                        print("--> {0} <--".format(member))
-                                        #
-                                        Player_Name = input("Enter a player name: ").title()
-                                        #VALIDATION 1 : IF THAT NAME IS IN THE LIST
-                                        for member in Team_List_1:
-                                            for event_member in Events[Event_Name]:
-                                                if member == event_member:
-                                                    #IF EVERYTHING IS GOOD THEN DO THIS.
-                                                    #DELETES FROM THE EVENT FILE
-                                                    event_file = open(Event_Name + ".txt","r")
-                                                    raw_lines = event_file.readlines()
-                                                    event_file.close()
-                                                    
-                                                    lines = [s.replace('\n', '') for s in raw_lines]
-                                                    event_file = open(Event_Name + ".txt","w")
-                                                    for line in lines:
-                                                        if line != Player_Name:
-                                                            event_file.write(line + "\n")
-                                                    event_file.close()
-                                        print("Player is not part of this event!\nName not found.")
-                                        print("Returning to Menu")
-                                        Events_Menu_2()
-                                        #
-                        elif temp_number == 2:
-                            print(Team_List_2)#TEMP
-                            for member in Team_List_2:
-                                for event_member in Events[Event_Name]:
-                                    if member == event_member:
-                                        print("--> {0} <--".format(member))
-                                        #
-                                        Player_Name = input("Enter a player name: ").title()
-                                        #VALIDATION 1 : IF THAT NAME IS IN THE LIST
-                                        for member in Team_List_2:
-                                            for event_member in Events[Event_Name]:
-                                                if member == event_member:
-                                                    #IF EVERYTHING IS GOOD THEN DO THIS.
-                                                    #DELETES FROM THE EVENT FILE
-                                                    event_file = open(Event_Name + ".txt","r")
-                                                    raw_lines = event_file.readlines()
-                                                    event_file.close()
-                                                    
-                                                    lines = [s.replace('\n', '') for s in raw_lines]
-                                                    event_file = open(Event_Name + ".txt","w")
-                                                    for line in lines:
-                                                        if line != Player_Name:
-                                                            event_file.write(line + "\n")
-                                                    event_file.close()
-                                        print("Player is not part of this event!\nName not found.")
-                                        print("Returning to Menu")
-                                        Events_Menu_2()
-                                        #
-                        elif temp_number == 3:
-                            print(Team_List_3)#TEMP
-                            for member in Team_List_3:
-                                for event_member in Events[Event_Name]:
-                                    if member == event_member:
-                                        print("--> {0} <--".format(member))
-                                        #
-                                        Player_Name = input("Enter a player name: ").title()
-                                        #VALIDATION 1 : IF THAT NAME IS IN THE LIST
-                                        for member in Team_List_3:
-                                            for event_member in Events[Event_Name]:
-                                                if member == event_member:
-                                                    #IF EVERYTHING IS GOOD THEN DO THIS.
-                                                    #DELETES FROM THE EVENT FILE
-                                                    event_file = open(Event_Name + ".txt","r")
-                                                    raw_lines = event_file.readlines()
-                                                    event_file.close()
-                                                    
-                                                    lines = [s.replace('\n', '') for s in raw_lines]
-                                                    event_file = open(Event_Name + ".txt","w")
-                                                    for line in lines:
-                                                        if line != Player_Name:
-                                                            event_file.write(line + "\n")
-                                                    event_file.close()
-                                        print("Player is not part of this event!\nName not found.")
-                                        print("Returning to Menu")
-                                        Events_Menu_2()
-                                        #
-                        else:
-                            temp_number += 1
-                        
-    print("--- ADDING TEAM TO EVENT ---")
-    print("Select Event")
-    for name in Events_List:
-        print("-- {0} --".format(name))
+                #
+                #IF EVERYTHING IS CORRECT
+                #DELETES FROM EVENTS_TEAMS_EVENT_NAME DICT.
+                Range = len(Events_Teams[Event_Name])
+                for pop in range(0,Range):
+                    for name in Events_Teams[Event_Name][pop]:
+                        if name == Team_Name:
+                            #GOOD
+                            del Events_Teams[Event_Name][0]
+                            #ADDS THE NEW UPDATED DICT INTO FILE .PKL
+                            with open("Event_Team_{0}.pkl".format(Event_Name), "wb") as f:
+                                pickle.dump(Events_Teams[Event_Name], f, pickle.HIGHEST_PROTOCOL)
+                            #PRINTS A MESSAGE
+                            print("\nTeam (0) has been removed from the event!".format(Team_Name))
+                            Events_Menu_2()
+                #
+    print("\n--- REMOVING TEAM FROM EVENT ---")
+    for key in Events_Teams:
+        print("-- {0} --".format(key))
     Event_Name = input("Enter a event name: ").title()
     #VALIDATION 1 : IF IT IS IN THE LIST ALREADY
-    for name in Events_List:
-        if Event_Name == name:
+    for key in Events_Teams:
+        if Event_Name == key:
             team_selection()
     #IF THE NAME IS NOT FOUND!
     print("\nEvent Not Found!")
