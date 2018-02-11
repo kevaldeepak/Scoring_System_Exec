@@ -32,7 +32,14 @@ Teams_List = []
 Events_Individuals = {}
 # ------   EVENTS DICT. -------
 Events_Teams = {}
-
+# ------   SCORES DICT. -------
+Ranking = {
+        1:5,
+        2:4,
+        3:3,
+        4:2,
+        5:1,
+    }
 
 #    ------------------- THIS IS THE INTRODUCTION ---------------------
 #    -------------------- CHANGE TO WHATEVER THE FIRST MESSAGE IS THAT WILL POPUP -----------------
@@ -360,7 +367,7 @@ def Individuals_Menu_2():
         for key in Teams:
             temp = Add_Individual in Teams[key]
             if temp == True:
-                print("{0} has been entered in a team {1}".format(Add_Individual,key))
+                print("\n{0} has been entered in a team {1}".format(Add_Individual,key))
                 Individuals_Menu()
         #TITLES() THE VARIABLE
         Add_Individual = Add_Individual.title()
@@ -766,11 +773,11 @@ def Events_Menu_1_2():
     Event_Name = input("Enter a event name: ").title()
     #VALIDATION 1 : IF THERE IS NO NAME
     if Event_Name == "":
-        print("Please enter a name!")
+        print("\nPlease enter a name!")
         Events_Menu_1()
     #VALIDATION 2: IF THERE ARE ANY NUMBERS
     elif any(i.isdigit() for i in Event_Name):
-        print("Enter a name without numbers!")
+        print("\nEnter a name without numbers!")
         Events_Menu_1()
     #VALIDATION 3 : IF THE NAME IS ALREADY TAKEN
     elif Event_Name in Events_Individuals:
@@ -832,7 +839,7 @@ def Events_Menu_1_3():
 #ADD INDIVIDUALS TO EVENTS
 def Events_Menu_1_4():
     print("\n--- ADDING INDIVIDUAL TO EVENT ---")
-    print("\nSelect Event")
+    print("\n--- Select Event ---")
     for key in Events_Individuals:
         print("--> {0} <--".format(key))
     Event_Name = input("Select a event: ").title()
@@ -840,7 +847,7 @@ def Events_Menu_1_4():
     for key in Events_Individuals:
         if key == Event_Name:
             #
-            print("\nSelect Player")
+            print("\n--- Select Player ---")
             for key in Individuals:
                 print("--> {0} <--".format(key))
             Player_Name = input("Select a player: ").title()
@@ -876,14 +883,14 @@ def Events_Menu_1_4():
 #REMOVE INDIVIDUALS TO EVENTS
 def Events_Menu_1_5():
     print("\n--- REMOVE INDIVIDUAL TO EVENT ---")
-    print("\nSelect Event")
+    print("\n--- Select Event ---")
     for key in Events_Individuals:
         print("--> {0} <--".format(key))
     Event_Name = input("Select a event: ").title()
     #VALIDATION 1 : IF IT IS A ACTUAL EVENT
     for key in Events_Individuals:
         if key == Event_Name:
-            print("\nSelect player")
+            print("\n--- Select player ---")
             for name in Events_Individuals[Event_Name]:
                 print("-> {0} <--".format(name))
             Player_Name = input("Select a player: ").title()
@@ -1178,9 +1185,224 @@ def Events_Menu_2_5():
     #IF THE NAME IS NOT FOUND!
     print("\nEvent Not Found!")
     Events_Menu_2()
+    
 #   ---------- THIS IS THE SCORES MENU. EVERYTHING RELATING TO SCORES IS HERE -----------
 def Scores_Menu():
+    print("\n---- Scoring System Main Menu ----")
+    S_M = int(input("1 - Scoring System for Individuals\n2 - Scoring System for Teams\n3 - Back\nWhere do you want to go?: "))
+    #INDIVIDUALS -- SCORING SYSTEM
+    if S_M == 1:
+        Scores_Menu_1()
+    #TEAMS -- SCORING SYSTEM
+    elif S_M == 2:
+        Scores_Menu_2()
+    #BACK
+    elif S_M == 3:
+        Main_Menu()
+    #BACK
+    else:
+        print("Please enter a valid answer!")
+        Scores_Menu()
+
+#THIS IS THE MAIN MENU FOR SCORING SYSTEM -- INIDIVDUALS
+def Scores_Menu_1():
+    print("\n----- SCORES FOR INDIVIDUALS -----")
+    S_M_i = int(input("1 - Review Scores\n2 - Add Scores to Individual\n3 - Reset Score for Individual\n4 - Back\nWhere do you want to go?: "))
+    #REVIEW SCORES
+    if S_M_i == 1:
+        Scores_Menu_1_1()
+    #ADD SCORES TO INDIVIDUALS
+    elif S_M_i == 2:
+        Scores_Menu_1_2()
+    #RESET SCORES
+    elif S_M_i == 3:
+        Scores_Menu_1_3()
+    #BACK
+    elif S_M_i == 4:
+        Scores_Menu()
+    #ANYTHING ELSE
+    else:
+        print("Please enter a valid answer!")
+        Scores_Menu_1()
+
+#REVIEW SCORES
+def Scores_Menu_1_1():
+    print("\n----- Scores For Individuals -----")
+    for key in Individuals:
+        print("-- {0} --> {1} --".format(key,Individuals[key]))
+
+    Scores_Menu_1()
+
+#ADD SCORES TO INDIVIDUALS
+def Scores_Menu_1_2():
+    print("\n--- Add Scores for Individuals ---")
+    for key in Individuals:
+        print("--> {0}".format(key))
+    Player_Name = input("Select a player: ").title()
+    #VALIDATION 1 : IF NAME IS IN THE DICT.
+    for key in Individuals:
+        if key == Player_Name:
+            #THIS IS GOOD
+            #
+            print("\n-- Ranking --")
+            print("--> 1st Place --> 5 Points")
+            print("--> 2nd Place --> 4 Points")
+            print("--> 3rd Place --> 3 Points")
+            print("--> 4th Place --> 2 Points")
+            print("--> 5th Place --> 1 Points")
+            #
+            #ADDING ALL THE SCORES FOR EACH EVENT THE PERSON IS ENTERED FOR
+            for event in Events_Individuals:
+                if Player_Name in Events_Individuals[event]:
+                    Placement = int(input("Enter position for {0} in {1}: ".format(Player_Name,event)))
+                    #GETS THE SCORE THAT IS ALREADY THERE
+                    Score = Individuals[Player_Name]
+                    #LOOKS UP SCORE DEPENDING ON PLACEMENT AND ADDS IT TO SCORE
+                    Score = int(Score) + int(Ranking[Placement])
+                    #ADDS NEW SCORE TO DICT. AGAIN
+                    Individuals[Player_Name] = Score
+                    #SAVES INTO FILE
+                    #OPENS THE FILE IN READ MODE
+                    file = open("Individual_Scores.txt","r")
+                    #READS THE FILE
+                    lines = file.readlines()
+                    file.close()
+                    #STRIPS THE LINES
+                    file_lines = [s.replace('\n', '') for s in lines]
+                    #OPEN THE FILE IN WRITE MODE
+                    file = open("Individual_Scores.txt","w")
+                    for line in file_lines:
+                        VAR = line.startswith(Player_Name)
+                        if VAR == True:
+                            file.write("{0} ---> {1}\n".format(Player_Name,Score))
+                        else:
+                            file.write(line + "\n")
+                    file.close()
+                    #GIVES A MESSAGE FOR THE USER
+                    print("\n{0} now has {1} points.".format(Player_Name,Score))
+                    #RETURNS BACK TO THE MENU
+                    Scores_Menu_1()
+
+            print("Player is not registered with any events.")
+            print("Warning!:\n         Register all players and teams to events before continuing with Scores.")
+            Scores_Menu_1()        
+            """
+            ##
+            print("-- Ranking --")
+            y = 5
+            for x in range(0,5):
+                if x+1 == 1:
+                    letters = "st"
+                elif x+1 == 2:
+                    letters = "nd"
+                elif x+1 == 3:
+                    letters = "rd"
+                else:
+                    letters = "th"
+                print("{0}{1} Place --> {2} Points".format(x+1,letters,y))
+                y -= 1
+            ##
+            """
+            
+    #IF NOT FOUND
+    print("Please enter a valid name.")
+    Scores_Menu_1()
+
+#RESET SCORES
+def Scores_Menu_1_3():
+    print("\n--- Reset Scores for Individuals ---")
+    for key in Individuals:
+        print("--> {0}".format(key))
+    Player_Name = input("Select a player: ").title()
+    #VALIDATION 1 : IF NAME IS IN THE DICT.
+    for key in Individuals:
+        if key == Player_Name:
+            
+            def sure():
+                print("\n{0} has {1} points\n".format(Player_Name,Individuals[Player_Name]))
+                print("1 - Yes\n2 - No")
+                confirm = int(input("Are you sure you want to reset {0}'s score?: "))
+                if confirm == 1:
+                    #THIS IS WHERE THE MAIN CODE SHOULD BE
+                    #CHANGES SCORE BACK TO ZERO IN DICT.
+                    Individuals[Player_Name] = 0
+                    #CHANGES SCORE BACK TO ZERO IN FILE
+                    file = open("Individual_Scores.txt","r")
+                    #READS THE FILE
+                    lines = file.readlines()
+                    file.close()
+                    #STRIPS THE LINES
+                    file_lines = [s.replace('\n', '') for s in lines]
+                    #OPEN THE FILE IN WRITE MODE
+                    file = open("Individual_Scores.txt","w")
+                    for line in file_lines:
+                        VAR = line.startswith(Player_Name)
+                        if VAR == True:
+                            file.write("{0} ---> 0\n".format(Player_Name))
+                        else:
+                            file.write(line + "\n")
+                    file.close()
+                    #MESSAGE FOR THE USER
+                    print("\n{0}'s score has been reset.".format(Player_Name))
+                    #RETURNS BACK TO MENU
+                    Scores_Menu_1()
+                elif confirm == 2:
+                    print("Returning back to Menu")
+                    print("No changes where made.")
+                    Scores_Menu_1()
+                else:
+                    print("Please enter a valid answer!")
+                    sure()
+             
+            sure()            
+    #IF NAME IS NOT FOUND
+    print("{0} is not found.".format(Player_Name))
+    Scores_Menu_1()
+    
+#THIS IS THE MAIN MENU FOR SCORING SYSTEM -- TEAMS
+def Scores_Menu_2():
+    print("----- SCORES FOR TEAMS -----")
+    S_M_t = int(input("1 - Review Scores\n2 - Add Scores to Teams\n3 - Reset Score for Teams\n4 - Back\nWhere do you want to go?: "))
+    #REVIEW SCORES
+    if S_M_t == 1:
+        Scores_Menu_2_1()
+    #ADD SCORES TO TEAMS
+    elif S_M_t == 2:
+        Scores_Menu_2_2()
+    #RESET SCORES FOR A TEAM
+    elif S_M_t == 3:
+        Scores_Menu_2_3()
+    #BACK
+    elif S_M_t == 4:
+        Scores_Menu()
+    #ANYTHING ELSE
+    else:
+        print("Please enter a valid answer!")
+        Scores_Menu_2()
+
+#REVIEW SCORES
+def Scores_Menu_2_1():
     return
+
+#ADD SCORES TO TEAMS
+def Scores_Menu_2_2():
+    return
+
+#RESET SCORES FOR A TEAM
+def Scores_Menu_2_3():
+    return
+
+"""
+-------------------------------------------------------------------
+NUM = {"Daxit":5,"Keval":10,"Hardik":7,}
+Sorted_K = sorted(NUM.keys())
+Sorted_V = sorted(NUM.values(), reverse=True)
+for score in Sorted_V:
+    for name in Sorted_K:
+        if score == NUM[name]:
+            print("{0} --> {1}".format(name,score))
+-------------------------------------------------------------------
+"""
 
 # ----------------- STARTS THE WHOLE PROGRAM, LAUNCHED WITH THE INTRODUCTION. ----------------------
 Introduction()
