@@ -178,18 +178,14 @@ def PasteValues():
             
             Events_Teams[event_name].append(player)
     #ADDING THE EVENT INFORMATION AS WELL
-    for key in Events_Teams:        
-        with open('Event_Team_{0}.pkl'.format(key), 'rb') as f:
-            global newDICT
-            newDICT = pickle.load(f)
-            Events_Teams[key] = newDICT
-
     #IMPORTING FROM THE PKL FILE
     for key in Events_Teams:
-        
-        with open("Event_Team_{0}.pkl".format(key), "rb") as f:
-            new_DICT = pickle.load(f)
-            Events_Teams[key] = new_DICT
+        lenght = os.stat('Event_Team_{0}.pkl'.format(key)).st_size == 0
+        if lenght == False:
+            with open("Event_Team_{0}.pkl".format(key), "rb") as f:
+                new_DICT = pickle.load(f)
+                Events_Teams[key] = new_DICT
+
     # ------ IMPORTING EVENTS ---------
     
     Main_Menu()
@@ -480,7 +476,7 @@ def Teams_Menu():
             Teams_Menu_4()
         #REMOVE PLAYERS FROM TEAMS #STILL NEED TO DO THIS
         elif T_M == 5:
-            return
+            Teams_Menu_5()
         #BACK TO MAIN MENU
         elif T_M == 6:
             Main_Menu()
@@ -544,8 +540,13 @@ def Teams_Menu_1():
     else:
         print("Please enter a valid option.")
     Teams_Menu()
-    
 
+#THIS IT TO REMOVE PLAYERS FROM TEAMS
+def Teams_Menu_5():
+    for key in Teams:
+        print("--> {0} <--".format(key))
+    
+    Teams_Menu()
     
 #THIS IS TO ADD TEAMS
 def Teams_Menu_2():
@@ -821,7 +822,8 @@ def Events_Menu_1_3():
         
 #ADD INDIVIDUALS TO EVENTS
 def Events_Menu_1_4():
-    return
+    
+    Events_Menu_1()
 
 #REMOVE INDIVIDUALS TO EVENTS
 def Events_Menu_1_5():
