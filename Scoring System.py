@@ -15,6 +15,7 @@ with open('Test.pkl', 'wb') as f:
 with open('Test.pkl', 'rb') as f:
     newDICT = pickle.load(f)
 """
+
 # ------- LISTS & DICTIONARIES ----------
 # ----- Individuals Dict. Name : Score -----
 Individuals = {}
@@ -154,7 +155,15 @@ def PasteValues():
     
     for event_name in Event_Names:
         Events_Individuals[event_name] = []
-    
+        
+    #IMPORTING FROM PKL
+    for key in Events_Individuals:
+        lenght = os.stat('Event_Individuals_{0}.pkl'.format(key)).st_size == 0
+        if lenght == False:
+            with open("Event_Individuals_{0}.pkl".format(key), "rb") as f:
+                ABCD = pickle.load(f)
+                for event in ABCD:
+                    Events_Individuals[key].append(event)
     # ----------------- TEAMS - EVENTS ----------------------
     event_names_file = open("Event_Names (Team).txt","a+")
     event_names_file.close()
@@ -740,7 +749,7 @@ def Events_Menu_1():
 # ----- SUB SECTIONS --- EVENTS ---- INDIVIDUALS
 #REVIEW EVENTS
 def Events_Menu_1_1():
-    print("----- Events for Individuals -----")
+    print("\n----- Events for Individuals -----")
     for key in Events_Individuals:
         print("      --- {0} ---".format(key))
         x = 1
@@ -822,13 +831,79 @@ def Events_Menu_1_3():
         
 #ADD INDIVIDUALS TO EVENTS
 def Events_Menu_1_4():
-    
+    print("\n--- ADDING INDIVIDUAL TO EVENT ---")
+    print("\nSelect Event")
+    for key in Events_Individuals:
+        print("--> {0} <--".format(key))
+    Event_Name = input("Select a event: ").title()
+    #VALIDATION 1 : IF IT IS A ACTUAL EVENT
+    for key in Events_Individuals:
+        if key == Event_Name:
+            #
+            print("\nSelect Player")
+            for key in Individuals:
+                print("--> {0} <--".format(key))
+            Player_Name = input("Select a player: ").title()
+            #VALIDATION 1 : IF IT IS A ACTUAL PLAYER
+            for key in Individuals:
+                if key == Player_Name:
+                    #VALIDATION 1 : CHECKS IF THE NAME IS ALREADY IN THE EVENT
+                    for name in Events_Individuals[Event_Name]:
+                        if name == Player_Name:
+                            print("{0} is already in Event {1}".format(Player_Name,Event_Name))
+                    
+                    #IF EVERYTHING IS GOING TO HAPPEN PROPERLY
+                    ##
+                    #APPENDING TO EVENTS_INDIVIDUALS DICT.
+                    Events_Individuals[Event_Name].append(Player_Name)
+                    #ADDS TO PKL FILE
+                    with open("Event_Individuals_{0}.pkl".format(Event_Name), "wb") as f:
+                        pickle.dump(Events_Individuals[Event_Name], f, pickle.HIGHEST_PROTOCOL)
+                    ##
+                    #GIVES A MESSAGE TO THE USER
+                    print("{0} has been added to event.".format(Player_Name))
+                    #RETURNS BACK TO MENU
+                    Events_Menu_1()
+            #IF EVENT IS NOT FOUND
+            print("Event not found!")
+            Events_Menu_1()
+            #
+    #IF EVENT IS NOT FOUND
+    print("Event not found!")
     Events_Menu_1()
+
 
 #REMOVE INDIVIDUALS TO EVENTS
 def Events_Menu_1_5():
-    return
-
+    print("\n--- REMOVE INDIVIDUAL TO EVENT ---")
+    print("\nSelect Event")
+    for key in Events_Individuals:
+        print("--> {0} <--".format(key))
+    Event_Name = input("Select a event: ").title()
+    #VALIDATION 1 : IF IT IS A ACTUAL EVENT
+    for key in Events_Individuals:
+        if key == Event_Name:
+            print("\nSelect player")
+            for name in Events_Individuals[Event_Name]:
+                print("-> {0} <--".format(name))
+            Player_Name = input("Select a player: ").title()
+            #VALIDATION 1 : IF IT IS A ACTUAL PLAYER IN THE EVENT
+            for name in Events_Individuals[Event_Name]:
+                if name == Player_Name:
+                    #IF IT IS GOOD THEN THIS WILL HAPPEN
+                    #REMOVES FROM LIST IN DICT. EVENTS_INDIVIDUALS
+                    Events_Individuals[Event_Name].remove(Player_Name)
+                    #ADDS NEW DICT. TO PKL FILE
+                    with open("Event_Individuals_{0}.pkl".format(Event_Name), "wb") as f:
+                        pickle.dump(Events_Individuals[Event_Name], f, pickle.HIGHEST_PROTOCOL)
+                    ##
+                    #GIVES A MESSAGE TO THE USER
+                    print("{0} has been removed from event {1}.".format(Player_Name,Event_Name))
+                    #RETURNS BACK TO MENU
+                    Events_Menu_1()
+            #IF NAME IS NOT FOUND
+            print("Player is not found!")
+            Events_Menu_1()
 
 #---------------------------   TEAMS ---------------
 def Events_Menu_2():
@@ -865,6 +940,24 @@ def Events_Menu_2():
     
 #REVIEW EVENTS
 def Events_Menu_2_1():
+    
+    print("----- Events for Teams -----")
+    for key in Events_Teams:
+        print(key)
+        print("      --- {0} ---".format(key))
+        x = 1
+        y = len(Events_Teams[key])
+        for xy in range(0,y):
+            for team_name in Events_Teams[key][xy]:
+                print("Player {0} --> {1} -- Team {2}".format(x,Events_Teams[key][xy][team_name],team_name))
+                x += 1
+        x = 1
+
+    time.sleep(1)
+    Events_Menu_2()
+    
+    
+    """
     print("----- Events for Teams -----")
     for key in Events_Teams:
         print("      --- {0} ---".format(key))
@@ -877,7 +970,7 @@ def Events_Menu_2_1():
 
     time.sleep(1)
     Events_Menu_2()
-
+    """
 #ADD EVENTS
 def Events_Menu_2_2():
     print(" ---- Add Events (Teams) ----")
