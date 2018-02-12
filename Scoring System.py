@@ -211,7 +211,9 @@ def PasteValues():
 
 
     # ---------- IMPORTING SCORES ----------
-    lenght = os.stat('Team_Scores.pkl').st_size == 0
+    lenght = True
+    if os.path.exists('Team_Scores.pkl'):
+        lenght = os.stat('Team_Scores.pkl').st_size == 0
     if lenght == False:
         with open("Team_Scores.pkl", "rb") as f:
             POP = pickle.load(f)
@@ -223,56 +225,32 @@ def PasteValues():
 
 #THIS IS THE FUNCTION THAT WILL RESET ALL MY STORED DATA
 def Reset():
-    #ASKING TO CONFIRM 
-    temp = input("Are you sure that you want to reset?(Y/N): ")
-    temp = temp.title()
-    #CONFIRMED
-    if temp == "Y":
-        # ----------------- INDIVIDUALS -----------------
-        #CLEARS THE FILE
-        open('Individual_Names.txt', 'w').close()
-        #CLEARS THE LISTS
-        # --- Individuals_List ---
-        del Individuals_List[:]
-        #CLEARS THE DICTIONARIES
-        Individuals.clear()
-        # ----------------- TEAMS -----------------
-        # -- DELETES ALL TEAM NAMES -- 
-        # READS TEAM NAMES
-        file = open("Team_Names.txt","r")
-        file_lines = file.readlines()
-        file.close()
-        # STRIPS THE '\N' FROM ALL LINES
-        striped_lines = [s.replace('\n','') for s in file_lines]
-        # CYCLES THROUGH THE LIST
-        for yuy in striped_lines:
-            # REMOVES FILES FOR EACH TEAM
-            os.remove(yuy + '.txt')
-        #REMOVES REST OF FILES AS WELL
-        # -- Individual_Names.TXT --
-        os.remove("Individual_Names.txt")
-        # -- Individual_Scores.TXT --
-        os.remove('Individual_Scores.txt')
-        # -- Team_Names.TXT --
-        os.remove('Team_Names.txt')
-        #GIVES A MESSAGE FOR THE USER
-        print("Program has been factory reset.")
-        #RETURNS BACK TO THE MAIN MENU AFTER RESET
-        print("Restarting program.")
-        Introduction()
-    #NOT CONFIRMED
-    elif temp == "N":
-        print("Returning to Main Menu...")
-        time.sleep(0.5)
-        Main_Menu()
-    #WHAT IF VALID OPTION IS NOT PROVIDED
-    else:
-        print("Not a valid option!")
-        time.sleep(0.5)
-        print("Returning to Main Menu...")
-        time.sleep(0.5)
-        Main_Menu()
-    return
+    #THIS IS A LIST OF ALL THE NAMES OF FILES
+    Static_Files = ["Team_Names.txt","Individual_Scores.txt","Individual_Names.txt","Event_Names (Team).txt","Event_Names (Individuals).txt","Team_Scores.pkl"]
+    #THIS IS A LIST OF ALL NAMES TO DELETE
+    Remove_Files = []
+    
+    for File_Name in Static_Files:
+        #CHECKS IF THE FILE PATH IS REAL
+        temp = os.path.exists(File_Name)
+        #IF IT IS, IT WILL APPEND INTO NEW TEMP LIST
+        if temp == True:
+            Remove_Files.append(File_Name)
+
+    #THEN DELETES ALL THE FILES THAT ARE ACTUALLY THERE
+    for File_Name in Remove_Files:
+        os.remove(File_Name)
+    #DELETES ALL THE EVENTS FILES -- Teams
+    for key in Events_Teams:
+        os.remove("Event_Team_{0}.pkl".format(key))
+    #DELETES ALL THE EVENTS FILES -- Individuals
+    for key in Events_Individuals:
+        os.remove("Event_Individuals_{0}.pkl".format(key))
+    
+    #RESTARTS THE PROGRAM ~ PYTHON FILE NAME
+    os.system('TASKKILL /F /IM Scoring System_Keval Deepak MOJAR CHANGES.py') #close the file
+    os.startfile("Scoring System_Keval Deepak MOJAR CHANGES.py") #open the file again
+
 
 #   ------------------- THIS IS THE MAIN MENU. USER DECIDES WHICH SUB MENU TO NAVIGATE TO. --------------------
 def Main_Menu():
@@ -571,13 +549,6 @@ def Teams_Menu_1():
     else:
         print("Please enter a valid option.")
     Teams_Menu()
-
-#THIS IT TO REMOVE PLAYERS FROM TEAMS
-def Teams_Menu_5():
-    for key in Teams:
-        print("--> {0} <--".format(key))
-    
-    Teams_Menu()
     
 #THIS IS TO ADD TEAMS
 def Teams_Menu_2():
@@ -611,7 +582,7 @@ def Teams_Menu_2():
             Teams[team_name] = []
             #ADDING TO DICT.
             #CREATES A KEY WITH A LIST
-            Team_Scores[Team_Name] = []
+            Team_Scores[team_name] = []
             #THIS CREATES A FILE USING THE TEAM NAME
             team_file = open('Team_%s.txt' % team_name, 'a+') #over here
             team_file.close()
@@ -654,6 +625,15 @@ def Teams_Menu_3():
                 del Team_Scores[remove_team]
                 #DELETES THE TEAM FILE
                 os.remove("Team_{0}.txt".format(remove_team))
+                #DELETES FROM THE EVENT DICT.
+                for key in Events_Teams:
+                    for x in range(0,len(Events_Teams[key])):
+                        if remove_team in Events_Teams[key][x]:
+                            #GOOD ~ DO THIS
+                            #REMOVES THE TEAM FROM THE EVENTS DICT
+                            #del Events_Teams[key][0][remove_team]
+                            #REMOVES THE WHOLE LIST ENTRY
+                            del Events_Teams[key][x]
                 #DELETES NAME FROM THE Team_Names.txt FILE
                 team_file = open("Team_Names.txt","r")
                 team_file_lines = team_file.readlines()
@@ -717,6 +697,13 @@ def Teams_Menu_4():
     except ValueError:
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
         Teams_Menu()
+
+#THIS IT TO REMOVE PLAYERS FROM TEAMS
+def Teams_Menu_5():
+    for key in Teams:
+        print("--> {0} <--".format(key))
+    
+    Teams_Menu()
     
 #   ---------- THIS IS THE EVENTS MENU. EVERYTHING RELATING TO EVENTS IS HERE -----------
 def Events_Menu():
@@ -739,7 +726,7 @@ def Events_Menu():
         print("\nPlease enter a valid option.")
         Events_Menu()
 
-#INDIVIDUALS --- EVENTS ----- DO THIS LATER
+#INDIVIDUALS --- EVENTS -----
 def Events_Menu_1():
     try:
         # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
@@ -970,7 +957,6 @@ def Events_Menu_2_1():
     
     print("----- Events for Teams -----")
     for key in Events_Teams:
-        print(key)
         print("      --- {0} ---".format(key))
         x = 1
         y = len(Events_Teams[key])
@@ -1022,8 +1008,8 @@ def Events_Menu_2_2():
         file.write(Event_Name + "\n")
         file.close()
         #CREATES A FILE NAME FOR EACH EVENT
-        file = open("Event_Team_{0}.txt".format(Event_Name),"a+")
-        file.close()
+        #file = open("Event_Team_{0}.txt".format(Event_Name),"a+") #DELETE FILE OVER HERE
+        #file.close()
         #CREATES A PKL FILE FOR EACH EVENT
         file = open("Event_Team_{0}.pkl".format(Event_Name),"a+")
         file.close()
@@ -1057,7 +1043,7 @@ def Events_Menu_2_3():
             #DELETES FROM EVENT'S DICT.
             del Events_Teams[Event_Name]
             #DELETES FILE FOR SPORT
-            os.remove("Event_Team_{0}.txt".format(Event_Name))
+            #os.remove("Event_Team_{0}.txt".format(Event_Name)) #DELETE FILE HERE
             os.remove("Event_Team_{0}.pkl".format(Event_Name))
             #GIVES A MESSAGE FOR THE USER
             print("\n{0} has been removed.".format(Event_Name))
