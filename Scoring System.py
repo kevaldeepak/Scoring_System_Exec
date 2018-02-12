@@ -364,7 +364,8 @@ def Individuals_Menu_2():
         for key in Teams:
             temp = Add_Individual in Teams[key]
             if temp == True:
-                print("\n{0} has been entered in a team {1}".format(Add_Individual,key))
+                print("\nError!")
+                print("{0} has been entered in a team {1}".format(Add_Individual,key))
                 Individuals_Menu()
         #TITLES() THE VARIABLE
         Add_Individual = Add_Individual.title()
@@ -921,15 +922,15 @@ def Events_Menu_1_4():
                         pickle.dump(Events_Individuals[Event_Name], f, pickle.HIGHEST_PROTOCOL)
                     ##
                     #GIVES A MESSAGE TO THE USER
-                    print("{0} has been added to event.".format(Player_Name))
+                    print("\n{0} has been added to event.".format(Player_Name))
                     #RETURNS BACK TO MENU
                     Events_Menu_1()
             #IF EVENT IS NOT FOUND
-            print("Event not found!")
+            print("\nEvent not found!")
             Events_Menu_1()
             #
     #IF EVENT IS NOT FOUND
-    print("Event not found!")
+    print("\nEvent not found!")
     Events_Menu_1()
 
 
@@ -1526,8 +1527,17 @@ def Final_Score_Menu():
 
 #INDIVIDUALS SCORES -- MENU
 def Final_Score_Menu_1():
-    return
+    Sorted_K = sorted(Individuals.keys())
+    Sorted_V = sorted(Individuals.values())
+    placement = 1
+    for score in Sorted_V:
+        for name in Sorted_K:
+            if score == Individuals[name]:
+                print("{0} Place --> {1} --- {2} Points".format(placement,name,score))
+                placement += 1
+                time.sleep(0.5)
 
+    Final_Score_Menu()
 #TEAMS SCORES -- MENU
 def Final_Score_Menu_2():
     return
