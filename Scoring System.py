@@ -126,7 +126,6 @@ def PasteValues():
         #ADDING BACK TO DICT.
         Teams[file_team_name] = ""   
         x += 1
-    #print(num_lines) #THIS IS TEMP JUST A NUMBER
     # ------ THIS IS TO IMPORT TEAM MEMBERS ------- ||||||  DO THIS AFTER ||||||
     #IMPORTING TEAMS
     team_name_file = open("Team_Names.txt","a+")
@@ -184,7 +183,6 @@ def PasteValues():
     event_names_file.close()
 
     Event_Names = [s.replace('\n', '') for s in lines]
-    print(Event_Names)
     for event_name in Event_Names:
         event_file = open("Event_Team_{0}.txt".format(event_name),"a+")
         event_file.close()
@@ -251,8 +249,8 @@ def Reset():
         os.remove("Event_Individuals_{0}.pkl".format(key))
     
     #RESTARTS THE PROGRAM ~ PYTHON FILE NAME
-    os.system('TASKKILL /F /IM Scoring System_Keval Deepak MOJAR CHANGES.py') #close the file
-    os.startfile("Scoring System_Keval Deepak MOJAR CHANGES.py") #open the file again
+    os.system('TASKKILL /F /IM Scoring System_Keval Deepak.py') #close the file
+    os.startfile("Scoring System_Keval Deepak.py") #open the file again
 
 
 #   ------------------- THIS IS THE MAIN MENU. USER DECIDES WHICH SUB MENU TO NAVIGATE TO. --------------------
@@ -261,7 +259,7 @@ def Main_Menu():
         # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
         print("-------- Main Menu --------")
         # INPUT WITH ALL THE OPTIONS LISTED. NUMBER REPRESENTS THE OPTION
-        M_M = int(input("1 - Individuals\n2 - Teams\n3 - Events\n4 - Scores\n5 - Reset all Data\n6 - Exit\nWhere do you want to go?: "))
+        M_M = int(input("1 - Individuals\n2 - Teams\n3 - Events\n4 - Scores\n5 - Reset all Data\n6 - Final Scores\n7 - Exit\nWhere do you want to go?: "))
         # IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN.
         #Individual MENU
         if M_M == 1:
@@ -278,8 +276,11 @@ def Main_Menu():
         #RESET ALL SCORES
         elif M_M == 5:
             Reset()
-        #EXITING
+        #FINAL SCORES
         elif M_M == 6:
+            Final_Score_Menu()
+        #EXITING
+        elif M_M == 7:
             print("GoodBye!")
             time.sleep(1)
             exit()
@@ -753,7 +754,7 @@ def Teams_Menu_5():
 #   ---------- THIS IS THE EVENTS MENU. EVERYTHING RELATING TO EVENTS IS HERE -----------
 def Events_Menu():
     # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
-    print("\n-------- Main Menu --------")
+    print("\n-------- Events Menu --------")
     # INPUT WITH ALL THE OPTIONS LISTED. NUMBER REPRESENTS THE OPTION
     E_M = int(input("1 - Events for Individuals\n2 - Events for Teams\n3 - Back\nWhere do you want to go?: "))
     #IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN
@@ -1014,21 +1015,6 @@ def Events_Menu_2_1():
     time.sleep(1)
     Events_Menu_2()
     
-    
-    """
-    print("----- Events for Teams -----")
-    for key in Events_Teams:
-        print("      --- {0} ---".format(key))
-        x = 1
-        for player in Events_Teams[key]:
-            print("Player {0} --> {1}".format(x,player))
-            x += 1
-
-        x = 1
-
-    time.sleep(1)
-    Events_Menu_2()
-    """
 #ADD EVENTS
 def Events_Menu_2_2():
     print(" ---- Add Events (Teams) ----")
@@ -1127,17 +1113,15 @@ def Events_Menu_2_4():
                         if name == Player_Name:
                             #NAME IS FOUND
                             #VALIDATION 1: IF THE NAME IS ALREADY IN A EVENT
-                            #PHASE 1 : READS THE FILE
-                            event_file = open("Event_Team_{0}.txt".format(Event_Name),"r")
-                            lines = event_file.readlines()
-                            Players = [s.replace('\n', '') for s in lines]
-                            event_file.close()
-                            #PHASE 2 : CHECKS IF ANY NAMES MATCH
-                            for player in Players:
-                                if player == Player_Name:
-                                    #IF THE NAME IS FOUND (BAD)
-                                    print("{0} is already in an event.".format(player))
-                                    Events_Menu_2()
+                            for key in Events_Teams:
+                                for x in range(0,len(Events_Teams[key])):
+                                    if Team_Name in Events_Teams[key][x]:
+                                        if Player_Name == Events_Teams[key][x][Team_Name]:
+                                            #NAME IS FOUND
+                                            print("\n{0} is already is Event {1}".format(Player_Name,key))
+                                            #RETURNS BACK TO MENU
+                                            Events_Menu_2()
+                                    
                             #IF THE NAME IS NOT FOUND! (GOOD)
                             #VALIDATION 2 : THE TEAM IS ALREADY ENTERED IN THIS EVENT
                             x = len(Events_Teams[Event_Name])
@@ -1147,19 +1131,6 @@ def Events_Menu_2_4():
                                         print("\nTeam is already registered for this event!")
                                         Events_Menu_2()
                             #IF EVERYTHING IS OKAY, DOES THIS
-                            """
-                                #THIS LOOPS ALL THE EVENTS
-                            if Team_Name in Events_Teams[Event_Name][0]:
-                                #
-                                print("a")
-                                if Player_Name in Events_Teams[Event_Name][0][Team_Name] == True:
-                                    print("b")
-                                    for key in Events_Teams:
-                                        if key == Events_Teams[key][0][Team_Name]:
-                                            print("Player is already in a event!")
-                                else:
-                                    a = 1 + 1
-                            """
                             #
                             #OR ELSE THIS CAN HAPPEN
                             #
@@ -1344,24 +1315,7 @@ def Scores_Menu_1_2():
             print("\nPlayer is not registered with any events.")
             print("Warning!:\n         Register all players and teams to events \nbefore continuing with Scores.")
             Scores_Menu_1()        
-            """
-            ##
-            print("-- Ranking --")
-            y = 5
-            for x in range(0,5):
-                if x+1 == 1:
-                    letters = "st"
-                elif x+1 == 2:
-                    letters = "nd"
-                elif x+1 == 3:
-                    letters = "rd"
-                else:
-                    letters = "th"
-                print("{0}{1} Place --> {2} Points".format(x+1,letters,y))
-                y -= 1
-            ##
-            """
-            
+  
     #IF NOT FOUND
     print("Please enter a valid name.")
     Scores_Menu_1()
@@ -1487,6 +1441,8 @@ def Scores_Menu_2_2():
                                         #VALID ANSWER = GOOD
                                         Score = Ranking[Placement]
                                         #APPLIES IT TO ALL DICTS. AND LISTS AND ALL
+                                        if Team_Name not in Team_Scores:
+                                            Team_Scores[Team_Name] = []
                                         #APPENDS TO THAT LIST
                                         Team_Scores[Team_Name].append({Player_Name:Score})
                                         #SAVES THIS WHOLE DICT. INTO FILE
@@ -1547,6 +1503,35 @@ def Scores_Menu_2_3():
             
     print("Team not found!")
     Scores_Menu_2()
+
+def Final_Score_Menu():
+    print("-------- Final Scores Menu --------")
+    temp = int(input("1 - Individual's Scores\n2 - Team's Scores\n3 - Back\nWhere do you want to go?: "))
+    #INDIVIDUALS SCORES
+    if temp == 1:
+        Final_Score_Menu_1()
+        Final_Score_Menu()
+    #TEAM SCORES
+    elif temp == 2:
+        Final_Score_Menu_2()
+        Final_Score_Menu()
+    #RETURNS BACK TO MAIN MENU
+    elif temp == 3:
+        Main_Menu()
+    #IF ANOTHER OPTION WAS GIVEN
+    else:
+        print("Enter a valid answer!")
+        Final_Score_Menu()
+
+
+#INDIVIDUALS SCORES -- MENU
+def Final_Score_Menu_1():
+    return
+
+#TEAMS SCORES -- MENU
+def Final_Score_Menu_2():
+    return
+
 """
 -------------------------------------------------------------------
 NUM = {"Daxit":5,"Keval":10,"Hardik":7,}
