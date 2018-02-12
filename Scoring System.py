@@ -79,10 +79,6 @@ def PasteValues():
     for abc in range(0,num_lines):
         #ADDING TO THE LIST
         Individuals_List.append(BLines[x])
-        """
-        #ADDING TO THE DICT.
-        Individuals[BLines[x]] = 0
-        """
         x += 1
     file.close()
     # --------- INDIVIDUALS SCORES FILE -------------
@@ -1540,19 +1536,38 @@ def Final_Score_Menu_1():
     Final_Score_Menu()
 #TEAMS SCORES -- MENU
 def Final_Score_Menu_2():
-    return
+    print("")
+    global Team_Final_Scores
+    Team_Final_Scores = {}
+    placement = 1
+    Sorted_Team_Names = sorted(Team_Scores.keys())
+    for Team_Name in Sorted_Team_Names:
+        for x in range(0,len(Team_Scores[Team_Name])):
+            Sorted_Player_Names = sorted(Team_Scores[Team_Name][x].keys())
+            Sorted_Player_Scores = sorted(Team_Scores[Team_Name][x].values())
+            #
+            for score in Sorted_Player_Scores:
+                for player_name in Sorted_Player_Names:
+                    if player_name in Team_Scores[Team_Name][x]:
+                        if score == Team_Scores[Team_Name][x][player_name]:
+                            #print("{0} Place --> Team: {1} --> Player: {2} --- {3} Points".format(placement,Team_Name,player_name,score))
+                            Team_Final_Scores["Place --> Team: {0} --> Player: {1} --- ".format(Team_Name,player_name)] = score
+                            placement += 1
+            #
+    global Sort_DICT
+    sort_dict = {key:score for score, key in sorted(Team_Final_Scores.items())}
 
-"""
--------------------------------------------------------------------
-NUM = {"Daxit":5,"Keval":10,"Hardik":7,}
-Sorted_K = sorted(NUM.keys())
-Sorted_V = sorted(NUM.values(), reverse=True)
-for score in Sorted_V:
-    for name in Sorted_K:
-        if score == NUM[name]:
-            print("{0} --> {1}".format(name,score))
--------------------------------------------------------------------
-"""
+    global sorted_dict_one
+    sorted_dict_one = {str(k):rank for rank, key in enumerate(sorted(Team_Final_Scores.items(), key = lambda x: x[1], reverse = True), 1) for k in key}
+
+    global final_touch
+    final_touch = {k: v for k,v in sorted_dict_one.items() if not k.isdigit()}
+    
+    for key in final_touch:
+        print("{0} {1}{2} Points".format(final_touch[key],key,Team_Final_Scores[key]))
+
+    print("")
+    Final_Score_Menu()
 
 # ----------------- STARTS THE WHOLE PROGRAM, LAUNCHED WITH THE INTRODUCTION. ----------------------
 Introduction()
