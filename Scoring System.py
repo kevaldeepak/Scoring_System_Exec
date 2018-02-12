@@ -245,8 +245,9 @@ def Reset():
         os.remove("Event_Individuals_{0}.pkl".format(key))
     
     #RESTARTS THE PROGRAM ~ PYTHON FILE NAME
-    os.system('TASKKILL /F /IM Scoring System_Keval Deepak.py') #close the file
-    os.startfile("Scoring System_Keval Deepak.py") #open the file again
+        #CHANGE THIS DEPENDING ON WHETHER THIS IS THE exe OR py
+    os.system('TASKKILL /F /IM Scoring System_Keval Deepak.exe') #close the file
+    os.startfile("Scoring System_Keval Deepak.exe") #open the file again
 
 
 #   ------------------- THIS IS THE MAIN MENU. USER DECIDES WHICH SUB MENU TO NAVIGATE TO. --------------------
