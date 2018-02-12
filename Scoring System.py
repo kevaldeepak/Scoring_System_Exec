@@ -240,6 +240,9 @@ def Reset():
     #THEN DELETES ALL THE FILES THAT ARE ACTUALLY THERE
     for File_Name in Remove_Files:
         os.remove(File_Name)
+    #DELETES ALL THE TEAMS FILES
+    for name in Teams_List:
+        os.remove("Team_{0}.txt".format(name))
     #DELETES ALL THE EVENTS FILES -- Teams
     for key in Events_Teams:
         os.remove("Event_Team_{0}.pkl".format(key))
@@ -685,7 +688,7 @@ def Teams_Menu_4():
                 #ADDING PLAYER TO TEAM DICT.
                 Teams[Team_Selected].append(Player_Name)
                 #SHOWS A MESSAGE FOR THE USER
-                print("\nPlayer has been added to " + Team_Selected)
+                print("\n{0} has been added to Team {1}".format(Player_Name,Team_Selected))
                 Teams_Menu()
             Teams_Menu()  
         #VALIDATION 1: IF THE NAME IS NOT ON THE LIST
@@ -700,10 +703,52 @@ def Teams_Menu_4():
 
 #THIS IT TO REMOVE PLAYERS FROM TEAMS
 def Teams_Menu_5():
-    for key in Teams:
-        print("--> {0} <--".format(key))
-    
-    Teams_Menu()
+    try:
+        print("")
+        for lol in Teams_List:
+            print("---> " + lol + " <---")
+        Team_Selected = input("First Select a team! : ").title()
+        #VALIDATION 1: IF THE NAME IS ON THE LIST
+        if Team_Selected in Teams_List:
+            print("\n--- " + Team_Selected + " has been selected! ---")
+            #BELOW IS THE CODE FOR ADDING A TEAM MATE
+            Player_Name = input("Enter a Player's FULL NAME for team " + Team_Selected + " : ").title()
+            #VALIDATION 1 : CHECKS IF IT IS A ACTUAL PLAYER
+            Player_File = open("Team_{0}.txt".format(Team_Selected),"r")
+            lines = Player_File.readlines()
+            Player_File.close()
+
+            Player_Names = [s.replace('\n', '') for s in lines]
+
+            #CHECKS ALL NAMES AND SEES IF IT IS THERE
+            if Player_Name in Player_Names:
+                #GOOD
+                #DELETES PLAYER FROM TEAM FILE
+                Team_File = open("Team_{0}.txt".format(Team_Selected),"w")
+                for name in Player_Names:
+                    if name != Player_Name:
+                        Team_File.write(name + "\n")
+                Team_File.close()
+                #DELETS PLAYER FROM TEAM DICT
+                Teams[Team_Selected].remove(Player_Name)
+                #SHOWS A MESSAGE TO THE USER
+                print("\n{0} has been removed from Team {1}".format(Player_Name,Team_Selected))
+                #RETURNS BACK TO MENU
+                Teams_Menu()
+            else:
+                print("\n{0} not found.".format(Player_Name))
+                Teams_Menu()
+            
+
+        #VALIDATION 1: IF THE NAME IS NOT ON THE LIST
+        else:
+            print("Please enter a correct name!")
+            print("Returning to Team's Menu.")
+            time.sleep(1)
+            Teams_Menu()
+    except ValueError:
+        print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
+        Teams_Menu()
     
 #   ---------- THIS IS THE EVENTS MENU. EVERYTHING RELATING TO EVENTS IS HERE -----------
 def Events_Menu():
