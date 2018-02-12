@@ -246,8 +246,8 @@ def Reset():
     
     #RESTARTS THE PROGRAM ~ PYTHON FILE NAME
         #CHANGE THIS DEPENDING ON WHETHER THIS IS THE exe OR py
-    os.system('TASKKILL /F /IM Scoring System_Keval Deepak.exe') #close the file
-    os.startfile("Scoring System_Keval Deepak.exe") #open the file again
+    os.system('TASKKILL /F /IM Scoring_System_Keval_Deepak.exe') #close the file
+    os.startfile("Scoring_System_Keval_Deepak.exe") #open the file again
 
 
 #   ------------------- THIS IS THE MAIN MENU. USER DECIDES WHICH SUB MENU TO NAVIGATE TO. --------------------
