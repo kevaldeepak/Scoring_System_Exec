@@ -247,7 +247,7 @@ def Reset():
     #RESTARTS THE PROGRAM ~ PYTHON FILE NAME
         #CHANGE THIS DEPENDING ON WHETHER THIS IS THE exe OR py
     #os.startfile("Launcher.exe") #open the laucher.exe
-    os.startfile("Launcher.py") #open the laucher.py
+    os.startfile("LAUNCHER.EXE") #open the laucher.py
 
 
 #   ------------------- THIS IS THE MAIN MENU. USER DECIDES WHICH SUB MENU TO NAVIGATE TO. --------------------
@@ -469,7 +469,13 @@ def Teams_Menu():
         # IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN.
         #REVIEW TEAMS
         if T_M == 1:
-            Teams_Menu_1()
+            #IF THERE ARE NO TEAMS
+            if len(Teams) == 0:
+                print("\nThere are no Teams!")
+                Teams_Menu()
+            #IF THERE ARE TEAMS
+            else:
+                Teams_Menu_1()
         #ADD TEAMS
         elif T_M == 2:
             lenght_Teams_List = len(Teams_List)
@@ -624,7 +630,8 @@ def Teams_Menu_3():
                 #REMOVES FROM THE DICTIONARY
                 del Teams[remove_team]
                 #REMOVE FROM THE DICT.
-                del Team_Scores[remove_team]
+                if remove_team in Team_Scores:
+                    del Team_Scores[remove_team]
                 #DELETES THE TEAM FILE
                 os.remove("Team_{0}.txt".format(remove_team))
                 #DELETES FROM THE EVENT DICT.
@@ -779,7 +786,13 @@ def Events_Menu_1():
         #IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN.
         #REVIEW EVENTS
         if E_M_i == 1:
-            Events_Menu_1_1()
+            #IF THERE ARE NO EVENTS
+                if len(Events_Individuals) == 0:
+                    print("\nThere are no Events for Individuals!")
+                    Events_Menu_1()
+            #IF THERE ARE EVENTS
+                else:
+                    Events_Menu_1_1()
         #ADD EVENTS
         elif E_M_i == 2:
             Events_Menu_1_2()
