@@ -20,11 +20,11 @@ Events_Individuals = {}
 Events_Teams = {}
 # ------   SCORES DICT. {Placement:Points Awarded} -------
 Ranking = {
-        1:5,
-        2:4,
-        3:3,
-        4:2,
-        5:1,
+        1:4,
+        2:3,
+        3:2,
+        4:1,
+        5:0,
         6:0,
         7:0,
         8:0,
@@ -172,26 +172,6 @@ def PasteValues():
                 for event in ABCD:
                     Events_Individuals[key].append(event)
     # ----------------- TEAMS - EVENTS ----------------------
-    event_names_file = open("Event_Names (Team).txt","a+")
-    event_names_file.close()
-    event_names_file = open("Event_Names (Team).txt","r")
-    lines = event_names_file.readlines()
-    event_names_file.close()
-
-    Event_Names = [s.replace('\n', '') for s in lines]
-    for event_name in Event_Names:
-        event_file = open("Event_Team_{0}.txt".format(event_name),"a+")
-        event_file.close()
-        event_file = open("Event_Team_{0}.txt".format(event_name),"r")
-        lines = event_file.readlines()
-        event_file.close()
-
-        Players = [s.replace('\n', '') for s in lines]
-        Events_Teams[event_name] = []
-        for player in Players:
-            #CREATES AN ENTRY FOR THE EVENT FIRST, IF THERE WASN'T ONE BEFORE
-            
-            Events_Teams[event_name].append(player)
     #ADDING THE EVENT INFORMATION AS WELL
     #IMPORTING FROM THE PKL FILE
     for key in Events_Teams:
@@ -201,7 +181,6 @@ def PasteValues():
                 new_DICT = pickle.load(f)
                 Events_Teams[key] = new_DICT
 
-    # ------ IMPORTING EVENTS ---------
 
 
     # ---------- IMPORTING SCORES ----------
@@ -1388,7 +1367,12 @@ def Scores_Menu_2():
     S_M_t = int(input("1 - Review Scores\n2 - Add Scores to Teams\n3 - Reset Score for Teams\n4 - Back\nWhere do you want to go?: "))
     #REVIEW SCORES
     if S_M_t == 1:
-        Scores_Menu_2_1()
+        if len(Team_Scores) == 0:
+            print("\nScores are not setup yet.")
+            print("Add scores to view.")
+            Scores_Menu_2()
+        else:
+            Scores_Menu_2_1()
     #ADD SCORES TO TEAMS
     elif S_M_t == 2:
         Scores_Menu_2_2()
@@ -1405,12 +1389,13 @@ def Scores_Menu_2():
 
 #REVIEW SCORES
 def Scores_Menu_2_1():
-    print("\n----- Scores For Individuals -----")
+    print("\n----- Scores For Teams -----")
 
     for team_name in Team_Scores:
         for x in range(0,len(Team_Scores[team_name])):
             for player_name in Team_Scores[team_name][x]:
-                print("-- Team: {0} -- Player: {1} --> Points: {2} --".format(team_name,player_name,Team_Scores[team_name][x][player_name]))
+                for event in Team_Scores[team_name][x][player_name]:
+                    print("-- Team: {0} -- Player: {1} -- Event: {2} --> Points: {3} --".format(team_name,player_name,event,Team_Scores[team_name][x][player_name][event]))
     Scores_Menu_2()
 
 #ADD SCORES TO TEAMS
@@ -1432,44 +1417,76 @@ def Scores_Menu_2_2():
                 if Player_Name == names:
                     #GOOD
                     #DO IT OVER HERE
-
                     for event in Events_Teams:
                         for x in range(0,len(Events_Teams[event])):
                             if Team_Name in Events_Teams[event][x]:
                                 if Player_Name in Events_Teams[event][x][Team_Name]:
                                     #
                                     print("\n------- Ranking -------")
-                                    print("--> 1st Place --> 5 Points")
-                                    print("--> 2nd Place --> 4 Points")
-                                    print("--> 3rd Place --> 3 Points")
-                                    print("--> 4th Place --> 2 Points")
-                                    print("--> 5th Place --> 1 Points")
+                                    print("--> 1st Place --> 4 Points")
+                                    print("--> 2nd Place --> 3 Points")
+                                    print("--> 3rd Place --> 2 Points")
+                                    print("--> 4th Place --> 1 Points")
                                     #
                                     print("\n---- INFO ----\nPlayer: {0} \nTeam: {1}\nEvent: {2}".format(Player_Name,Team_Name,event))
-                                    Placement = int(input("Enter position for {0} -- Team {1} in {2}: ".format(Player_Name,Team_Name,event)))
-                                    #VALIDATION 1 : IF A VALID PLACEMENT WAS CHOSEN
-                                    if Placement <= 5 and Placement >= 1:
-                                        #VALID ANSWER = GOOD
-                                        Score = Ranking[Placement]
-                                        #APPLIES IT TO ALL DICTS. AND LISTS AND ALL
-                                        if Team_Name not in Team_Scores:
-                                            Team_Scores[Team_Name] = []
-                                        #APPENDS TO THAT LIST
-                                        Team_Scores[Team_Name].append({Player_Name:Score})
-                                        #SAVES THIS WHOLE DICT. INTO FILE
-                                        with open("Team_Scores.pkl", "wb") as f:
-                                            pickle.dump(Team_Scores, f, pickle.HIGHEST_PROTOCOL)
-                                        #GIVES A MESSAGE FOR THE USER
-                                        print("\n{0}'s Score in Team {1} for Event {2} has been edited.".format(Player_Name,Team_Name,event))
-                                        #RETURNS BACK TO MENU
-                                        Scores_Menu_2()
-                                    #NOT A VALID ANSWER = BAD
-                                    else:
-                                        print("Enter a valid placement.")
+                                    try:
+                                        Placement = int(input("Enter position for {0} -- Team {1} in {2}: ".format(Player_Name,Team_Name,event)))
+                                        #VALIDATION 1 : IF A VALID PLACEMENT WAS CHOSEN
+                                        if Placement <= 4 and Placement >= 1:
+                                            #VALID ANSWER = GOOD
+                                            Score = Ranking[Placement]
+                                            #VALIDATION 2: IF THE PLACEMENT ISN'T CHOSEN ALREADY
+                                            #THIS IS DONE BY CHECKING THE SCORE THAT IS GIVEN
+                                            #GOES THROUGH THE WHOLE DICT.
+                                            for team_name_2 in Team_Scores:
+                                                for y in range(0,len(Team_Scores[team_name_2])):
+                                                    for name_player in Team_Scores[team_name_2][y]:
+                                                        if event in Team_Scores[team_name_2][y][name_player]:
+                                                            #IF A MATCH IS FOUND
+                                                            if Score == Team_Scores[team_name_2][y][name_player][event]:
+                                                                print("\nTeam: {0} | Player: {1} has recieved {2} points.".format(team_name_2,name_player,Score))
+                                                                print("There can be no duplicates.")
+                                                                Scores_Menu_2()
+                                                
+                                            #APPLIES IT TO ALL DICTS. AND LISTS AND ALL
+                                            if Team_Name not in Team_Scores:
+                                                Team_Scores[Team_Name] = []
+                                            #APPENDS TO THAT LIST
+                                            #CHECKS IF A ENTRY IS ALREADY IN THE DICT. #NO DUPLICATES
+                                            for team_name_2 in Team_Scores:
+                                                for y in range(0,len(Team_Scores[team_name_2])):
+                                                    if Player_Name in Team_Scores[team_name_2][y]:
+                                                        #IT SHOULD OVERWRITE THE ENTRY ALREADY IF FOUND
+                                                        Team_Scores[team_name_2][y] = {Player_Name:{event:Score}}
+                                                        #
+                                                        #SAVES THIS WHOLE DICT. INTO FILE
+                                                        with open("Team_Scores.pkl", "wb") as f:
+                                                            pickle.dump(Team_Scores, f, pickle.HIGHEST_PROTOCOL)
+                                                        #GIVES A MESSAGE FOR THE USER
+                                                        print("\n{0}'s Score in Team {1} for Event {2} has been edited.".format(Player_Name,Team_Name,event))
+                                                        #RETURNS BACK TO MENU
+                                                        Scores_Menu_2()
+                                                        #
+                                            #NO DUPLICATES
+                                            Team_Scores[Team_Name].append({Player_Name:{event:Score}})
+                                            #SAVES THIS WHOLE DICT. INTO FILE
+                                            with open("Team_Scores.pkl", "wb") as f:
+                                                pickle.dump(Team_Scores, f, pickle.HIGHEST_PROTOCOL)
+                                            #GIVES A MESSAGE FOR THE USER
+                                            print("\n{0}'s Score in Team {1} for Event {2} has been edited.".format(Player_Name,Team_Name,event))
+                                            #RETURNS BACK TO MENU
+                                            Scores_Menu_2()
+                                        #NOT A VALID ANSWER = BAD
+                                        else:
+                                            print("\nEnter a valid placement.")
+                                            Scores_Menu_2()
+                                            
+                                    except ValueError:
+                                        print("\nEnter a valid placement.")
                                         Scores_Menu_2()
 
-                        print("\nTeam / Player is not registered in any event.\n")
-                        print("Warning!:\n         Register all players and teams to events \nbefore continuing with Scores.")
+                    print("\nTeam / Player is not registered in any event.\n")
+                    print("Warning!:\n         Register all players and teams to events \nbefore continuing with Scores.")
             
                     Scores_Menu_2()
                     
