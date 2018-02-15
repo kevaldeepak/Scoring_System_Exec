@@ -249,7 +249,7 @@ def Reset():
     #RESTARTS THE PROGRAM ~ PYTHON FILE NAME
         #CHANGE THIS DEPENDING ON WHETHER THIS IS THE exe OR py
     #os.startfile("Launcher.exe") #open the laucher.exe
-    os.startfile("LAUNCHER.EXE") #open the laucher.py
+    os.startfile("Launcher.exe") #open the laucher.py
 
 
 #   ------------------- THIS IS THE MAIN MENU. USER DECIDES WHICH SUB MENU TO NAVIGATE TO. --------------------

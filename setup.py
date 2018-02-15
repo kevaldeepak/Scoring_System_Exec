@@ -14,6 +14,6 @@ setup(  name = "Scoring System",
         version = "0.2",
         description = "Tournament Scoring System By Keval Deepak",
         options = {"build_exe": build_exe_options},
-        executables = [Executable("Scoring_System.py", base=base, icon="icon.ico"),
+        executables = [Executable("Scoring_System_Keval Deepak.py", base=base, icon="icon.ico"),
                        Executable("Launcher.py", base=base, icon="icon.ico")])
 
