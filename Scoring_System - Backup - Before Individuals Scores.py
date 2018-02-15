@@ -43,8 +43,6 @@ Ranking = {
     }
 # ----- Individuals Dict. Name : Score -----
 Individuals = {}
-# ----- Individuals Dict. Player_Name : {Event_Name : Score} -----
-Individuals_Scores = {}
 # ----- Teams Dict. Team_Name : [{Player_Name:Score}] -----
 Team_Scores = {}
 
@@ -164,7 +162,7 @@ def PasteValues():
     
     for event_name in Event_Names:
         Events_Individuals[event_name] = []
-    
+        
     #IMPORTING FROM PKL
     for key in Events_Individuals:
         lenght = os.stat('Event_Individuals_{0}.pkl'.format(key)).st_size == 0
@@ -186,15 +184,6 @@ def PasteValues():
 
 
     # ---------- IMPORTING SCORES ----------
-    lenght = True
-    if os.path.exists('Individuals_Scores.pkl'):
-        lenght = os.stat('Individuals_Scores.pkl').st_size == 0
-    if lenght == False:
-        with open('Individuals_Scores.pkl', 'rb') as f:
-            POP = pickle.load(f)
-            global Individuals_Scores
-            Individuals_Scores = POP
-        
     lenght = True
     if os.path.exists('Team_Scores.pkl'):
         lenght = os.stat('Team_Scores.pkl').st_size == 0
@@ -369,8 +358,6 @@ def Individuals_Menu_2():
             Individuals[Add_Individual] = 0
             #SAVES THE NAMES ONTO A FILE USING A DIFFERENT FUNCTION
             Individual_Save()
-            #ADDS TO NEW LIST FOR SCORES
-            Individuals_Scores[Add_Individual] = {}
             #PRESENTS A MESSAGE FOR THE USER
             print("\nIndividual has been added!")
             #RETURNS BACK TO THE MAIN MENU
@@ -417,18 +404,6 @@ def Individuals_Menu_3():
                     else:
                         f.write(line)
                 f.close()
-                #CHECKS IF NAME IS IN Individuals_Scores
-                if temp in Individuals_Scores:
-                    del Individuals_Scores[temp]
-                #CHECKS IF NAME IS IN EVENTS_INDIVIDUALS
-                for event in Events_Individuals:
-                    for player in Events_Individuals[event]:
-                        if player == temp:
-                            #A MATCH HAS BEEN FOUND
-                            Events_Individuals[event].remove(temp)
-                            #REMOVES TO PKL FILE
-                            with open("Event_Individuals_{0}.pkl".format(event), "wb") as f:
-                                pickle.dump(Events_Individuals[event], f, pickle.HIGHEST_PROTOCOL)
                 #TELLS THE USER THAT IT HAS HAPPENED SUCCESSFULLY
                 print("\nIndividual has been removed!")
                 #RETURNS BACK TO THE INDIVIDUAL MENU
@@ -647,9 +622,6 @@ def Teams_Menu_3():
                             #del Events_Teams[key][0][remove_team]
                             #REMOVES THE WHOLE LIST ENTRY
                             del Events_Teams[key][x]
-                            #SAVES THIS WHOLE DICT. INTO FILE
-                            with open("Team_Scores.pkl", "wb") as f:
-                                pickle.dump(Team_Scores, f, pickle.HIGHEST_PROTOCOL)
                 #DELETES NAME FROM THE Team_Names.txt FILE
                 team_file = open("Team_Names.txt","r")
                 team_file_lines = team_file.readlines()
@@ -724,12 +696,7 @@ def Teams_Menu_5():
         #VALIDATION 1: IF THE NAME IS ON THE LIST
         if Team_Selected in Teams_List:
             print("\n--- " + Team_Selected + " has been selected! ---")
-            print("")
-            for team in Teams:
-                if team == Team_Selected:
-                    for player in Teams[team]:
-                        print("--> {0} <--".format(player))
-            #BELOW IS THE CODE FOR REMOVING A TEAM MATE
+            #BELOW IS THE CODE FOR ADDING A TEAM MATE
             Player_Name = input("Enter a Player's FULL NAME for team " + Team_Selected + " : ").title()
             #VALIDATION 1 : CHECKS IF IT IS A ACTUAL PLAYER
             Player_File = open("Team_{0}.txt".format(Team_Selected),"r")
@@ -741,12 +708,6 @@ def Teams_Menu_5():
             #CHECKS ALL NAMES AND SEES IF IT IS THERE
             if Player_Name in Player_Names:
                 #GOOD
-                #DELETES PLAYER FROM Team_Scores dict.
-                for key in Team_Scores:
-                    for x in range(0,len(Team_Scores[key])):
-                       if Player_Name in Team_Scores[key][x]:
-                           #PLAYER IS FOUND
-                           del Team_Scores[key][x]
                 #DELETES PLAYER FROM TEAM FILE
                 Team_File = open("Team_{0}.txt".format(Team_Selected),"w")
                 for name in Player_Names:
@@ -825,7 +786,6 @@ def Events_Menu_1():
             Events_Menu_1_5()
         #BACK
         elif E_M_i == 6:
-            print("")
             Events_Menu()
         #IF THE USER TYPES SOMETHING ELSE
         else:
@@ -1280,25 +1240,13 @@ def Scores_Menu_1():
 #REVIEW SCORES
 def Scores_Menu_1_1():
     print("\n----- Scores For Individuals -----")
-    """
     for key in Individuals:
         print("-- {0} --> {1} --".format(key,Individuals[key]))
-    """
-    for key in Individuals_Scores:
-        global jkhasd
-        jkhasd = 0
-        print("")
-        for event in Individuals_Scores[key]:
-            print("-- {0} -- {1} -- [{2}] point(s)".format(key,event,Individuals_Scores[key][event]))
-        
-            jkhasd += Individuals_Scores[key][event]
-        print("\n-- {0}'s Total Score --> [{1}] point(s).".format(key,jkhasd))
-        
+
     Scores_Menu_1()
-    
+
 #ADD SCORES TO INDIVIDUALS
 def Scores_Menu_1_2():
-    done = False
     print("\n--- Add Scores for Individuals ---")
     for key in Individuals:
         print("--> {0}".format(key))
@@ -1307,81 +1255,55 @@ def Scores_Menu_1_2():
     for key in Individuals:
         if key == Player_Name:
             #THIS IS GOOD
-
+            #
+            print("\n------- Ranking -------")
+            print("--> 1st Place --> 5 Points")
+            print("--> 2nd Place --> 4 Points")
+            print("--> 3rd Place --> 3 Points")
+            print("--> 4th Place --> 2 Points")
+            print("--> 5th Place --> 1 Points")
+            #
             #ADDING ALL THE SCORES FOR EACH EVENT THE PERSON IS ENTERED FOR
             for event in Events_Individuals:
                 if Player_Name in Events_Individuals[event]:
-                    #
-                    print("\n------- Ranking -------")
-                    print("--> 1st Place --> 4 Points")
-                    print("--> 2nd Place --> 3 Points")
-                    print("--> 3rd Place --> 2 Points")
-                    print("--> 4th Place --> 1 Points")
-                    #
                     Placement = int(input("Enter position for {0} in {1}: ".format(Player_Name,event)))
                     #VALIDATION 1 : GIVES A VALID PLACEMENT
                     if Placement <= 20 and Placement >= 1:
-                        Match = False    
                         #
                         #GETS THE SCORE THAT IS ALREADY THERE
-                        #Score = Individuals[Player_Name]
+                        Score = Individuals[Player_Name]
                         #LOOKS UP SCORE DEPENDING ON PLACEMENT AND ADDS IT TO SCORE
-                        #Score = int(Score) + int(Ranking[Placement])
-                        Score = int(Ranking[Placement])
-                        #VALIDATION 1 : IF PLACEMENT IS ALREADY TAKEN
-                        for name_player in Individuals_Scores:
-                            for name_event in Individuals_Scores[name_player]:
-                                if name_event == event:
-                                    if Score == Individuals_Scores[name_player][name_event]:
-                                        #ITS A MATCH!
-                                        #CHECKS IF ITS THE SAME PERSON
-                                        if Player_Name == name_player:
-                                            Match = False
-                                        else:
-                                            print("Placement: {0} has beem taken by {1} in this event({2}).".format(Placement,name_player,name_event))
-                                            #RETURNS BACK TO MENU
-                                            Match = True
-                        if Match == False:           
-                            #               
-                            #
-                            #ADDS NEW SCORE TO DICT. AGAIN
-                            Individuals[Player_Name] = Score
-                            #SAVES INTO FILE
-                            #OPENS THE FILE IN READ MODE
-                            file = open("Individual_Scores.txt","r")
-                            #READS THE FILE
-                            lines = file.readlines()
-                            file.close()
-                            #STRIPS THE LINES
-                            file_lines = [s.replace('\n', '') for s in lines]
-                            #OPEN THE FILE IN WRITE MODE
-                            file = open("Individual_Scores.txt","w")
-                            for line in file_lines:
-                                VAR = line.startswith(Player_Name)
-                                if VAR == True:
-                                    file.write("{0} ---> {1}\n".format(Player_Name,Score))
-                                else:
-                                    file.write(line + "\n")
-                            file.close()
-                            #ADDS IT TO Individuals_Scores
-                            Individuals_Scores[Player_Name][event] = Score
-                            #ADDS IT TO A FILE
-                            #SAVES THIS WHOLE DICT. INTO FILE
-                            with open("Individuals_Scores.pkl", "wb") as f:
-                                pickle.dump(Individuals_Scores, f, pickle.HIGHEST_PROTOCOL)
-                            #GIVES A MESSAGE FOR THE USER
-                            print("\n{0} now has {1} points for event {2}.".format(Player_Name,Score,event))
-                            done = True
-                            #
-                            #
+                        Score = int(Score) + int(Ranking[Placement])
+                        #ADDS NEW SCORE TO DICT. AGAIN
+                        Individuals[Player_Name] = Score
+                        #SAVES INTO FILE
+                        #OPENS THE FILE IN READ MODE
+                        file = open("Individual_Scores.txt","r")
+                        #READS THE FILE
+                        lines = file.readlines()
+                        file.close()
+                        #STRIPS THE LINES
+                        file_lines = [s.replace('\n', '') for s in lines]
+                        #OPEN THE FILE IN WRITE MODE
+                        file = open("Individual_Scores.txt","w")
+                        for line in file_lines:
+                            VAR = line.startswith(Player_Name)
+                            if VAR == True:
+                                file.write("{0} ---> {1}\n".format(Player_Name,Score))
+                            else:
+                                file.write(line + "\n")
+                        file.close()
+                        #GIVES A MESSAGE FOR THE USER
+                        print("\n{0} now has {1} points.".format(Player_Name,Score))
+                        #RETURNS BACK TO THE MENU
+                        Scores_Menu_1()
+                        #
                     else:
                         print("Enter a valid placement.")
                         Scores_Menu_1()
-            if done == True:
-                #RETURNS BACK TO THE MENU
-                Scores_Menu_1()
+
             print("\nPlayer is not registered with any events.")
-            print("Warning!:\n         Register all players and teams to events \n         before continuing with Scores.")
+            print("Warning!:\n         Register all players and teams to events \nbefore continuing with Scores.")
             Scores_Menu_1()        
   
     #IF NOT FOUND
@@ -1401,7 +1323,7 @@ def Scores_Menu_1_3():
             def sure():
                 print("\n{0} has {1} points\n".format(Player_Name,Individuals[Player_Name]))
                 print("1 - Yes\n2 - No")
-                confirm = int(input("Are you sure you want to reset {0}'s score?: ".format(Player_Name)))
+                confirm = int(input("Are you sure you want to reset {0}'s score?: "))
                 if confirm == 1:
                     #THIS IS WHERE THE MAIN CODE SHOULD BE
                     #CHANGES SCORE BACK TO ZERO IN DICT.
@@ -1422,13 +1344,6 @@ def Scores_Menu_1_3():
                         else:
                             file.write(line + "\n")
                     file.close()
-                    #CHANGES SCORE BACK TO ZERO  in Individuals_Scores
-                    for event in Individuals_Scores[Player_Name]:
-                        Individuals_Scores[Player_Name][event] = 0
-                    #THEN SAVES IT INTO THE FILE AGAIN
-                    #SAVES THIS WHOLE DICT. INTO FILE
-                    with open("Individuals_Scores.pkl", "wb") as f:
-                        pickle.dump(Individuals_Scores, f, pickle.HIGHEST_PROTOCOL)
                     #MESSAGE FOR THE USER
                     print("\n{0}'s score has been reset.".format(Player_Name))
                     #RETURNS BACK TO MENU
@@ -1639,24 +1554,16 @@ def Final_Score_Menu():
 
 #INDIVIDUALS SCORES -- MENU
 def Final_Score_Menu_1():
-    TEMP_DICT_SCORE = {}
-    for key in Individuals_Scores:
-        global jkhasd
-        jkhasd = 0
-        for event in Individuals_Scores[key]:
-            jkhasd += Individuals_Scores[key][event]
-        TEMP_DICT_SCORE[key] = jkhasd
-    V = sorted(TEMP_DICT_SCORE.values(), reverse = True)
-    K = sorted(TEMP_DICT_SCORE, key=TEMP_DICT_SCORE.get, reverse= True)
-    print("")
-    x = 1
-    for value in V:
-        for key in K:
-            if value == TEMP_DICT_SCORE[key]:
-                print("-- Place: [{0}]-- {1}'s Total Score --> [{2}] point(s).\n".format(x,key,value))
-                time.sleep(1)
-                x += 1
-        
+    Sorted_K = sorted(Individuals.keys())
+    Sorted_V = sorted(Individuals.values())
+    placement = 1
+    for score in Sorted_V:
+        for name in Sorted_K:
+            if score == Individuals[name]:
+                print("{0} Place --> {1} --- {2} Points".format(placement,name,score))
+                placement += 1
+                time.sleep(0.5)
+
     Final_Score_Menu()
 #TEAMS SCORES -- MENU
 def Final_Score_Menu_2():
