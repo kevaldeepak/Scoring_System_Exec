@@ -174,6 +174,16 @@ def PasteValues():
                 for event in ABCD:
                     Events_Individuals[key].append(event)
     # ----------------- TEAMS - EVENTS ----------------------
+    
+    lenght = True
+    if os.path.exists("Event_Teams.pkl"):
+        lenght = os.stat("Event_Teams.pkl").st_size == 0
+    if lenght == False:
+        with open("Event_Teams.pkl", 'rb') as f:
+            POP = pickle.load(f)
+            global Events_Teams
+            Events_Teams = POP
+            
     #ADDING THE EVENT INFORMATION AS WELL
     #IMPORTING FROM THE PKL FILE
     for key in Events_Teams:
@@ -233,7 +243,9 @@ def Reset():
     #DELETES ALL THE EVENTS FILES -- Individuals
     for key in Events_Individuals:
         os.remove("Event_Individuals_{0}.pkl".format(key))
-    
+    #DELETE EVENT_TEAMS.PKL FILE IF THERE IS ONE
+    if os.path.exists("Event_Teams.pkl"):
+        os.remove("Event_Teams.pkl")
     #RESTARTS THE PROGRAM ~ PYTHON FILE NAME
         #CHANGE THIS DEPENDING ON WHETHER THIS IS THE exe OR py
     #os.startfile("Launcher.exe") #open the laucher.exe
@@ -1077,6 +1089,9 @@ def Events_Menu_2_2():
         #SAVES INTO EVENTS DICT. AND ADDS IT TO EVENTS_ID DICT.
         #IF EVERYTHING IS GOOD
         Events_Teams[Event_Name] = []
+        #ADDS TO EVENT FILE .pkl
+        with open("Event_Teams.pkl", "wb") as f:
+            pickle.dump(Events_Teams, f, pickle.HIGHEST_PROTOCOL)   
         #MESSAGE FOR USER
         print("\n{0} has been added.".format(Event_Name))
         #GOES BACK TO MENU
@@ -1661,6 +1676,34 @@ def Final_Score_Menu_1():
 #TEAMS SCORES -- MENU
 def Final_Score_Menu_2():
     print("")
+    global TEMP_DICT_SCORE_TEAMS
+    TEMP_DICT_SCORE_TEAMS = {}
+    place = 1
+    for Team in Team_Scores:
+        total = 0
+        x = str(Team_Scores[Team])
+        numbers = re.findall(r'\b\d+\b',x)
+        for num in numbers:
+            total = total + int(num)
+        #CREATES A TEMP DICT
+        TEMP_DICT_SCORE_TEAMS[Team] = total
+        #print("Placement: {0} | Team : {1} | Points : {2}".format(place,Team,str(total)))
+        place += 1
+
+    V = sorted(TEMP_DICT_SCORE_TEAMS.values(), reverse = True)
+    K = sorted(TEMP_DICT_SCORE_TEAMS, key=TEMP_DICT_SCORE_TEAMS.get, reverse= True)
+    print("")
+    x = 1
+    for value in V:
+        for key in K:
+            if value == TEMP_DICT_SCORE_TEAMS[key]:
+                print("-- Place: [{0}]-- {1}'s Total Score --> [{2}] point(s).\n".format(x,key,value))
+                time.sleep(1)
+                x += 1
+        
+
+        
+    """
     global Team_Final_Scores
     Team_Final_Scores = {}
     placement = 1
@@ -1678,6 +1721,7 @@ def Final_Score_Menu_2():
                             Team_Final_Scores["Place --> Team: {0} --> Player: {1} --- ".format(Team_Name,player_name)] = score
                             placement += 1
             #
+    #
     global Sort_DICT
     sort_dict = {key:score for score, key in sorted(Team_Final_Scores.items())}
 
@@ -1689,7 +1733,8 @@ def Final_Score_Menu_2():
     
     for key in final_touch:
         print("{0} {1}{2} Points".format(final_touch[key],key,Team_Final_Scores[key]))
-
+    #
+    """
     print("")
     Final_Score_Menu()
 
