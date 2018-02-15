@@ -3,7 +3,7 @@ import time
 import re
 import os
 import pickle
-    
+
 # ------- LISTS & DICTIONARIES ----------
 # ----- Individuals list. Name -----
 Individuals_List = []
@@ -280,9 +280,29 @@ def Main_Menu():
             Final_Score_Menu()
         #EXITING
         elif M_M == 7:
-            print("GoodBye!")
-            time.sleep(1)
-            exit()
+            #
+            global tempx
+            tempx = 0
+            def Temp():                
+                temp = input("\n1 - Yes\n2 - No\nDo you wish to send all data to a email? (Sender Must be GMAIL): ")
+                if temp == '1':
+                    os.startfile("Sending.exe")
+                elif temp == '2':
+                    print("GoodBye!")
+                    time.sleep(1)
+                    exit()
+                else:
+                    print("\nEnter a valid answer!")
+                    global tempx
+                    if tempx == 3:
+                        print("You have failed to provide a valid answer in {0} attempts".format(str(tempx)))
+                        print("Shutting the application down.")
+                        time.sleep(2)
+                        exit()
+                    tempx += 1
+                    Temp()
+            Temp()
+            #
         #ANYTHING ELSE
         else:
             print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------\n")
