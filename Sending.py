@@ -5,6 +5,7 @@ from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
 import time
 from zipfile import *
+import sys
 
 COMMASPACE = ', '
 recipients = []
@@ -166,12 +167,13 @@ def Send():
                     Open_Files.append(file)
 
     #ADDING THE TEAM NAMES FILES
-    A = open("Team_Names.txt", "r")
-    lines = A.readlines()
-    A.close()
-    Team_Names = [s.replace('\n', '') for s in lines]
-    for team_name in Team_Names:
-        Files.append("Team_{0}.txt".format(team_name))
+    if os.path.exists("Team_Names.txt"):
+        A = open("Team_Names.txt", "r")
+        lines = A.readlines()
+        A.close()
+        Team_Names = [s.replace('\n', '') for s in lines]
+        for team_name in Team_Names:
+            Files.append("Team_{0}.txt".format(team_name))
 
         
     Variable_Files = []
@@ -187,7 +189,10 @@ def Send():
             for name in File_Names:
                 Files.append("Event_Team_{0}.pkl".format(name))
 
-
+    #CREATING READ ME FILE
+    readme = open("ReadMe.txt","w")
+    readme.write("===== Scoring System Created By Keval Deepak =====\n\nTo install data back into the program:\n[1] Extract all files from the .zip (Look Below)\n[2] Put all files in the directory of the program\n[3] Start the program.\n\nWarning : Do NOT change any names of any files.\n\nTo extract files from the .zip file: \n[1] Download one to extract: \n    [1] Winrar - \n    - https://www.rarlab.com/download.htm\n    [2] 7Zip - \n    - http://www.7-zip.org/download.html\n[2] Right Click .zip file and click 'Extract Here'\n\nCreated by Keval Deepak")
+    readme.close() 
 
     #CREATING THE ZIP FILE
     file_name = "Data.zip"
@@ -196,10 +201,8 @@ def Send():
         zip_archive.write(item)
     zip_archive.close()
         
-    
-    
     # List of attachments
-    attachments = ['Data.zip']
+    attachments = ['Data.zip','ReadMe.txt']
 
     # Add the attachments to the message
     for file in attachments:
@@ -226,6 +229,11 @@ def Send():
             s.sendmail(sender, recipients, composed)
             s.close()
         print("\nEmail sent!")
+        #AFTER IT IS SENT
+        #IT SHOULD DELETE THE .ZIP FILE AND THE README
+        os.remove("ReadMe.txt")
+        os.remove("Data.zip")
+        #THEN IT SHOULD EXIT
         print("Goodbye!")
         time.sleep(1)
         exit()
