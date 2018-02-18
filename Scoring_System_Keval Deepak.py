@@ -52,7 +52,7 @@ Team_Scores = {}
 #    -------------------- CHANGE TO WHATEVER THE FIRST MESSAGE IS THAT WILL POPUP -----------------
 def Introduction():
     #THIS IS JUST AN INTRODUCTION
-    print("Welcome to Jimesh's World\n") #\\\\\CHANGE THIS LATER/////#
+    print("Scoring System v0.7 Created by Keval Deepak\n") 
     print("Note!:\n      Players in Individuals cannot be entered into a team. \n      Enter players for a team from team's menu\n")
     PasteValues()
 
