@@ -49,7 +49,6 @@ Individuals_Scores = {}
 Team_Scores = {}
 
 #    ------------------- THIS IS THE INTRODUCTION ---------------------
-#    -------------------- CHANGE TO WHATEVER THE FIRST MESSAGE IS THAT WILL POPUP -----------------
 def Introduction():
     #THIS IS JUST AN INTRODUCTION
     print("Scoring System v0.7 Created by Keval Deepak\n") 
@@ -1315,10 +1314,6 @@ def Scores_Menu_1():
 #REVIEW SCORES
 def Scores_Menu_1_1():
     print("\n----- Scores For Individuals -----")
-    """
-    for key in Individuals:
-        print("-- {0} --> {1} --".format(key,Individuals[key]))
-    """
     for key in Individuals_Scores:
         global jkhasd
         jkhasd = 0
@@ -1721,40 +1716,6 @@ def Final_Score_Menu_2():
                 time.sleep(1)
                 x += 1
         
-
-        
-    """
-    global Team_Final_Scores
-    Team_Final_Scores = {}
-    placement = 1
-    Sorted_Team_Names = sorted(Team_Scores.keys())
-    for Team_Name in Sorted_Team_Names:
-        for x in range(0,len(Team_Scores[Team_Name])):
-            Sorted_Player_Names = sorted(Team_Scores[Team_Name][x].keys())
-            Sorted_Player_Scores = sorted(Team_Scores[Team_Name][x].values())
-            #
-            for score in Sorted_Player_Scores:
-                for player_name in Sorted_Player_Names:
-                    if player_name in Team_Scores[Team_Name][x]:
-                        if score == Team_Scores[Team_Name][x][player_name]:
-                            #print("{0} Place --> Team: {1} --> Player: {2} --- {3} Points".format(placement,Team_Name,player_name,score))
-                            Team_Final_Scores["Place --> Team: {0} --> Player: {1} --- ".format(Team_Name,player_name)] = score
-                            placement += 1
-            #
-    #
-    global Sort_DICT
-    sort_dict = {key:score for score, key in sorted(Team_Final_Scores.items())}
-
-    global sorted_dict_one
-    sorted_dict_one = {str(k):rank for rank, key in enumerate(sorted(Team_Final_Scores.items(), key = lambda x: x[1], reverse = True), 1) for k in key}
-
-    global final_touch
-    final_touch = {k: v for k,v in sorted_dict_one.items() if not k.isdigit()}
-    
-    for key in final_touch:
-        print("{0} {1}{2} Points".format(final_touch[key],key,Team_Final_Scores[key]))
-    #
-    """
     print("")
     Final_Score_Menu()
 
