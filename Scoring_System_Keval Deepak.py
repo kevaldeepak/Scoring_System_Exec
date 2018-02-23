@@ -3,6 +3,7 @@ import time
 import re
 import os
 import pickle
+import string
 
 # ------- LISTS & DICTIONARIES ----------
 # ----- Individuals list. Name -----
@@ -394,18 +395,24 @@ def Individuals_Menu_2():
                 Individuals_Menu()
         #IF NAME IS OKAY AFTER VALIDATION THEN THIS WILL BE EXECUTED
         else:
-            #ADDING TO LIST
-            Individuals_List.append(Add_Individual)
-            #ADDING TO DICTIONARY
-            Individuals[Add_Individual] = 0
-            #SAVES THE NAMES ONTO A FILE USING A DIFFERENT FUNCTION
-            Individual_Save()
-            #ADDS TO NEW LIST FOR SCORES
-            Individuals_Scores[Add_Individual] = {}
-            #PRESENTS A MESSAGE FOR THE USER
-            print("\nIndividual has been added!")
-            #RETURNS BACK TO THE MAIN MENU
-            Individuals_Menu()
+            #ADDING VALIDATION FOR INVALID CHARACTERS
+            invalidChars = set(string.punctuation.replace("_", ""))
+            if any(char in invalidChars for char in Add_Individual):
+                print("\nEnter a name without special characters.")
+                Individuals_Menu()
+            else:
+                #ADDING TO LIST
+                Individuals_List.append(Add_Individual)
+                #ADDING TO DICTIONARY
+                Individuals[Add_Individual] = 0
+                #SAVES THE NAMES ONTO A FILE USING A DIFFERENT FUNCTION
+                Individual_Save()
+                #ADDS TO NEW LIST FOR SCORES
+                Individuals_Scores[Add_Individual] = {}
+                #PRESENTS A MESSAGE FOR THE USER
+                print("\nIndividual has been added!")
+                #RETURNS BACK TO THE MAIN MENU
+                Individuals_Menu()
     #WHAT IF THE PERSON DOESN'T TYPE ANYTHING. 
     except ValueError:
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
@@ -619,25 +626,30 @@ def Teams_Menu_2():
                 Teams_Menu()
         #IF NAME IS OKAY AFTER VALIDATION THEN THIS WILL BE EXECUTED
         else:
-            #ADDING TO LIST (Teams_List)
-            Teams_List.append(team_name)
-            #ADDING TO DICT. Team : Team_List
-            Teams[team_name] = []
-            #ADDING TO DICT.
-            #CREATES A KEY WITH A LIST
-            Team_Scores[team_name] = []
-            #THIS CREATES A FILE USING THE TEAM NAME
-            team_file = open('Team_%s.txt' % team_name, 'a+') #over here
-            team_file.close()
-            #THIS CREATES A FILE FOR ALL THE TEAM NAMES
-            teams_file = open("Team_Names.txt","a+")
-            #THIS WRITES THE TEAM NAME INSIDE THE FILE
-            teams_file.write(team_name + "\n")
-            teams_file.close()
-            #PRINTS CONFIRMATION FOR THE USER TO KNOW
-            print("\nTeam has been added!")
-            #REDIRECTS BACK TO THE MENU
-            Teams_Menu()
+            invalidChars = set(string.punctuation.replace("_", ""))
+            if any(char in invalidChars for char in team_name):
+                print("\nEnter a name without special characters!")
+                Teams_Menu()
+            else:
+                #ADDING TO LIST (Teams_List)
+                Teams_List.append(team_name)
+                #ADDING TO DICT. Team : Team_List
+                Teams[team_name] = []
+                #ADDING TO DICT.
+                #CREATES A KEY WITH A LIST
+                Team_Scores[team_name] = []
+                #THIS CREATES A FILE USING THE TEAM NAME
+                team_file = open('Team_%s.txt' % team_name, 'a+') #over here
+                team_file.close()
+                #THIS CREATES A FILE FOR ALL THE TEAM NAMES
+                teams_file = open("Team_Names.txt","a+")
+                #THIS WRITES THE TEAM NAME INSIDE THE FILE
+                teams_file.write(team_name + "\n")
+                teams_file.close()
+                #PRINTS CONFIRMATION FOR THE USER TO KNOW
+                print("\nTeam has been added!")
+                #REDIRECTS BACK TO THE MENU
+                Teams_Menu()
     except ValueError:
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
         Teams_Menu()
@@ -725,15 +737,33 @@ def Teams_Menu_4():
             elif temp == True:
                 print("{0} has already been entered to Individuals".format(Player_Name))
             else:
-                #ADDING PLAYER TO TEAM FILE
-                Team_File = open("Team_{0}.txt".format(Team_Selected),"a+")#over here
-                Team_File.write(Player_Name + "\n")
-                Team_File.close()
-                #ADDING PLAYER TO TEAM DICT.
-                Teams[Team_Selected].append(Player_Name)
-                #SHOWS A MESSAGE FOR THE USER
-                print("\n{0} has been added to Team {1}".format(Player_Name,Team_Selected))
-                Teams_Menu()
+                invalidChars = set(string.punctuation.replace("_", ""))
+                if any(char in invalidChars for char in Player_Name):
+                    print("\nEnter a name without special characters!")
+                    Teams_Menu()
+                else:
+                    #
+                    #VALIDATION 2: CHECKS IF ALREADY IN A TEAM
+                    for key in Teams:
+                        for player in Teams[key]:
+                            if player == Player_Name:
+                                print("{0} is already in Team {1}".format(player, key))
+                                Teams_Menu()
+                    #
+                    #CHECKS IF THERE ARE ANY NUMBERS
+                    temp = Player_Name.isdigit()
+                    if temp == True:
+                        print("Enter a player name without any numbers.")
+                        Teams_Menu()
+                    #ADDING PLAYER TO TEAM FILE
+                    Team_File = open("Team_{0}.txt".format(Team_Selected),"a+")#over here
+                    Team_File.write(Player_Name + "\n")
+                    Team_File.close()
+                    #ADDING PLAYER TO TEAM DICT.
+                    Teams[Team_Selected].append(Player_Name)
+                    #SHOWS A MESSAGE FOR THE USER
+                    print("\n{0} has been added to Team {1}".format(Player_Name,Team_Selected))
+                    Teams_Menu()
             Teams_Menu()  
         #VALIDATION 1: IF THE NAME IS NOT ON THE LIST
         else:
@@ -807,23 +837,27 @@ def Teams_Menu_5():
     
 #   ---------- THIS IS THE EVENTS MENU. EVERYTHING RELATING TO EVENTS IS HERE -----------
 def Events_Menu():
-    # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
-    print("\n-------- Events Menu --------")
-    # INPUT WITH ALL THE OPTIONS LISTED. NUMBER REPRESENTS THE OPTION
-    E_M = int(input("1 - Events for Individuals\n2 - Events for Teams\n3 - Back\nWhere do you want to go?: "))
-    #IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN
-    #INDIVIDUALS
-    if E_M == 1:
-        Events_Menu_1()
-    #TEAMS
-    elif E_M == 2:
-        Events_Menu_2()
-    #BACK
-    elif E_M == 3:
-        Main_Menu()
-    #ANYTHING ELSE
-    else:
-        print("\nPlease enter a valid option.")
+    try:
+        # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
+        print("\n-------- Events Menu --------")
+        # INPUT WITH ALL THE OPTIONS LISTED. NUMBER REPRESENTS THE OPTION
+        E_M = int(input("1 - Events for Individuals\n2 - Events for Teams\n3 - Back\nWhere do you want to go?: "))
+        #IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN
+        #INDIVIDUALS
+        if E_M == 1:
+            Events_Menu_1()
+        #TEAMS
+        elif E_M == 2:
+            Events_Menu_2()
+        #BACK
+        elif E_M == 3:
+            Main_Menu()
+        #ANYTHING ELSE
+        else:
+            print("\nPlease enter a valid option.")
+            Events_Menu()
+    except ValueError:
+        print("\nPlease enter a valid option!")
         Events_Menu()
 
 #INDIVIDUALS --- EVENTS -----
@@ -899,6 +933,10 @@ def Events_Menu_1_2():
         Events_Menu_1()
     #IF EVERYTHING IS OKAY, THIS WILL HAPPEN
     else:
+        invalidChars = set(string.punctuation.replace("_", ""))
+        if any(char in invalidChars for char in Event_Name):
+            print("\nEnter a name  without any special characters.")
+            Events_Menu_1()
         #ADDS TO DICT. (Events_Individuals)
         Events_Individuals[Event_Name] = []
         #CREATES A PKL FILE FOR EACH EVENT
@@ -985,8 +1023,8 @@ def Events_Menu_1_4():
                     print("\n{0} has been added to event.".format(Player_Name))
                     #RETURNS BACK TO MENU
                     Events_Menu_1()
-            #IF EVENT IS NOT FOUND
-            print("\nEvent not found!")
+            #IF Player IS NOT FOUND
+            print("\nPlayer not found!")
             Events_Menu_1()
             #
     #IF EVENT IS NOT FOUND
@@ -1095,6 +1133,10 @@ def Events_Menu_2_2():
             Events_Menu_2()
     #IF EVERYTHING IS OKAY  - -  THIS HAPPENS 
     else:
+        invalidChars = set(string.punctuation.replace("_", ""))
+        if any(char in invalidChars for char in Event_Name):
+            print("\nEnter a name without special characters.")
+            Events_Menu_2()
         #SAVES TO FILE EVENT_NAMES
         file = open("Event_Names (Team).txt","a+")
         file.write(Event_Name + "\n")
@@ -1274,43 +1316,50 @@ def Events_Menu_2_5():
     
 #   ---------- THIS IS THE SCORES MENU. EVERYTHING RELATING TO SCORES IS HERE -----------
 def Scores_Menu():
-    print("\n---- Scoring System Main Menu ----")
-    S_M = int(input("1 - Scoring System for Individuals\n2 - Scoring System for Teams\n3 - Back\nWhere do you want to go?: "))
-    #INDIVIDUALS -- SCORING SYSTEM
-    if S_M == 1:
-        Scores_Menu_1()
-    #TEAMS -- SCORING SYSTEM
-    elif S_M == 2:
-        Scores_Menu_2()
-    #BACK
-    elif S_M == 3:
-        Main_Menu()
-    #BACK
-    else:
-        print("Please enter a valid answer!")
+    try:
+        print("\n---- Scoring System Main Menu ----")
+        S_M = int(input("1 - Scoring System for Individuals\n2 - Scoring System for Teams\n3 - Back\nWhere do you want to go?: "))
+        #INDIVIDUALS -- SCORING SYSTEM
+        if S_M == 1:
+            Scores_Menu_1()
+        #TEAMS -- SCORING SYSTEM
+        elif S_M == 2:
+            Scores_Menu_2()
+        #BACK
+        elif S_M == 3:
+            Main_Menu()
+        #BACK
+        else:
+            print("\nPlease enter a valid answer!")
+            Scores_Menu()
+    except ValueError:
+        print("\nEnter a valid answer.")
         Scores_Menu()
 
 #THIS IS THE MAIN MENU FOR SCORING SYSTEM -- INIDIVDUALS
 def Scores_Menu_1():
-    print("\n----- SCORES FOR INDIVIDUALS -----")
-    S_M_i = int(input("1 - Review Scores\n2 - Add Scores to Individual\n3 - Reset Score for Individual\n4 - Back\nWhere do you want to go?: "))
-    #REVIEW SCORES
-    if S_M_i == 1:
-        Scores_Menu_1_1()
-    #ADD SCORES TO INDIVIDUALS
-    elif S_M_i == 2:
-        Scores_Menu_1_2()
-    #RESET SCORES
-    elif S_M_i == 3:
-        Scores_Menu_1_3()
-    #BACK
-    elif S_M_i == 4:
-        Scores_Menu()
-    #ANYTHING ELSE
-    else:
-        print("Please enter a valid answer!")
+    try:
+        print("\n----- SCORES FOR INDIVIDUALS -----")
+        S_M_i = int(input("1 - Review Scores\n2 - Add Scores to Individual\n3 - Reset Score for Individual\n4 - Back\nWhere do you want to go?: "))
+        #REVIEW SCORES
+        if S_M_i == 1:
+            Scores_Menu_1_1()
+        #ADD SCORES TO INDIVIDUALS
+        elif S_M_i == 2:
+            Scores_Menu_1_2()
+        #RESET SCORES
+        elif S_M_i == 3:
+            Scores_Menu_1_3()
+        #BACK
+        elif S_M_i == 4:
+            Scores_Menu()
+        #ANYTHING ELSE
+        else:
+            print("Please enter a valid answer!")
+            Scores_Menu_1()
+    except ValueError:
+        print("Enter a valid answer!")
         Scores_Menu_1()
-
 #REVIEW SCORES
 def Scores_Menu_1_1():
     print("\n----- Scores For Individuals -----")
@@ -1347,65 +1396,74 @@ def Scores_Menu_1_2():
                     print("--> 2nd Place --> 3 Points")
                     print("--> 3rd Place --> 2 Points")
                     print("--> 4th Place --> 1 Points")
-                    #
-                    Placement = int(input("Enter position for {0} in {1}: ".format(Player_Name,event)))
-                    #VALIDATION 1 : GIVES A VALID PLACEMENT
-                    if Placement <= 20 and Placement >= 1:
-                        Match = False    
+                    try:
                         #
-                        #GETS THE SCORE THAT IS ALREADY THERE
-                        #Score = Individuals[Player_Name]
-                        #LOOKS UP SCORE DEPENDING ON PLACEMENT AND ADDS IT TO SCORE
-                        #Score = int(Score) + int(Ranking[Placement])
-                        Score = int(Ranking[Placement])
-                        #VALIDATION 1 : IF PLACEMENT IS ALREADY TAKEN
-                        for name_player in Individuals_Scores:
-                            for name_event in Individuals_Scores[name_player]:
-                                if name_event == event:
-                                    if Score == Individuals_Scores[name_player][name_event]:
-                                        #ITS A MATCH!
-                                        #CHECKS IF ITS THE SAME PERSON
-                                        if Player_Name == name_player:
-                                            Match = False
-                                        else:
-                                            print("Placement: {0} has beem taken by {1} in this event({2}).".format(Placement,name_player,name_event))
-                                            #RETURNS BACK TO MENU
-                                            Match = True
-                        if Match == False:           
-                            #               
+                        Placement = int(input("Enter position for {0} in {1}: ".format(Player_Name,event)))
+                        #VALIDATION 1 : GIVES A VALID PLACEMENT
+                        if Placement <= 20 and Placement >= 1:
+                            Match = False    
                             #
-                            #ADDS NEW SCORE TO DICT. AGAIN
-                            Individuals[Player_Name] = Score
-                            #SAVES INTO FILE
-                            #OPENS THE FILE IN READ MODE
-                            file = open("Individual_Scores.txt","r")
-                            #READS THE FILE
-                            lines = file.readlines()
-                            file.close()
-                            #STRIPS THE LINES
-                            file_lines = [s.replace('\n', '') for s in lines]
-                            #OPEN THE FILE IN WRITE MODE
-                            file = open("Individual_Scores.txt","w")
-                            for line in file_lines:
-                                VAR = line.startswith(Player_Name)
-                                if VAR == True:
-                                    file.write("{0} ---> {1}\n".format(Player_Name,Score))
-                                else:
-                                    file.write(line + "\n")
-                            file.close()
-                            #ADDS IT TO Individuals_Scores
-                            Individuals_Scores[Player_Name][event] = Score
-                            #ADDS IT TO A FILE
-                            #SAVES THIS WHOLE DICT. INTO FILE
-                            with open("Individuals_Scores.pkl", "wb") as f:
-                                pickle.dump(Individuals_Scores, f, pickle.HIGHEST_PROTOCOL)
-                            #GIVES A MESSAGE FOR THE USER
-                            print("\n{0} now has {1} points for event {2}.".format(Player_Name,Score,event))
-                            done = True
-                            #
-                            #
-                    else:
-                        print("Enter a valid placement.")
+                            #GETS THE SCORE THAT IS ALREADY THERE
+                            #Score = Individuals[Player_Name]
+                            #LOOKS UP SCORE DEPENDING ON PLACEMENT AND ADDS IT TO SCORE
+                            #Score = int(Score) + int(Ranking[Placement])
+                            Score = int(Ranking[Placement])
+                            #VALIDATION 1 : IF PLACEMENT IS ALREADY TAKEN
+                            for name_player in Individuals_Scores:
+                                for name_event in Individuals_Scores[name_player]:
+                                    if name_event == event:
+                                        if Score == Individuals_Scores[name_player][name_event]:
+                                            #ITS A MATCH!
+                                            #CHECKS IF ITS THE SAME PERSON
+                                            if Player_Name == name_player:
+                                                Match = False
+                                            else:
+                                                print("Placement: {0} has beem taken by {1} in this event({2}).".format(Placement,name_player,name_event))
+                                                #RETURNS BACK TO MENU
+                                                Match = True
+                            if Match == False:
+                                #VALIDATION : IF THERE ARE ANY LETTERS
+                                
+                                #               
+                                #
+                                #ADDS NEW SCORE TO DICT. AGAIN
+                                Individuals[Player_Name] = Score
+                                #SAVES INTO FILE
+                                #OPENS THE FILE IN READ MODE
+                                file = open("Individual_Scores.txt","r")
+                                #READS THE FILE
+                                lines = file.readlines()
+                                file.close()
+                                #STRIPS THE LINES
+                                file_lines = [s.replace('\n', '') for s in lines]
+                                #OPEN THE FILE IN WRITE MODE
+                                file = open("Individual_Scores.txt","w")
+                                for line in file_lines:
+                                    VAR = line.startswith(Player_Name)
+                                    if VAR == True:
+                                        file.write("{0} ---> {1}\n".format(Player_Name,Score))
+                                    else:
+                                        file.write(line + "\n")
+                                file.close()
+                                #ADDS ENTRY FOR THE USER AGAIN
+                                Individuals_Scores[Player_Name] = {}
+                                #ADDS IT TO Individuals_Scores
+                                Individuals_Scores[Player_Name][event] = Score
+                                #ADDS IT TO A FILE
+                                #SAVES THIS WHOLE DICT. INTO FILE
+                                with open("Individuals_Scores.pkl", "wb") as f:
+                                    pickle.dump(Individuals_Scores, f, pickle.HIGHEST_PROTOCOL)
+                                #GIVES A MESSAGE FOR THE USER
+                                print("\n{0} now has {1} points for event {2}.".format(Player_Name,Score,event))
+                                done = True
+                                #
+                                #
+                        else:
+                            print("\nEnter a valid placement.")
+                            Scores_Menu_1()
+                        #
+                    except ValueError:
+                        print("\nEnter a valid placement!")
                         Scores_Menu_1()
             if done == True:
                 #RETURNS BACK TO THE MENU
