@@ -4,7 +4,7 @@ Welcome
 
 #---- DOWNLOAD ----
 
-Download the .rar file in the same directory
+Download the .rar file for the executable version of the program
 
 #---- EXTRA INFORMATION ----
 
