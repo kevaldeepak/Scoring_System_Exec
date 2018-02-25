@@ -541,7 +541,7 @@ def Teams_Menu():
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
         Teams_Menu()
         
-#THIS IS TO REVIEW ALL THE TEAMS /////////// THIS CAN BE DIFFERENT, TO BE ABLE TO VIEW MEMEBRS \\\\\\\\\\\\\\\\
+#THIS IS TO REVIEW ALL THE TEAMS 
 def Teams_Menu_1():
     print("")
     temphgh = int(input("1 - View players by team\n2 - View all Teams\n3 - Back\nWhere do you want to go?: "))
@@ -1668,6 +1668,7 @@ def Final_Score_Menu():
 
 
 #INDIVIDUALS SCORES -- MENU
+        
 def Final_Score_Menu_1():
     TEMP_DICT_SCORE = {}
     for key in Individuals_Scores:
@@ -1688,7 +1689,8 @@ def Final_Score_Menu_1():
                 x += 1
         
     Final_Score_Menu()
-#TEAMS SCORES -- MENU
+    
+#TEAMS SCORES -- 
 def Final_Score_Menu_2():
     print("")
     global TEMP_DICT_SCORE_TEAMS
