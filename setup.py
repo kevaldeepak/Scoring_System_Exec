@@ -11,7 +11,7 @@ build_exe_options = {"packages": ["os", "re", "time", "pickle", "smtplib","email
 base = None
 
 setup(  name = "Scoring System",
-        version = "0.8",
+        version = "0.9",
         description = "Tournament Scoring System By Keval Deepak",
         options = {"build_exe": build_exe_options},
         executables = [Executable("Scoring_System_Keval Deepak.py", base=base, icon="icon.ico"),

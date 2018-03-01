@@ -548,7 +548,7 @@ def Teams_Menu():
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
         Teams_Menu()
         
-#THIS IS TO REVIEW ALL THE TEAMS 
+#THIS IS TO REVIEW ALL THE TEAMS /////////// THIS CAN BE DIFFERENT, TO BE ABLE TO VIEW MEMEBRS \\\\\\\\\\\\\\\\
 def Teams_Menu_1():
     print("")
     temphgh = int(input("1 - View players by team\n2 - View all Teams\n3 - Back\nWhere do you want to go?: "))
@@ -1011,6 +1011,14 @@ def Events_Menu_1_4():
                         if name == Player_Name:
                             print("{0} is already in Event {1}".format(Player_Name,Event_Name))
                     
+                    x = 0
+                    for key in Events_Individuals:
+                        for value in Events_Individuals[key]:
+                            if Player_Name == value:
+                                x += 1
+                    if x == 4:
+                        print("{0} has been added to five different events already.".format(Player_Name))
+                        Events_Menu_1()
                     #IF EVERYTHING IS GOING TO HAPPEN PROPERLY
                     ##
                     #APPENDING TO EVENTS_INDIVIDUALS DICT.
@@ -1726,7 +1734,6 @@ def Final_Score_Menu():
 
 
 #INDIVIDUALS SCORES -- MENU
-        
 def Final_Score_Menu_1():
     TEMP_DICT_SCORE = {}
     for key in Individuals_Scores:

@@ -13,7 +13,7 @@ def main():
     print("\nYour Data will not be stored.")
     global tempx
     tempx = 0
-    def Email():
+    def Email_Gmail():
 
         global sender
         sender = input("\nEnter your email (Gmail): ")
@@ -21,11 +21,10 @@ def main():
         if confirm == '1':
             a = 1 + 1
         elif confirm == '2':
-            Email()
+            Email_Gmail()
         else:
             print("\nCan not continue without confirmation.")
             global tempx
-            
             if tempx == 3:
                 print("\nYou have failed to provide a valid answer.")
                 time.sleep(1)
@@ -33,8 +32,9 @@ def main():
                 time.sleep(1)
                 exit()
             tempx += 1
-            Email()
-    Email()
+            Email_Gmail()
+            
+    Email_Gmail()
     
     
     def Password():
