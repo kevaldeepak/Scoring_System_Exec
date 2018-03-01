@@ -1010,7 +1010,7 @@ def Events_Menu_1_4():
                     for name in Events_Individuals[Event_Name]:
                         if name == Player_Name:
                             print("{0} is already in Event {1}".format(Player_Name,Event_Name))
-                    
+                    #VALIDATION 2: IF THE NAME HAS BEEN ENTERED INTO MORE THAN FIVE EVENTS
                     x = 0
                     for key in Events_Individuals:
                         for value in Events_Individuals[key]:
@@ -1754,8 +1754,7 @@ def Final_Score_Menu_1():
                 x += 1
         
     Final_Score_Menu()
-    
-#TEAMS SCORES -- 
+#TEAMS SCORES -- MENU
 def Final_Score_Menu_2():
     print("")
     global TEMP_DICT_SCORE_TEAMS
