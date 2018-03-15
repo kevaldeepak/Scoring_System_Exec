@@ -1,4 +1,4 @@
-# ---------------------- _____IMPORTS____ ---------------------- 
+# ---------------------- _____IMPORTS____ ----------------------
 import time
 import re
 import os
@@ -50,9 +50,14 @@ Individuals_Scores = {}
 Team_Scores = {}
 
 #    ------------------- THIS IS THE INTRODUCTION ---------------------
+def Clear():
+    for x in range(0,100):
+        print("")
+    return
 def Introduction():
+    Clear()
     #THIS IS JUST AN INTRODUCTION
-    print("Scoring System v0.7 Created by Keval Deepak\n") 
+    print("Scoring System v0.7 Created by Keval Deepak\n")
     print("Note!:\n      Players in Individuals cannot be entered into a team. \n      Enter players for a team from team's menu\n")
     PasteValues()
 
@@ -64,7 +69,7 @@ def PasteValues():
     #THIS CREATES A NEW FILE IF THERE ISN'T ONE ALREADY
     #TO PREVENT A ERROR THAT THERE IS NO DIRECTORY
     file = open("Individual_Names.txt","a+")
-    
+
     file.close()
 
     #THIS WILL READ THE FILE
@@ -77,7 +82,7 @@ def PasteValues():
     #THIS STRIPS THE '\n' FROM THE VALUES IN THE LIST
     BLines = [s.replace('\n', '') for s in lines]
     x = 0
-    #THIS CYCLES THROUGH ADDING EACH NAME INTO THE LISTS AND DICTIONARIES 
+    #THIS CYCLES THROUGH ADDING EACH NAME INTO THE LISTS AND DICTIONARIES
     for abc in range(0,num_lines):
         #ADDING TO THE LIST
         Individuals_List.append(BLines[x])
@@ -89,7 +94,7 @@ def PasteValues():
     file = open("Individual_Scores.txt","a+")
 
     file.close()
-    #THIS CYCLES THROUGH ADDING EACH NAME INTO THE LISTS AND DICTIONARIES 
+    #THIS CYCLES THROUGH ADDING EACH NAME INTO THE LISTS AND DICTIONARIES
     file = open("Individual_Scores.txt","r")
 
     lines2 = file.readlines()
@@ -110,10 +115,10 @@ def PasteValues():
     file.close()
 
     file = open("Team_Names.txt","r")
-    
+
     num_lines = sum(1 for line in open('Team_Names.txt'))
     lines3 = file.readlines()
-    
+
     BLines3 = [s.replace('\n', '') for s in lines3]
     # ------ THIS IS ALL THE IMPORT TEAM NAMES -------
     x = 0
@@ -122,7 +127,7 @@ def PasteValues():
         #ADDING IT BACK TO THE LIST
         Teams_List.append(file_team_name)
         #ADDING BACK TO DICT.
-        Teams[file_team_name] = ""   
+        Teams[file_team_name] = ""
         x += 1
     # ------ THIS IS TO IMPORT TEAM MEMBERS ------- ||||||  DO THIS AFTER ||||||
     #IMPORTING TEAMS
@@ -159,12 +164,12 @@ def PasteValues():
     file = open("Event_Names (Individuals).txt","r")
     lines = file.readlines()
     file.close()
-    
+
     Event_Names = [s.replace('\n', '') for s in lines]
-    
+
     for event_name in Event_Names:
         Events_Individuals[event_name] = []
-    
+
     #IMPORTING FROM PKL
     for key in Events_Individuals:
         lenght = os.stat('Event_Individuals_{0}.pkl'.format(key)).st_size == 0
@@ -174,7 +179,7 @@ def PasteValues():
                 for event in ABCD:
                     Events_Individuals[key].append(event)
     # ----------------- TEAMS - EVENTS ----------------------
-    
+
     lenght = True
     if os.path.exists("Event_Teams.pkl"):
         lenght = os.stat("Event_Teams.pkl").st_size == 0
@@ -183,7 +188,7 @@ def PasteValues():
             POP = pickle.load(f)
             global Events_Teams
             Events_Teams = POP
-            
+
     #ADDING THE EVENT INFORMATION AS WELL
     #IMPORTING FROM THE PKL FILE
     for key in Events_Teams:
@@ -204,7 +209,7 @@ def PasteValues():
             POP = pickle.load(f)
             global Individuals_Scores
             Individuals_Scores = POP
-        
+
     lenght = True
     if os.path.exists('Team_Scores.pkl'):
         lenght = os.stat('Team_Scores.pkl').st_size == 0
@@ -213,8 +218,8 @@ def PasteValues():
             POP = pickle.load(f)
             global Team_Scores
             Team_Scores = POP
-            
-            
+
+
     Main_Menu()
 
 #THIS IS THE FUNCTION THAT WILL RESET ALL MY STORED DATA
@@ -223,7 +228,7 @@ def Reset():
     Static_Files = ["Team_Names.txt","Individual_Scores.txt","Individual_Names.txt","Event_Names (Team).txt","Event_Names (Individuals).txt","Team_Scores.pkl"]
     #THIS IS A LIST OF ALL NAMES TO DELETE
     Remove_Files = []
-    
+
     for File_Name in Static_Files:
         #CHECKS IF THE FILE PATH IS REAL
         temp = os.path.exists(File_Name)
@@ -255,7 +260,7 @@ def Reset():
 #   ------------------- THIS IS THE MAIN MENU. USER DECIDES WHICH SUB MENU TO NAVIGATE TO. --------------------
 def Main_Menu():
     try:
-        # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
+        # THIS PRINT IS JUST FOR AESTHETICS PURPOSES
         print("-------- Main Menu --------")
         # INPUT WITH ALL THE OPTIONS LISTED. NUMBER REPRESENTS THE OPTION
         M_M = int(input("1 - Individuals\n2 - Teams\n3 - Events\n4 - Scores\n5 - Reset all Data\n6 - Final Scores\n7 - Exit\nWhere do you want to go?: "))
@@ -281,9 +286,10 @@ def Main_Menu():
         #EXITING
         elif M_M == 7:
             #
+            Clear()
             global tempx
             tempx = 0
-            def Temp():                
+            def Temp():
                 temp = input("\n1 - Yes\n2 - No\nDo you wish to send all data to a email? (Sender Must be GMAIL): ")
                 if temp == '1':
                     os.startfile("Sending.exe")
@@ -306,15 +312,18 @@ def Main_Menu():
         #ANYTHING ELSE
         else:
             print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------\n")
+            Clear()
             Main_Menu()
-    #WHAT IF THE PERSON DOESN'T TYPE ANYTHING. 
+    #WHAT IF THE PERSON DOESN'T TYPE ANYTHING.
     except ValueError:
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------\n")
+        Clear()
         Main_Menu()
 #   ---------- THIS IS THE PARTICIPANTS MENU. EVERYTHING RELATING TO PARTICIPANTS IS HERE -----------
 def Individuals_Menu():
     try:
-        # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
+        Clear()
+        # THIS PRINT IS JUST FOR AESTHETICS PURPOSES
         print("\n-------- Individual's Menu --------")
         # INPUT WITH ALL THE OPTIONS LISTED. NUMBER REPRESENTS THE OPTION
         P_M = int(input("1 - Review Individuals\n2 - Add Individuals\n3 - Remove Individuals\n4 - Back\nWhere do you want to go?: "))
@@ -335,20 +344,22 @@ def Individuals_Menu():
             Individuals_Menu_3()
         #BACK TO MAIN MENU
         elif P_M == 4:
+            Clear()
             Main_Menu()
         #ANYTHING ELSE
         else:
             print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
             Individuals_Menu()
-    #WHAT IF THE PERSON DOESN'T TYPE ANYTHING. 
+    #WHAT IF THE PERSON DOESN'T TYPE ANYTHING.
     except ValueError:
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
         Individuals_Menu()
-        
+
 #THIS IS REVIEWING ALL THE INDIVIDUALS
 def Individuals_Menu_1():
-    # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
+    # THIS PRINT IS JUST FOR AESTHETICS PURPOSES
     print("")
+    Clear()
     # THIS CHECKS THE LENGHT OF THE LIST --- TO CHECK IF IT IS EMPTY
     lenght = len(Individuals_List)
     #IF IT IS EMPTY, THIS SHOULD HAPPEN
@@ -359,32 +370,39 @@ def Individuals_Menu_1():
         print("---------- Players ----------")
         for abc in Individuals_List:
             print("---> " + abc + " <---")
-    #RETURNING TO INDIVIDUAL MENU MACHANISM    
+            time.sleep(0.2)
+    #RETURNING TO INDIVIDUAL MENU MACHANISM
+    time.sleep(2.8)
     Individuals_Menu()
-    
+
 #THIS IS ADDING A INDIVIDUAL
 def Individuals_Menu_2():
     try:
+        Clear()
         global Add_Individual
         Add_Individual = input("\nPlease enter a full name: ").title()
         #VALIDATION 1 : IF THERE ARE ANY NUMBERS
         if any(i.isdigit() for i in Add_Individual):
             print("\n---------- Error! ----------\nPlease enter a name without numbers!\n----------------------------")
+            time.sleep(2)
             Individuals_Menu()
         #VALIDATION 2 : IF THERE IS NO NAME
         elif Add_Individual == "":
             print("\n---------- Error! ----------\nPlease enter a name!\n----------------------------")
+            time.sleep(2)
             Individuals_Menu()
         #VALIDATION 3 : IF THE PERSON HASN'T ENTERED A FULL NAME
         elif " " not in Add_Individual:
             print("\n---------- Error! ----------\nPlease enter your First & Last name!\n----------------------------")
+            time.sleep(2)
             Individuals_Menu()
         #VALIDATION 5 : IF THE NAME HAS BEEN ENTERED INTO A TEAM ALREADY
         for key in Teams:
             temp = Add_Individual in Teams[key]
             if temp == True:
                 print("\nError!")
-                print("{0} has been entered in a team {1}".format(Add_Individual,key))
+                print("{0} has been entered in a team {1} already".format(Add_Individual,key))
+                time.sleep(2)
                 Individuals_Menu()
         #TITLES() THE VARIABLE
         Add_Individual = Add_Individual.title()
@@ -392,6 +410,7 @@ def Individuals_Menu_2():
         for ghg in Individuals_List:
             if Add_Individual == ghg:
                 print("\n---------- Error! ----------\n   Name is already taken!\n----------------------------")
+                time.sleep(2)
                 Individuals_Menu()
         #IF NAME IS OKAY AFTER VALIDATION THEN THIS WILL BE EXECUTED
         else:
@@ -399,6 +418,7 @@ def Individuals_Menu_2():
             invalidChars = set(string.punctuation.replace("_", ""))
             if any(char in invalidChars for char in Add_Individual):
                 print("\nEnter a name without special characters.")
+                time.sleep(2)
                 Individuals_Menu()
             else:
                 #ADDING TO LIST
@@ -411,16 +431,19 @@ def Individuals_Menu_2():
                 Individuals_Scores[Add_Individual] = {}
                 #PRESENTS A MESSAGE FOR THE USER
                 print("\nIndividual has been added!")
+                time.sleep(2)
                 #RETURNS BACK TO THE MAIN MENU
                 Individuals_Menu()
-    #WHAT IF THE PERSON DOESN'T TYPE ANYTHING. 
+    #WHAT IF THE PERSON DOESN'T TYPE ANYTHING.
     except ValueError:
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
+        time.sleep(2)
         Individuals_Menu_2()
 
 #THIS IS TO REMOVE A INDIVIDUAL
 def Individuals_Menu_3():
     try:
+        Clear()
         #PRINTS ALL THE INDIVIDUAL'S NAMES
         print("---------- Players ----------")
         for abc in Individuals_List:
@@ -469,6 +492,7 @@ def Individuals_Menu_3():
                                 pickle.dump(Events_Individuals[event], f, pickle.HIGHEST_PROTOCOL)
                 #TELLS THE USER THAT IT HAS HAPPENED SUCCESSFULLY
                 print("\nIndividual has been removed!")
+                time.sleep(2)
                 #RETURNS BACK TO THE INDIVIDUAL MENU
                 Individuals_Menu()
             #WHAT SHOULD HAPPEN IF THE NAME IS NOT FOUND INSIDE THE LIST (SEE COMMENT BELOW)
@@ -476,34 +500,38 @@ def Individuals_Menu_3():
                 tempx = 1 + 1
         if temp == "":
             print("\n---------- Error! ----------\n----Please enter a name.----\n----------------------------")
+            time.sleep(2)
             Individuals_Menu()
         #THIS IS ACTUALLY WHAT HAPPENS AS IT ALLOWS THE PROGRAM TO CHECK ALL THE NAMES WITHIN THE LIST
-        #ERROR MESSAGE FOR THE USER 
+        #ERROR MESSAGE FOR THE USER
         print("\n---------- Error! ----------\n" + temp + " is not a valid player.\n----------------------------")
+        time.sleep(2)
         #RETURNS BACK TO THE INDIVIDUAL MENU
         Individuals_Menu()
-        
+
     except ValueError:
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
+        time.sleep(2)
         Individuals_Menu()
 
 #   ---------- THIS IS THE SAVING THE INDIVIDUAL'S NAMES. -----------
 def Individual_Save():
     file = open("Individual_Names.txt","a+")
-    
-    file.write(Add_Individual + "\n")  
-    
+
+    file.write(Add_Individual + "\n")
+
     file.close()
 
     file = open("Individual_Scores.txt","a+")
 
     file.write(Add_Individual + " ---> " + str(Individuals[Add_Individual]) + "\n")
-    
+
     file.close()
     return
 #   ---------- THIS IS THE TEAMS MENU. EVERYTHING RELATING TO TEAMS IS HERE -----------
 def Teams_Menu():
     try:
+        Clear()
         # THIS PRINT IS JUST FOR AESTHETICS PURPOSES
         print("\n-------- Teams's Menu --------")
         # INPUT WITH ALL THE OPTIONS LISTED. NUMBER REPRESENTS THE OPTION
@@ -514,6 +542,7 @@ def Teams_Menu():
             #IF THERE ARE NO TEAMS
             if len(Teams) == 0:
                 print("\nThere are no Teams!")
+                time.sleep(2)
                 Teams_Menu()
             #IF THERE ARE TEAMS
             else:
@@ -521,11 +550,12 @@ def Teams_Menu():
         #ADD TEAMS
         elif T_M == 2:
             lenght_Teams_List = len(Teams_List)
-            if lenght_Teams_List <= 3:                
+            if lenght_Teams_List <= 3:
                 Teams_Menu_2()
             else:
                 print("\n    ----- Error -----")
                 print("There are too many teams! (Max 4 Teams)")
+                time.sleep(2)
                 Teams_Menu()
         #REMOVE TEAMS
         elif T_M == 3:
@@ -543,14 +573,15 @@ def Teams_Menu():
         else:
             print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
             Teams_Menu()
-    #WHAT IF THE PERSON DOESN'T TYPE ANYTHING. 
+    #WHAT IF THE PERSON DOESN'T TYPE ANYTHING.
     except ValueError:
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
         Teams_Menu()
-        
+
 #THIS IS TO REVIEW ALL THE TEAMS /////////// THIS CAN BE DIFFERENT, TO BE ABLE TO VIEW MEMEBRS \\\\\\\\\\\\\\\\
 def Teams_Menu_1():
     print("")
+    Clear()
     temphgh = int(input("1 - View players by team\n2 - View all Teams\n3 - Back\nWhere do you want to go?: "))
     #VIEWING PLAYERS BY A SPECIFIC TEAM
     if temphgh == 1:
@@ -572,10 +603,12 @@ def Teams_Menu_1():
                 #RESETS VARIABLE ONCE DONE LOOPING
                 x = 1
                 #RETURNS BACK TO THE MENU
+                time.sleep(3)
                 Teams_Menu()
         #IF THE NAME IS NOT FOUND
         print("Team is not found!")
         #RETURNS BACK TO THE MENU
+        time.sleep(3)
         Teams_Menu()
     #VIEWING ALL TEAMS
     elif temphgh == 2:
@@ -591,44 +624,53 @@ def Teams_Menu_1():
             print("---------- TEAMS ----------")
             for abc in Teams_List:
                 print("---> " + abc + " <---")
-        #RETURNING TO INDIVIDUAL MENU MACHANISM    
+        #RETURNING TO INDIVIDUAL MENU MACHANISM
+        time.sleep(3)
         Teams_Menu()
     #BACK
     elif temphgh == 3:
+        time.sleep(3)
         Teams_Menu()
     else:
         print("Please enter a valid option.")
+        time.sleep(3)
     Teams_Menu()
-    
+
 #THIS IS TO ADD TEAMS
 def Teams_Menu_2():
     try:
+        Clear()
         team_name = input("Enter a name for the new team: ")
         team_name = team_name.title()
-        
+
         #VALIDATION 1 : IF THERE ARE ANY NUMBERS
         if any(i.isdigit() for i in team_name):
             print("\n---------- Error! ----------\nPlease enter a name without numbers!\n----------------------------")
+            time.sleep(2)
             Teams_Menu()
         #VALIDATION 2 : IF THERE IS NO NAME
         elif team_name == "":
             print("\n---------- Error! ----------\nPlease enter a name!\n----------------------------")
+            time.sleep(2)
             Teams_Menu()
-        #VALIDATION 4 : RESERVED NAMES 
+        #VALIDATION 4 : RESERVED NAMES
         elif team_name == "Individual_Names" or team_name == "Individual_Scores" or team_name == "Team_Names":
             print("\nYou have entered a reserved name for the system.")
             print("You may not have access to name a team this.")
+            time.sleep(2)
             Teams_Menu()
         #VALIDATION 3 : IF THERE IS THE SAME NAME PRESENT IT DOES THIS
         for ghg in Teams_List:
             if team_name == ghg:
                 print("\n---------- Error! ----------\n   Name is already taken!\n----------------------------")
+                time.sleep(2)
                 Teams_Menu()
         #IF NAME IS OKAY AFTER VALIDATION THEN THIS WILL BE EXECUTED
         else:
             invalidChars = set(string.punctuation.replace("_", ""))
             if any(char in invalidChars for char in team_name):
                 print("\nEnter a name without special characters!")
+                time.sleep(2)
                 Teams_Menu()
             else:
                 #ADDING TO LIST (Teams_List)
@@ -648,26 +690,31 @@ def Teams_Menu_2():
                 teams_file.close()
                 #PRINTS CONFIRMATION FOR THE USER TO KNOW
                 print("\nTeam has been added!")
+                time.sleep(2)
                 #REDIRECTS BACK TO THE MENU
                 Teams_Menu()
     except ValueError:
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
+        time.sleep(2)
         Teams_Menu()
 
 #THIS IS TO REMOVE TEAMS
 def Teams_Menu_3():
     try:
+        Clear()
         for abc in Teams_List:
             print("---> " + abc + " <---")
         remove_team = input("Enter a team name to remove: ")
         #VALIDATION 1 : IF THERE ARE ANY NUMBERS
         if any(i.isdigit() for i in remove_team):
             print("\n---------- Error! ----------\nPlease enter a name without numbers!\n----------------------------")
+            time.sleep(2)
             Teams_Menu()
         remove_team = remove_team.title()
         #VALIDATION 2 : IF THERE IS NO NAME
         if remove_team == "":
             print("\n---------- Error! ----------\nPlease enter a name!\n----------------------------")
+            time.sleep(2)
             Teams_Menu()
         #IF EVERYTHING IS ALRIGHT THIS WILL HAPPEN
         for ghg in Teams_List:
@@ -706,17 +753,22 @@ def Teams_Menu_3():
                 team_file.close()
                 #PRINTS A MESSAGE FOR THE USER
                 print("\nTeam '" + remove_team + "' has been removed!")
+                time.sleep(2)
                 Teams_Menu()
         #IF THE NAME WASN'T FOUND IN LIST
         print("\n---------- Error! ----------\n   There is no such team!\n----------------------------")
+        time.sleep(2)
         Teams_Menu()
     except ValueError:
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
+        time.sleep(2)
         Teams_Menu()
-
+#JKFHJKASKDSADJKASD DO THIS AT HOME DAXIT DAXIT DAXIT SEARCH THIS ADD TIME SLEEPP AND CLEAR EVERYWHERE TO MAKE APPEARENCE BETTER
+#ADD A LOADING SCREEN
 #THIS IS TO ADD PLAYERS TO TEAMS
 def Teams_Menu_4():
     try:
+        Clear()
         print("")
         for lol in Teams_List:
             print("---> " + lol + " <---")
@@ -730,16 +782,20 @@ def Teams_Menu_4():
             #IF NAME IS REGISTERED WITH INDIVIDUALS PARTICIPANTS
             if Player_Name in Individuals_List:
                 print("\n{0} is registered with individuals.".format(Player_Name))
+                time.sleep(2)
             #VALIDATION : NAME MUST BE A FULL NAME
             elif " " not in Player_Name:
                 print("\nPlease enter a FULL name.")
+                time.sleep(2)
                 Teams_Menu()
             elif temp == True:
                 print("{0} has already been entered to Individuals".format(Player_Name))
+                time.sleep(2)
             else:
                 invalidChars = set(string.punctuation.replace("_", ""))
                 if any(char in invalidChars for char in Player_Name):
                     print("\nEnter a name without special characters!")
+                    time.sleep(2)
                     Teams_Menu()
                 else:
                     #
@@ -748,12 +804,14 @@ def Teams_Menu_4():
                         for player in Teams[key]:
                             if player == Player_Name:
                                 print("{0} is already in Team {1}".format(player, key))
+                                time.sleep(2)
                                 Teams_Menu()
                     #
                     #CHECKS IF THERE ARE ANY NUMBERS
                     temp = Player_Name.isdigit()
                     if temp == True:
                         print("Enter a player name without any numbers.")
+                        time.sleep(2)
                         Teams_Menu()
                     #ADDING PLAYER TO TEAM FILE
                     Team_File = open("Team_{0}.txt".format(Team_Selected),"a+")#over here
@@ -763,8 +821,9 @@ def Teams_Menu_4():
                     Teams[Team_Selected].append(Player_Name)
                     #SHOWS A MESSAGE FOR THE USER
                     print("\n{0} has been added to Team {1}".format(Player_Name,Team_Selected))
+                    time.sleep(2)
                     Teams_Menu()
-            Teams_Menu()  
+            Teams_Menu()
         #VALIDATION 1: IF THE NAME IS NOT ON THE LIST
         else:
             print("Please enter a correct name!")
@@ -773,11 +832,13 @@ def Teams_Menu_4():
             Teams_Menu()
     except ValueError:
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
+        time.sleep(2)
         Teams_Menu()
 
 #THIS IT TO REMOVE PLAYERS FROM TEAMS
 def Teams_Menu_5():
     try:
+        Clear()
         print("")
         for lol in Teams_List:
             print("---> " + lol + " <---")
@@ -818,12 +879,14 @@ def Teams_Menu_5():
                 Teams[Team_Selected].remove(Player_Name)
                 #SHOWS A MESSAGE TO THE USER
                 print("\n{0} has been removed from Team {1}".format(Player_Name,Team_Selected))
+                time.sleep(2)
                 #RETURNS BACK TO MENU
                 Teams_Menu()
             else:
                 print("\n{0} not found.".format(Player_Name))
+                time.sleep(2)
                 Teams_Menu()
-            
+
 
         #VALIDATION 1: IF THE NAME IS NOT ON THE LIST
         else:
@@ -833,12 +896,14 @@ def Teams_Menu_5():
             Teams_Menu()
     except ValueError:
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------")
+        time.sleep(2)
         Teams_Menu()
-    
+
 #   ---------- THIS IS THE EVENTS MENU. EVERYTHING RELATING TO EVENTS IS HERE -----------
 def Events_Menu():
     try:
-        # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
+        Clear()
+        # THIS PRINT IS JUST FOR AESTHETICS PURPOSES
         print("\n-------- Events Menu --------")
         # INPUT WITH ALL THE OPTIONS LISTED. NUMBER REPRESENTS THE OPTION
         E_M = int(input("1 - Events for Individuals\n2 - Events for Teams\n3 - Back\nWhere do you want to go?: "))
@@ -855,15 +920,18 @@ def Events_Menu():
         #ANYTHING ELSE
         else:
             print("\nPlease enter a valid option.")
+            time.sleep(2)
             Events_Menu()
     except ValueError:
         print("\nPlease enter a valid option!")
+        time.sleep(2)
         Events_Menu()
 
 #INDIVIDUALS --- EVENTS -----
 def Events_Menu_1():
     try:
-        # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
+        Clear()
+        # THIS PRINT IS JUST FOR AESTHETICS PURPOSES
         print("\n-------- EVENTS (INDIVIDUALS) --------")
         E_M_i = int(input("1 - Review Events\n2 - Add Events\n3 - Remove Events\n4 - Add Individuals to Events\n5 - Remove Individuals to Events\n6 - Back\nWhere do you want to go?: "))
         #IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN.
@@ -872,6 +940,7 @@ def Events_Menu_1():
             #IF THERE ARE NO EVENTS
                 if len(Events_Individuals) == 0:
                     print("\nThere are no Events for Individuals!")
+                    time.sleep(2)
                     Events_Menu_1()
             #IF THERE ARE EVENTS
                 else:
@@ -895,15 +964,18 @@ def Events_Menu_1():
         #IF THE USER TYPES SOMETHING ELSE
         else:
             print("Please enter a valid option.")
+            time.sleep(2)
             Events_Menu_1()
-    #WHAT IF THE PERSON DOESN'T TYPE ANYTHING. 
+    #WHAT IF THE PERSON DOESN'T TYPE ANYTHING.
     except ValueError:
         print("\n---------- Error! ----------\nPlease enter a valid answer!\n----------------------------\n")
+        time.sleep(2)
         Events_Menu_1()
 
 # ----- SUB SECTIONS --- EVENTS ---- INDIVIDUALS
 #REVIEW EVENTS
 def Events_Menu_1_1():
+    Clear()
     print("\n----- Events for Individuals -----")
     for key in Events_Individuals:
         print("      --- {0} ---".format(key))
@@ -912,30 +984,35 @@ def Events_Menu_1_1():
             print("Player {0} --> {1}".format(x,player))
             x += 1
         x = 1
-    time.sleep(1)
+    time.sleep(2)
     Events_Menu_1()
 
 #ADD EVENTS
 def Events_Menu_1_2():
+    Clear()
     print("\n ---- Add Events (Individuals) ----")
     Event_Name = input("Enter a event name: ").title()
     #VALIDATION 1 : IF THERE IS NO NAME
     if Event_Name == "":
         print("\nPlease enter a name!")
+        time.sleep(2)
         Events_Menu_1()
     #VALIDATION 2: IF THERE ARE ANY NUMBERS
     elif any(i.isdigit() for i in Event_Name):
         print("\nEnter a name without numbers!")
+        time.sleep(2)
         Events_Menu_1()
     #VALIDATION 3 : IF THE NAME IS ALREADY TAKEN
     elif Event_Name in Events_Individuals:
         print("\n -- This name is taken -- ")
+        time.sleep(2)
         Events_Menu_1()
     #IF EVERYTHING IS OKAY, THIS WILL HAPPEN
     else:
         invalidChars = set(string.punctuation.replace("_", ""))
         if any(char in invalidChars for char in Event_Name):
             print("\nEnter a name  without any special characters.")
+            time.sleep(2)
             Events_Menu_1()
         #ADDS TO DICT. (Events_Individuals)
         Events_Individuals[Event_Name] = []
@@ -948,11 +1025,13 @@ def Events_Menu_1_2():
         file.close()
         #GIVES A MESSAGE FOR THE USER
         print("\nEvent has been created!")
+        time.sleep(2)
         #RETURNS BACK TO MENU
         Events_Menu_1()
-        
+
 #REMOVE EVENTS
 def Events_Menu_1_3():
+    Clear()
     print("\n ---- Remove Events (Individuals) ----")
     for key in Events_Individuals:
         print("-- {0} --".format(key))
@@ -960,10 +1039,12 @@ def Events_Menu_1_3():
     #VALIDATION 1 : IF THERE IS NO NAME
     if Event_Name == "":
         print("Please enter a name!")
+        time.sleep(2)
         Events_Menu_1()
     #VALIDATION 2: IF THERE ARE ANY NUMBERS
     elif any(i.isdigit() for i in Event_Name):
         print("Enter a name without numbers!")
+        time.sleep(2)
         Events_Menu_1()
     #VALIDATION 3 : IF THE NAME IS ALREADY TAKEN
     elif Event_Name in Events_Individuals:
@@ -985,11 +1066,13 @@ def Events_Menu_1_3():
         file.close()
         #GIVES A MESSAGE FOR THE USER
         print("\nEvent has been removed!")
+        time.sleep(2)
         #RETURNS BACK TO MENU
         Events_Menu_1()
-        
+
 #ADD INDIVIDUALS TO EVENTS
 def Events_Menu_1_4():
+    Clear()
     print("\n--- ADDING INDIVIDUAL TO EVENT ---")
     print("\n--- Select Event ---")
     for key in Events_Individuals:
@@ -1010,6 +1093,7 @@ def Events_Menu_1_4():
                     for name in Events_Individuals[Event_Name]:
                         if name == Player_Name:
                             print("{0} is already in Event {1}".format(Player_Name,Event_Name))
+                            time.sleep(2)
                     #VALIDATION 2: IF THE NAME HAS BEEN ENTERED INTO MORE THAN FIVE EVENTS
                     x = 0
                     for key in Events_Individuals:
@@ -1018,6 +1102,7 @@ def Events_Menu_1_4():
                                 x += 1
                     if x == 4:
                         print("{0} has been added to five different events already.".format(Player_Name))
+                        time.sleep(2)
                         Events_Menu_1()
                     #IF EVERYTHING IS GOING TO HAPPEN PROPERLY
                     ##
@@ -1029,19 +1114,23 @@ def Events_Menu_1_4():
                     ##
                     #GIVES A MESSAGE TO THE USER
                     print("\n{0} has been added to event.".format(Player_Name))
+                    time.sleep(2)
                     #RETURNS BACK TO MENU
                     Events_Menu_1()
             #IF Player IS NOT FOUND
             print("\nPlayer not found!")
+            time.sleep(2)
             Events_Menu_1()
             #
     #IF EVENT IS NOT FOUND
     print("\nEvent not found!")
+    time.sleep(2)
     Events_Menu_1()
 
 
 #REMOVE INDIVIDUALS TO EVENTS
 def Events_Menu_1_5():
+    Clear()
     print("\n--- REMOVE INDIVIDUAL TO EVENT ---")
     print("\n--- Select Event ---")
     for key in Events_Individuals:
@@ -1066,15 +1155,18 @@ def Events_Menu_1_5():
                     ##
                     #GIVES A MESSAGE TO THE USER
                     print("{0} has been removed from event {1}.".format(Player_Name,Event_Name))
+                    time.sleep(2)
                     #RETURNS BACK TO MENU
                     Events_Menu_1()
             #IF NAME IS NOT FOUND
             print("Player is not found!")
+            time.sleep(2)
             Events_Menu_1()
 
 #---------------------------   TEAMS ---------------
 def Events_Menu_2():
-    # THIS PRINT IS JUST FOR AESTHETICS PURPOSES 
+    Clear()
+    # THIS PRINT IS JUST FOR AESTHETICS PURPOSES
     print("\n-------- EVENTS (TEAMS) --------")
     E_M = int(input("1 - Review Events\n2 - Add Events\n3 - Remove Events\n4 - Add Teams to Events\n5 - Remove Teams from Events\n6 - Back\nWhere do you want to go?: "))
     #IF STATEMENTS DECIDE WHICH OPTION IS CHOSEN.
@@ -1086,6 +1178,7 @@ def Events_Menu_2():
         if len(Events_Teams.keys()) == 5:
             print("\nToo many events!")
             print("Please remove to add new one.")
+            time.sleep(2)
             Events_Menu_2()
         Events_Menu_2_2()
     #REMOVE EVENTS
@@ -1103,11 +1196,12 @@ def Events_Menu_2():
     #ANYTHING ELSE
     else:
         print("Please enter a valid option.")
+        time.sleep(2)
         Events_Menu_2()
-    
+
 #REVIEW EVENTS
 def Events_Menu_2_1():
-    
+    Clear()
     print("----- Events for Teams -----")
     for key in Events_Teams:
         print("      --- {0} ---".format(key))
@@ -1119,31 +1213,36 @@ def Events_Menu_2_1():
                 x += 1
         x = 1
 
-    time.sleep(1)
+    time.sleep(2)
     Events_Menu_2()
-    
+
 #ADD EVENTS
 def Events_Menu_2_2():
+    Clear()
     print(" ---- Add Events (Teams) ----")
     Event_Name = input("Enter a event name: ").title()
     #VALIDATION 1 : IF THERE IS NO NAME
     if Event_Name == "":
         print("Please enter a name!")
+        time.sleep(2)
         Events_Menu_2()
     #VALIDATION 2: IF THERE ARE ANY NUMBERS
     elif any(i.isdigit() for i in Event_Name):
         print("Enter a name without numbers!")
+        time.sleep(2)
         Events_Menu_2()
     #VALIDATION 3 : IF THE NAME IS ALREADY TAKEN
     for key in Events_Teams:
         if key == Event_Name:
             print("\n -- This name is taken -- ")
+            time.sleep(2)
             Events_Menu_2()
-    #IF EVERYTHING IS OKAY  - -  THIS HAPPENS 
+    #IF EVERYTHING IS OKAY  - -  THIS HAPPENS
     else:
         invalidChars = set(string.punctuation.replace("_", ""))
         if any(char in invalidChars for char in Event_Name):
             print("\nEnter a name without special characters.")
+            time.sleep(2)
             Events_Menu_2()
         #SAVES TO FILE EVENT_NAMES
         file = open("Event_Names (Team).txt","a+")
@@ -1160,14 +1259,16 @@ def Events_Menu_2_2():
         Events_Teams[Event_Name] = []
         #ADDS TO EVENT FILE .pkl
         with open("Event_Teams.pkl", "wb") as f:
-            pickle.dump(Events_Teams, f, pickle.HIGHEST_PROTOCOL)   
+            pickle.dump(Events_Teams, f, pickle.HIGHEST_PROTOCOL)
         #MESSAGE FOR USER
         print("\n{0} has been added.".format(Event_Name))
+        time.sleep(2)
         #GOES BACK TO MENU
         Events_Menu_2()
-        
+
 #REMOVE EVENTS
 def Events_Menu_2_3():
+    Clear()
     print(" ---- Remove Events ----")
     for key in Events_Teams:
         print("-- {0} --".format(key))
@@ -1192,15 +1293,18 @@ def Events_Menu_2_3():
             os.remove("Event_Team_{0}.pkl".format(Event_Name))
             #GIVES A MESSAGE FOR THE USER
             print("\n{0} has been removed.".format(Event_Name))
+            time.sleep(2)
             #RETURNS BACK TO MENU
             Events_Menu_2()
 
     #IF NO NAME WAS FOUND THEN ~ ERROR MESSAGE
     print("Event Not Found!")
+    time.sleep(2)
     Events_Menu_2()
 
 #ADD TEAMS TO EVENTS
 def Events_Menu_2_4():
+    Clear()
     global loop
     loop = 0
     def team_select():
@@ -1219,7 +1323,7 @@ def Events_Menu_2_4():
                 print("------ PLAYERS ------")
                 for line in striped_lines:
                     print("-- {0} --".format(line))
-                
+
                 #ASKS FOR WHICH TEAM MEMBER IS JOINING THE EVENT
                 def Player_Select():
                     Player_Name = input("Enter a player name: ").title()
@@ -1233,9 +1337,10 @@ def Events_Menu_2_4():
                                         if Player_Name == Events_Teams[key][x][Team_Name]:
                                             #NAME IS FOUND
                                             print("\n{0} is already is Event {1}".format(Player_Name,key))
+                                            time.sleep(2)
                                             #RETURNS BACK TO MENU
                                             Events_Menu_2()
-                                    
+
                             #IF THE NAME IS NOT FOUND! (GOOD)
                             #VALIDATION 2 : THE TEAM IS ALREADY ENTERED IN THIS EVENT
                             x = len(Events_Teams[Event_Name])
@@ -1243,6 +1348,7 @@ def Events_Menu_2_4():
                                 for key in Events_Teams[Event_Name][y]:
                                     if Team_Name == key:
                                         print("\nTeam is already registered for this event!")
+                                        time.sleep(2)
                                         Events_Menu_2()
                             #IF EVERYTHING IS OKAY, DOES THIS
                             #
@@ -1253,23 +1359,26 @@ def Events_Menu_2_4():
                             Events_Teams[Event_Name].append({Team_Name:Player_Name})
                             #ADDS TO EVENT FILE .pkl
                             with open("Event_Team_{0}.pkl".format(Event_Name), "wb") as f:
-                                pickle.dump(Events_Teams[Event_Name], f, pickle.HIGHEST_PROTOCOL)                      
+                                pickle.dump(Events_Teams[Event_Name], f, pickle.HIGHEST_PROTOCOL)
                             #GIVES A MESSAGE FOR THE USER
                             print("\n{0} has been added to the event.".format(Player_Name))
+                            time.sleep(2)
                             #RETURNS BACK TO MENU
                             Events_Menu_2()
-                            #            
+                            #
                     print("------ PLAYERS ------")
                     for line in striped_lines:
                         print("-- {0} --".format(line))
                     print("Name not found!")
+                    time.sleep(2)
                     Player_Select()
 
                 Player_Select()
         #IF THE NAME IS NOT FOUND
         print("\nEvent Not Found!")
+        time.sleep(2)
         Events_Menu_2()
-        
+
     print("--- ADDING TEAM TO EVENT ---")
     print("Select Event")
     for key in Events_Teams:
@@ -1281,11 +1390,13 @@ def Events_Menu_2_4():
             team_select()
     #IF THE NAME IS NOT FOUND!
     print("\nEvent Not Found!")
+    time.sleep(2)
     Events_Menu_2()
 
 #REMOVE TEAMS FROM EVENTS
 def Events_Menu_2_5():
     def team_selection():
+        Clear()
         print("\n-- Select Team --")
         for key in Teams:
             print("-- {0} --".format(key))
@@ -1308,8 +1419,10 @@ def Events_Menu_2_5():
                                 pickle.dump(Events_Teams[Event_Name], f, pickle.HIGHEST_PROTOCOL)
                             #PRINTS A MESSAGE
                             print("\nTeam (0) has been removed from the event!".format(Team_Name))
+                            time.sleep(2)
                             Events_Menu_2()
                 #
+    Clear()
     print("\n--- REMOVING TEAM FROM EVENT ---")
     for key in Events_Teams:
         print("-- {0} --".format(key))
@@ -1320,11 +1433,13 @@ def Events_Menu_2_5():
             team_selection()
     #IF THE NAME IS NOT FOUND!
     print("\nEvent Not Found!")
+    time.sleep(2)
     Events_Menu_2()
-    
+
 #   ---------- THIS IS THE SCORES MENU. EVERYTHING RELATING TO SCORES IS HERE -----------
 def Scores_Menu():
     try:
+        Clear()
         print("\n---- Scoring System Main Menu ----")
         S_M = int(input("1 - Scoring System for Individuals\n2 - Scoring System for Teams\n3 - Back\nWhere do you want to go?: "))
         #INDIVIDUALS -- SCORING SYSTEM
@@ -1339,14 +1454,17 @@ def Scores_Menu():
         #BACK
         else:
             print("\nPlease enter a valid answer!")
+            time.sleep(2)
             Scores_Menu()
     except ValueError:
         print("\nEnter a valid answer.")
+        time.sleep(2)
         Scores_Menu()
 
 #THIS IS THE MAIN MENU FOR SCORING SYSTEM -- INIDIVDUALS
 def Scores_Menu_1():
     try:
+        Clear()
         print("\n----- SCORES FOR INDIVIDUALS -----")
         S_M_i = int(input("1 - Review Scores\n2 - Add Scores to Individual\n3 - Reset Score for Individual\n4 - Back\nWhere do you want to go?: "))
         #REVIEW SCORES
@@ -1364,12 +1482,15 @@ def Scores_Menu_1():
         #ANYTHING ELSE
         else:
             print("Please enter a valid answer!")
+            time.sleep(2)
             Scores_Menu_1()
     except ValueError:
         print("Enter a valid answer!")
+        time.sleep(2)
         Scores_Menu_1()
 #REVIEW SCORES
 def Scores_Menu_1_1():
+    Clear()
     print("\n----- Scores For Individuals -----")
     for key in Individuals_Scores:
         global jkhasd
@@ -1377,14 +1498,16 @@ def Scores_Menu_1_1():
         print("")
         for event in Individuals_Scores[key]:
             print("-- {0} -- {1} -- [{2}] point(s)".format(key,event,Individuals_Scores[key][event]))
-        
+
             jkhasd += Individuals_Scores[key][event]
         print("\n-- {0}'s Total Score --> [{1}] point(s).".format(key,jkhasd))
-        
+
+    time.sleep(2)
     Scores_Menu_1()
-    
+
 #ADD SCORES TO INDIVIDUALS
 def Scores_Menu_1_2():
+    Clear()
     done = False
     print("\n--- Add Scores for Individuals ---")
     for key in Individuals:
@@ -1409,7 +1532,7 @@ def Scores_Menu_1_2():
                         Placement = int(input("Enter position for {0} in {1}: ".format(Player_Name,event)))
                         #VALIDATION 1 : GIVES A VALID PLACEMENT
                         if Placement <= 20 and Placement >= 1:
-                            Match = False    
+                            Match = False
                             #
                             #GETS THE SCORE THAT IS ALREADY THERE
                             #Score = Individuals[Player_Name]
@@ -1427,12 +1550,13 @@ def Scores_Menu_1_2():
                                                 Match = False
                                             else:
                                                 print("Placement: {0} has beem taken by {1} in this event({2}).".format(Placement,name_player,name_event))
+                                                time.sleep(2)
                                                 #RETURNS BACK TO MENU
                                                 Match = True
                             if Match == False:
                                 #VALIDATION : IF THERE ARE ANY LETTERS
-                                
-                                #               
+
+                                #
                                 #
                                 #ADDS NEW SCORE TO DICT. AGAIN
                                 Individuals[Player_Name] = Score
@@ -1463,25 +1587,30 @@ def Scores_Menu_1_2():
                                     pickle.dump(Individuals_Scores, f, pickle.HIGHEST_PROTOCOL)
                                 #GIVES A MESSAGE FOR THE USER
                                 print("\n{0} now has {1} points for event {2}.".format(Player_Name,Score,event))
+                                time.sleep(2)
                                 done = True
                                 #
                                 #
                         else:
                             print("\nEnter a valid placement.")
+                            time.sleep(2)
                             Scores_Menu_1()
                         #
                     except ValueError:
                         print("\nEnter a valid placement!")
+                        time.sleep(2)
                         Scores_Menu_1()
             if done == True:
                 #RETURNS BACK TO THE MENU
                 Scores_Menu_1()
             print("\nPlayer is not registered with any events.")
             print("Warning!:\n         Register all players and teams to events \n         before continuing with Scores.")
-            Scores_Menu_1()        
-  
+            time.sleep(2)
+            Scores_Menu_1()
+
     #IF NOT FOUND
     print("Please enter a valid name.")
+    time.sleep(2)
     Scores_Menu_1()
 
 #RESET SCORES
@@ -1493,7 +1622,7 @@ def Scores_Menu_1_3():
     #VALIDATION 1 : IF NAME IS IN THE DICT.
     for key in Individuals:
         if key == Player_Name:
-            
+
             def sure():
                 print("\n{0} has {1} points\n".format(Player_Name,Individuals[Player_Name]))
                 print("1 - Yes\n2 - No")
@@ -1527,23 +1656,28 @@ def Scores_Menu_1_3():
                         pickle.dump(Individuals_Scores, f, pickle.HIGHEST_PROTOCOL)
                     #MESSAGE FOR THE USER
                     print("\n{0}'s score has been reset.".format(Player_Name))
+                    time.sleep(2)
                     #RETURNS BACK TO MENU
                     Scores_Menu_1()
                 elif confirm == 2:
                     print("Returning back to Menu")
                     print("No changes where made.")
+                    time.sleep(2)
                     Scores_Menu_1()
                 else:
                     print("Please enter a valid answer!")
+                    time.sleep(2)
                     sure()
-             
-            sure()            
+
+            sure()
     #IF NAME IS NOT FOUND
     print("{0} is not found.".format(Player_Name))
+    time.sleep(2)
     Scores_Menu_1()
-    
+
 #THIS IS THE MAIN MENU FOR SCORING SYSTEM -- TEAMS
 def Scores_Menu_2():
+    Clear()
     print("\n----- SCORES FOR TEAMS -----")
     S_M_t = int(input("1 - Review Scores\n2 - Add Scores to Teams\n3 - Reset Score for Teams\n4 - Back\nWhere do you want to go?: "))
     #REVIEW SCORES
@@ -1551,6 +1685,7 @@ def Scores_Menu_2():
         if len(Team_Scores) == 0:
             print("\nScores are not setup yet.")
             print("Add scores to view.")
+            time.sleep(2)
             Scores_Menu_2()
         else:
             Scores_Menu_2_1()
@@ -1566,10 +1701,12 @@ def Scores_Menu_2():
     #ANYTHING ELSE
     else:
         print("Please enter a valid answer!")
+        time.sleep(2)
         Scores_Menu_2()
 
 #REVIEW SCORES
 def Scores_Menu_2_1():
+    Clear()
     print("\n----- Scores For Teams -----")
 
     for team_name in Team_Scores:
@@ -1581,6 +1718,7 @@ def Scores_Menu_2_1():
 
 #ADD SCORES TO TEAMS
 def Scores_Menu_2_2():
+    Clear()
     print("\n--- Add Scores for a Team ---")
     for key in Teams:
         print("--> {0}".format(key))
@@ -1627,8 +1765,9 @@ def Scores_Menu_2_2():
                                                             if Score == Team_Scores[team_name_2][y][name_player][event]:
                                                                 print("\nTeam: {0} | Player: {1} has recieved {2} points.".format(team_name_2,name_player,Score))
                                                                 print("There can be no duplicates.")
+                                                                time.sleep(2)
                                                                 Scores_Menu_2()
-                                                
+
                                             #APPLIES IT TO ALL DICTS. AND LISTS AND ALL
                                             if Team_Name not in Team_Scores:
                                                 Team_Scores[Team_Name] = []
@@ -1645,6 +1784,7 @@ def Scores_Menu_2_2():
                                                             pickle.dump(Team_Scores, f, pickle.HIGHEST_PROTOCOL)
                                                         #GIVES A MESSAGE FOR THE USER
                                                         print("\n{0}'s Score in Team {1} for Event {2} has been edited.".format(Player_Name,Team_Name,event))
+                                                        time.sleep(2)
                                                         #RETURNS BACK TO MENU
                                                         Scores_Menu_2()
                                                         #
@@ -1655,31 +1795,37 @@ def Scores_Menu_2_2():
                                                 pickle.dump(Team_Scores, f, pickle.HIGHEST_PROTOCOL)
                                             #GIVES A MESSAGE FOR THE USER
                                             print("\n{0}'s Score in Team {1} for Event {2} has been edited.".format(Player_Name,Team_Name,event))
+                                            time.sleep(2)
                                             #RETURNS BACK TO MENU
                                             Scores_Menu_2()
                                         #NOT A VALID ANSWER = BAD
                                         else:
                                             print("\nEnter a valid placement.")
+                                            time.sleep(2)
                                             Scores_Menu_2()
-                                            
+
                                     except ValueError:
                                         print("\nEnter a valid placement.")
+                                        time.sleep(2)
                                         Scores_Menu_2()
 
                     print("\nTeam / Player is not registered in any event.\n")
                     print("Warning!:\n         Register all players and teams to events \nbefore continuing with Scores.")
-            
+                    time.sleep(2)
                     Scores_Menu_2()
-                    
+
             #BAD
             print("\nName not Found!")
+            time.sleep(2)
             Scores_Menu_2()
     #BAD
     print("\n{0} was not found!".format(Team_Name))
+    time.sleep(2)
     Scores_Menu_2()
 
 #RESET SCORES FOR A TEAM
 def Scores_Menu_2_3():
+    Clear()
     print("\n--- Reset Scores for a Team ---")
     for key in Teams:
         print("--> {0}".format(key))
@@ -1703,17 +1849,21 @@ def Scores_Menu_2_3():
                             del Team_Scores[Team_Name][x]
                             #GIVES A MESSAGE FOR THE USER
                             print("Team: {0} Player: {1}'s score has been reset.".format(Team_Name,Player_Name))
+                            time.sleep(2)
                             #RETURNS BACK TO MENU
                             Scores_Menu_2()
-                    
+
             #NAME WAS NOT FOUND
             print("Player not found!")
+            time.sleep(2)
             Scores_Menu_2()
-            
+
     print("Team not found!")
+    time.sleep(2)
     Scores_Menu_2()
 
 def Final_Score_Menu():
+    Clear()
     print("-------- Final Scores Menu --------")
     temp = int(input("1 - Individual's Scores\n2 - Team's Scores\n3 - Back\nWhere do you want to go?: "))
     #INDIVIDUALS SCORES
@@ -1730,11 +1880,13 @@ def Final_Score_Menu():
     #IF ANOTHER OPTION WAS GIVEN
     else:
         print("Enter a valid answer!")
+        time.sleep(2)
         Final_Score_Menu()
 
 
 #INDIVIDUALS SCORES -- MENU
 def Final_Score_Menu_1():
+    Clear()
     TEMP_DICT_SCORE = {}
     for key in Individuals_Scores:
         global jkhasd
@@ -1750,12 +1902,13 @@ def Final_Score_Menu_1():
         for key in K:
             if value == TEMP_DICT_SCORE[key]:
                 print("-- Place: [{0}]-- {1}'s Total Score --> [{2}] point(s).\n".format(x,key,value))
-                time.sleep(1)
+                time.sleep(2)
                 x += 1
-        
+
     Final_Score_Menu()
 #TEAMS SCORES -- MENU
 def Final_Score_Menu_2():
+    Clear()
     print("")
     global TEMP_DICT_SCORE_TEAMS
     TEMP_DICT_SCORE_TEAMS = {}
@@ -1779,9 +1932,9 @@ def Final_Score_Menu_2():
         for key in K:
             if value == TEMP_DICT_SCORE_TEAMS[key]:
                 print("-- Place: [{0}]-- {1}'s Total Score --> [{2}] point(s).\n".format(x,key,value))
-                time.sleep(1)
+                time.sleep(2)
                 x += 1
-        
+
     print("")
     Final_Score_Menu()
 
