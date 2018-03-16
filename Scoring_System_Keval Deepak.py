@@ -464,9 +464,22 @@ def Individuals_Menu_3():
         Clear()
         #PRINTS ALL THE INDIVIDUAL'S NAMES
         print("---------- Players ----------")
+        TEMP_DICT = {}
+        x = 1
         for abc in Individuals_List:
-            print("---> " + abc + " <---")
-        temp = input("Who do you want to remove?: ")
+            print("{0} --> {1}".format(str(x), abc))
+            TEMP_DICT[x] = abc
+            x += 1
+        print("")
+        tempx = int(input("Who do you want to remove?: "))
+        try:
+            temp = TEMP_DICT[tempx]
+        except:
+            Clear()
+            print("Select a valid individual")
+            print("Returning to menu!")
+            time.sleep(1)
+            Individuals_Menu()
         temp = temp.title()
         #THIS IS SO THAT IT CYCLES THROUGH THE WHOLE LIST CHECKING IF THE NAME IS SAME
         for abc in Individuals_List:
@@ -625,15 +638,34 @@ def Teams_Menu_1():
     if temphgh == 1:
         print("")
         print("--- Teams ---")
+        TEMP_DICT = {}
+        x = 1
         for key in Teams:
-            print("--> {0} <--".format(key))
-        Team = input("Enter a team name to view: ").title()
+            print("{0} --> {1}".format(x, key))
+            TEMP_DICT[x] = key
+            x += 1
+        Teamx = int(input("Enter a team name to view: "))
+        try:
+            Team = TEMP_DICT[Teamx]
+        except:
+            Clear()
+            print("Select a valid team!")
+            print("Returning to menu!")
+            time.sleep(1)
+            Teams_Menu()
         #VALIDATION : IF THE NAME IS CORRECT
         for name in Teams:
             if name == Team:
                 #THIS WILL HAPPEN IF CORRECT
                 print('')
+                if len(Teams[Team]) == 0:
+                    Clear()
+                    print("There are no players in this Team!")
+                    time.sleep(1)
+                    Teams_Menu()
                 x = 1
+                Clear()
+                print("----- Team: {0} -----".format(Team))
                 for player in Teams[Team]:
                     print('Player {0} --> {1}'.format(x,player))
                     x += 1
@@ -740,9 +772,22 @@ def Teams_Menu_2():
 def Teams_Menu_3():
     try:
         Clear()
+        TEMP_DICT = {}
+        x = 1
+        print("-------- Teams --------")
         for abc in Teams_List:
-            print("---> " + abc + " <---")
-        remove_team = input("Enter a team name to remove: ")
+            print("{0} --> {1}".format(x,abc))
+            TEMP_DICT[x] = abc
+            x += 1
+        remove_team_temp = int(input("Select a team name to remove: "))
+        try:
+            remove_team = TEMP_DICT[remove_team_temp]
+        except:
+            Clear()
+            print("Select a valid Team")
+            print("Returning to Menu")
+            time.sleep(1)
+            Teams_Menu()
         #VALIDATION 1 : IF THERE ARE ANY NUMBERS
         if any(i.isdigit() for i in remove_team):
             print("\n---------- Error! ----------\nPlease enter a name without numbers!\n----------------------------")
@@ -808,9 +853,21 @@ def Teams_Menu_4():
     try:
         Clear()
         print("")
+        TEMP_DICT = {}
+        x = 1
         for lol in Teams_List:
-            print("---> " + lol + " <---")
-        Team_Selected = input("First Select a team! : ").title()
+            print("{0} -- {1}".format(x,lol))
+            TEMP_DICT[x] = lol
+            x += 1
+        Team_Selectedx = int(input("First Select a team! : "))
+        try:
+            Team_Selected = TEMP_DICT[Team_Selectedx]
+        except:
+            Clear()
+            print("Select a valid team!")
+            print("Returning to Menu!")
+            time.sleep(1)
+            Teams_Menu()
         #VALIDATION 1: IF THE NAME IS ON THE LIST
         if Team_Selected in Teams_List:
             print("\n--- " + Team_Selected + " has been selected! ---")
@@ -878,19 +935,43 @@ def Teams_Menu_5():
     try:
         Clear()
         print("")
+        TEMP_DICT = {}
+        x = 1
         for lol in Teams_List:
-            print("---> " + lol + " <---")
-        Team_Selected = input("First Select a team! : ").title()
+            print("{0} -- {1}".format(x, lol))
+            TEMP_DICT[x] = lol
+            x += 1
+        Team_Selectedx = int(input("First Select a team! : "))
+        try:
+            Team_Selected = TEMP_DICT[Team_Selectedx]
+        except:
+            Clear()
+            print("Select a valid team!")
+            print("Returning to Menu!")
+            time.sleep(1)
+            Teams_Menu()
         #VALIDATION 1: IF THE NAME IS ON THE LIST
         if Team_Selected in Teams_List:
             print("\n--- " + Team_Selected + " has been selected! ---")
             print("")
             for team in Teams:
                 if team == Team_Selected:
+                    TEMP_DICT = {}
+                    x = 1
                     for player in Teams[team]:
-                        print("--> {0} <--".format(player))
+                        print("{0} --> {1}".format(x, player))
+                        TEMP_DICT[x] = player
+                        x += 1
             #BELOW IS THE CODE FOR REMOVING A TEAM MATE
-            Player_Name = input("Enter a Player's FULL NAME for team " + Team_Selected + " : ").title()
+            Player_Namex = int(input("Enter a Player's FULL NAME for team " + Team_Selected + " : "))
+            try:
+                Player_Name = TEMP_DICT[Player_Namex]
+            except:
+                Clear()
+                print("Select a valid player!")
+                print("Returning to Menu!")
+                time.sleep(1)
+                Teams_Menu()
             #VALIDATION 1 : CHECKS IF IT IS A ACTUAL PLAYER
             Player_File = open("Team_{0}.txt".format(Team_Selected),"r")
             lines = Player_File.readlines()
@@ -954,6 +1035,7 @@ def Events_Menu():
             Events_Menu_2()
         #BACK
         elif E_M == 3:
+            Clear()
             Main_Menu()
         #ANYTHING ELSE
         else:
@@ -977,8 +1059,9 @@ def Events_Menu_1():
         if E_M_i == 1:
             #IF THERE ARE NO EVENTS
                 if len(Events_Individuals) == 0:
+                    Clear()
                     print("\nThere are no Events for Individuals!")
-                    time.sleep(2)
+                    time.sleep(1)
                     Events_Menu_1()
             #IF THERE ARE EVENTS
                 else:
@@ -1071,9 +1154,19 @@ def Events_Menu_1_2():
 def Events_Menu_1_3():
     Clear()
     print("\n ---- Remove Events (Individuals) ----")
+    TEMP_DICT = {}
+    x = 1
     for key in Events_Individuals:
-        print("-- {0} --".format(key))
-    Event_Name = input("Enter a event name: ").title()
+        print("{0} --> {1}".format(x, key))
+        TEMP_DICT[x] = key
+        x += 1
+    Event_Namex = int(input("Enter a event name: "))
+    try:
+        Event_Name = TEMP_DICT[Event_Namex]
+    except:
+        print("Select a valid event!")
+        print("Returning to menu!")
+        Events_Menu_1()
     #VALIDATION 1 : IF THERE IS NO NAME
     if Event_Name == "":
         print("Please enter a name!")
@@ -1122,17 +1215,41 @@ def Events_Menu_1_4():
     Clear()
     print("\n--- ADDING INDIVIDUAL TO EVENT ---")
     print("\n--- Select Event ---")
+    TEMP_DICT = {}
+    x = 1
     for key in Events_Individuals:
-        print("--> {0} <--".format(key))
-    Event_Name = input("Select a event: ").title()
+        print("{0} --> {1}".format(x, key))
+        TEMP_DICT[x] = key
+        x += 1
+    Event_Namex = int(input("Select a event: "))
+    try:
+        Event_Name = TEMP_DICT[Event_Namex]
+    except:
+        Clear()
+        print("Select a valid event!")
+        print("Returning to main menu")
+        time.sleep(1)
+        Events_Menu_1()
     #VALIDATION 1 : IF IT IS A ACTUAL EVENT
     for key in Events_Individuals:
         if key == Event_Name:
             #
             print("\n--- Select Player ---")
+            TEMP_DICT = {}
+            x = 1
             for key in Individuals:
-                print("--> {0} <--".format(key))
-            Player_Name = input("Select a player: ").title()
+                print("{0} -- {1}".format(x, key))
+                TEMP_DICT[x] = key
+                x += 1
+            Player_Namex = int(input("Select a player: "))
+            try:
+                Player_Name = TEMP_DICT[Player_Namex]
+            except:
+                Clear()
+                print("Select a valid player!")
+                print("Returning to main menu")
+                time.sleep(1)
+                Events_Menu_1()
             #VALIDATION 1 : IF IT IS A ACTUAL PLAYER
             for key in Individuals:
                 if key == Player_Name:
@@ -1160,7 +1277,7 @@ def Events_Menu_1_4():
                         pickle.dump(Events_Individuals[Event_Name], f, pickle.HIGHEST_PROTOCOL)
                     ##
                     #GIVES A MESSAGE TO THE USER
-                    print("\n{0} has been added to event.".format(Player_Name))
+                    print("\n{0} has been added to {1}.".format(Player_Name,Event_Name))
                     time.sleep(2)
                     #RETURNS BACK TO MENU
                     Events_Menu_1()
@@ -1180,16 +1297,40 @@ def Events_Menu_1_5():
     Clear()
     print("\n--- REMOVE INDIVIDUAL TO EVENT ---")
     print("\n--- Select Event ---")
+    TEMP_DICT = {}
+    x = 1
     for key in Events_Individuals:
-        print("--> {0} <--".format(key))
-    Event_Name = input("Select a event: ").title()
+        print("{0} -- {1}".format(x, key))
+        TEMP_DICT[x] = key
+        x += 1
+    Event_Namex = int(input("Select a event: "))
+    try:
+        Event_Name = TEMP_DICT[Event_Namex]
+    except:
+        Clear()
+        print("Select a valid event!")
+        print("Returning to menu.")
+        time.sleep(1)
+        Events_Menu_1()
     #VALIDATION 1 : IF IT IS A ACTUAL EVENT
     for key in Events_Individuals:
         if key == Event_Name:
             print("\n--- Select player ---")
+            TEMP_DICT = {}
+            x = 1
             for name in Events_Individuals[Event_Name]:
-                print("-> {0} <--".format(name))
-            Player_Name = input("Select a player: ").title()
+                print("{0} -- {1}".format(x, name))
+                TEMP_DICT[x] = name
+                x += 1
+            Player_Namex = int(input("Select a player: "))
+            try:
+                Player_Name = TEMP_DICT[Player_Namex]
+            except:
+                Clear()
+                print("Select a valid event!")
+                print("Returning to menu.")
+                time.sleep(1)
+                Events_Menu_1()
             #VALIDATION 1 : IF IT IS A ACTUAL PLAYER IN THE EVENT
             for name in Events_Individuals[Event_Name]:
                 if name == Player_Name:
@@ -1210,7 +1351,7 @@ def Events_Menu_1_5():
                         else:
                             pass
                     #GIVES A MESSAGE TO THE USER
-                    print("{0} has been removed from event {1}.".format(Player_Name,Event_Name))
+                    print("\n{0} has been removed from event {1}.".format(Player_Name,Event_Name))
                     time.sleep(2)
                     #RETURNS BACK TO MENU
                     Events_Menu_1()
@@ -1326,9 +1467,22 @@ def Events_Menu_2_2():
 def Events_Menu_2_3():
     Clear()
     print(" ---- Remove Events ----")
+    TEMP_DICT = {}
+    x = 1
     for key in Events_Teams:
-        print("-- {0} --".format(key))
-    Event_Name = input("Enter a event name: ").title()
+        print("{0} -- {1}".format(x, key))
+        TMEP_DICT[x] = key
+        x += 1
+    Event_Namex = int(input("Enter a event name: "))
+    try:
+        Event_Name = TEMP_DICT[Event_Namex]
+    except:
+        Clear()
+        print("Select a valid event!")
+        print("Returning to menu")
+        time.sleep(1)
+        Events_Menu_2()
+        
     for key in Events_Teams:
         #IF IT IS CORRECT IT SHOULD DO THIS
         if Event_Name == key:
@@ -1365,9 +1519,21 @@ def Events_Menu_2_4():
     loop = 0
     def team_select():
         print("-- Select Team --")
+        TEMP_DICT = {}
+        x = 1
         for key in Teams:
-            print("-- {0} --".format(key))
-        Team_Name = input("Enter a team name: ").title()
+            print("{0} -- {1}".format(x, key))
+            TEMP_DICT[x] = key
+            x += 1
+        Team_Namex = int(input("Enter a team name: "))
+        try:
+            Team_Name = TEMP_DICT[Team_Namex]
+        except:
+            Clear()
+            print("Select a valid team name!")
+            print("Returning to menu!")
+            time.sleep(1)
+            Events_Menu_2()
         #VALIDATION 1 : IF IT IS IN THE LIST ALREADY
         for key in Teams:
             if Team_Name == key:
@@ -1377,12 +1543,24 @@ def Events_Menu_2_4():
                 file.close()
                 striped_lines = [s.replace('\n', '') for s in lines]
                 print("------ PLAYERS ------")
+                TEMP_DICT = {}
+                x = 1
                 for line in striped_lines:
-                    print("-- {0} --".format(line))
+                    print("{0} -- {1}".format(x, line))
+                    TEMP_DICT[x] = line
+                    x += 1
 
                 #ASKS FOR WHICH TEAM MEMBER IS JOINING THE EVENT
                 def Player_Select():
-                    Player_Name = input("Enter a player name: ").title()
+                    Player_Namex = int(input("Enter a player name: "))
+                    try:
+                        Player_Name = TEMP_DICT[Player_Namex]
+                    except:
+                        Clear()
+                        print("Select a valid player!")
+                        print("Returning to menu.")
+                        time.sleep(1)
+                        Events_Menu_2()
                     for name in Teams[Team_Name]:
                         if name == Player_Name:
                             #NAME IS FOUND
@@ -1437,9 +1615,21 @@ def Events_Menu_2_4():
 
     print("--- ADDING TEAM TO EVENT ---")
     print("Select Event")
+    TEMP_DICT = {}
+    x = 1
     for key in Events_Teams:
-        print("-- {0} --".format(key))
-    Event_Name = input("Enter a event name: ").title()
+        print("{0} -- {1}".format(x, key))
+        TEMP_DICT[x] = key
+        x += 1
+    Event_Namex = int(input("Enter a event name: "))
+    try:
+        Event_Name = TEMP_DICT[Event_Namex]
+    except:
+        Clear()
+        print("Select a valid event.")
+        print("Returning to menu!")
+        time.sleep(1)
+        Events_Menu_2()
     #VALIDATION 1 : IF IT IS IN THE LIST ALREADY
     for key in Events_Teams:
         if Event_Name == key:
@@ -1454,9 +1644,21 @@ def Events_Menu_2_5():
     def team_selection():
         Clear()
         print("\n-- Select Team --")
+        TEMP_DICT = {}
+        x = 1
         for key in Teams:
-            print("-- {0} --".format(key))
-        Team_Name = input("Enter a team name: ").title()
+            print("{0} -- {1}".format(x, key))
+            TEMP_DICT[x] = key
+            x += 1
+        Team_Namex = int(input("Enter a team name: "))
+        try:
+            Team_Name = TEMP_DICT[Team_Namex]
+        except:
+            Clear()
+            print("Select a valid team!")
+            print("Returning to menu.")
+            time.sleep(1)
+            Events_Menu_2()
         #VALIDATION 1 : IF IT IS IN THE LIST ALREADY
         for name in Teams_List:
             if Team_Name == name:
@@ -1474,15 +1676,31 @@ def Events_Menu_2_5():
                             with open("Event_Team_{0}.pkl".format(Event_Name), "wb") as f:
                                 pickle.dump(Events_Teams[Event_Name], f, pickle.HIGHEST_PROTOCOL)
                             #PRINTS A MESSAGE
-                            print("\nTeam (0) has been removed from the event!".format(Team_Name))
+                            print("\nTeam {0} has been removed from the event {1}!".format(Team_Name,Event_Name))
                             time.sleep(2)
                             Events_Menu_2()
+        Clear()
+        print("Team not found!")
+        time.sleep(1)
+        Events_Menu_2()
                 #
     Clear()
     print("\n--- REMOVING TEAM FROM EVENT ---")
+    TEMP_DICT = {}
+    x = 1
     for key in Events_Teams:
-        print("-- {0} --".format(key))
-    Event_Name = input("Enter a event name: ").title()
+        print("{0} -- {1}".format(x, key))
+        TEMP_DICT[x] = key
+        x += 1
+    Event_Namex = int(input("Enter a event name: "))
+    try:
+        Event_Name = TEMP_DICT[Event_Namex]
+    except:
+        Clear()
+        print("Select a valid event!")
+        print("Returning to menu!")
+        time.sleep(1)
+        Events_Menu_2()
     #VALIDATION 1 : IF IT IS IN THE LIST ALREADY
     for key in Events_Teams:
         if Event_Name == key:
@@ -1506,6 +1724,7 @@ def Scores_Menu():
             Scores_Menu_2()
         #BACK
         elif S_M == 3:
+            Clear()
             Main_Menu()
         #BACK
         else:
@@ -1563,9 +1782,21 @@ def Scores_Menu_1_2():
     Clear()
     done = False
     print("\n--- Add Scores for Individuals ---")
+    TEMP_DICT = {}
+    x = 1
     for key in Individuals:
-        print("--> {0}".format(key))
-    Player_Name = input("Select a player: ").title()
+        print("{0} -- {1}".format(x,key))
+        TEMP_DICT[x] = key
+        x += 1
+    Player_Namex = int(input("Select a player: "))
+    try:
+        Player_Name = TEMP_DICT[Player_Namex]
+    except:
+        Clear()
+        print("Select a valid player!")
+        print("Returning to menu.")
+        time.sleep(1)
+        Scores_Menu_1()
     #VALIDATION 1 : IF NAME IS IN THE DICT.
     for key in Individuals:
         if key == Player_Name:
@@ -1692,9 +1923,21 @@ def Scores_Menu_1_2():
 #RESET SCORES
 def Scores_Menu_1_3():
     print("\n--- Reset Scores for Individuals ---")
+    TEMP_DICT = {}
+    x = 1
     for key in Individuals:
-        print("--> {0}".format(key))
-    Player_Name = input("Select a player: ").title()
+        print("{0} -- {1}".format(x, key))
+        TEMP_DICT[x] = key
+        x += 1
+    Player_Namex = int(input("Select a player: "))
+    try:
+        Player_Name = TEMP_DICT[Player_Namex]
+    except:
+        Clear()
+        print("Select a valid player!")
+        print("Returning to menu!")
+        time.sleep(1)
+        Scores_Menu_1()
     #VALIDATION 1 : IF NAME IS IN THE DICT.
     for key in Individuals:
         if key == Player_Name:
@@ -1800,17 +2043,41 @@ def Scores_Menu_2_1():
 def Scores_Menu_2_2():
     Clear()
     print("\n--- Add Scores for a Team ---")
+    TEMP_DICT = {}
+    x = 1
     for key in Teams:
-        print("--> {0}".format(key))
-    Team_Name = input("Select a team: ").title()
+        print("{0} -- {1}".format(x, key))
+        TEMP_DICT[x] = key
+        x += 1
+    Team_Namex = int(input("Select a team: "))
+    try:
+        Team_Name = TEMP_DICT[Team_Namex]
+    except:
+        Clear()
+        print("Select a valid team!")
+        print("Returning to menu.")
+        time.sleep(1)
+        Scores_Menu_2()
     #VALIDATION 1 : IF NAME IS IN THE DICT.
     for key in Teams:
         if key == Team_Name:
             #GOOD
             print("")
+            TEMP_DICT = {}
+            x = 1
             for names in Teams[Team_Name]:
-                print("--> {0} <--".format(names))
-            Player_Name = input("Select a player: ").title()
+                print("{0} -- {1}".format(x, names))
+                TEMP_DICT[x] = names
+                x += 1
+            Player_Namex = int(input("Select a player: "))
+            try:
+                Player_Name = TEMP_DICT[Player_Namex]
+            except:
+                Clear()
+                print("Select a valid player!")
+                print("Returning to menu!")
+                time.sleep(1)
+                Scores_Menu_2()
             #VALIDATION 1 : IF THIS IS AN ACTUAL NAME
             for names in Teams[Team_Name]:
                 if Player_Name == names:
@@ -1907,17 +2174,41 @@ def Scores_Menu_2_2():
 def Scores_Menu_2_3():
     Clear()
     print("\n--- Reset Scores for a Team ---")
+    TEMP_DICT = {}
+    x = 1
     for key in Teams:
-        print("--> {0}".format(key))
-    Team_Name = input("Select a team: ").title()
+        print("{0} -- {1}".format(x, key))
+        TEMP_DICT[x] = key
+        x += 1
+    Team_Namex = int(input("Select a team: "))
+    try:
+        Team_Name = TEMP_DICT[Team_Namex]
+    except:
+        Clear()
+        print("Select a valid team!")
+        print("Returning to menu!")
+        time.sleep(1)
+        Scores_Menu_2()
     #VALIDATION 1 : IF NAME IS IN THE DICT.
     for key in Teams:
         if key == Team_Name:
             #GOOD
             print("")
+            TEMP_DICT = {}
+            x = 1
             for names in Teams[Team_Name]:
-                print("--> {0} <--".format(names))
-            Player_Name = input("Select a player: ").title()
+                print("{0} -- {1}".format(x, names))
+                TEMP_DICT[x] = names
+                x += 1
+            Player_Namex = int(input("Select a player: "))
+            try:
+                Player_Name = TEMP_DICT[Player_Namex]
+            except:
+                Clear()
+                print("Select a valid player")
+                print("Returning to menu")
+                time.sleep(1)
+                Scores_Menu_2()
             #VALIDATION 1 : IF THIS IS AN ACTUAL NAME
             for names in Teams[Team_Name]:
                 if Player_Name == names:
@@ -1956,6 +2247,7 @@ def Final_Score_Menu():
         Final_Score_Menu()
     #RETURNS BACK TO MAIN MENU
     elif temp == 3:
+        Clear()
         Main_Menu()
     #IF ANOTHER OPTION WAS GIVEN
     else:
